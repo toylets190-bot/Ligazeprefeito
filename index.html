@@ -320,12 +320,13 @@ section{padding:50px 0;position:relative;}
    ===================================================================== */
 .rank-list{display:flex;flex-direction:column;gap:8px;}
 .rank-row{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);
-  border-radius:12px;padding:11px 14px;}
-.rank-row:first-child{border-color:rgba(255,209,0,.4);}
+  border-radius:12px;padding:11px 14px;cursor:pointer;transition:border-color .15s,transform .1s;}
+.rank-row:active{transform:scale(.99);}
+.rank-row:first-child{border-color:rgba(255,209,0,.4);background:linear-gradient(135deg,rgba(255,209,0,.05),var(--panel));}
 .rank-pos{font-family:var(--font-head);font-size:18px;color:var(--grey-dim);width:20px;flex-shrink:0;}
 .rank-row:first-child .rank-pos{color:var(--amber);}
 .rank-club{display:flex;align-items:center;gap:9px;font-family:var(--font-head);font-size:14.5px;flex:1;min-width:0;}
-.rank-club img{width:24px;height:24px;object-fit:contain;background:var(--void);border-radius:50%;border:1px solid var(--line);padding:3px;flex-shrink:0;}
+.rank-club img{width:26px;height:26px;object-fit:contain;background:var(--void);border-radius:50%;border:1px solid var(--line);padding:3px;flex-shrink:0;}
 .rank-stats{display:flex;gap:12px;flex-shrink:0;}
 .rank-stats div{text-align:center;min-width:26px;}
 .rank-stats b{display:block;font-family:var(--font-head);font-size:14px;}
@@ -512,6 +513,102 @@ footer .foot-guide-link{display:inline-block;margin-top:10px;color:var(--cyan);f
   background:rgba(30,155,255,.08);border:1px solid rgba(30,155,255,.25);color:var(--cyan);
   padding:4px 10px;border-radius:20px;white-space:nowrap;}
 .badge-chip.is-gold{background:rgba(255,209,0,.1);border-color:rgba(255,209,0,.35);color:var(--amber);}
+
+/* perfil eFootball — componentes visuais */
+.efb-id-row{display:flex;align-items:center;justify-content:space-between;
+  background:rgba(30,155,255,.07);border:1px solid rgba(30,155,255,.2);
+  border-radius:10px;padding:10px 14px;margin-bottom:14px;}
+.efb-id-label{font-size:9.5px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.08em;}
+.efb-id-val{font-family:var(--font-head);font-size:15px;color:var(--cyan);}
+.efb-forca-bar{background:linear-gradient(135deg,rgba(255,209,0,.08),rgba(0,82,255,.06));
+  border:1px solid rgba(255,209,0,.25);border-radius:14px;padding:14px 16px;margin-bottom:14px;}
+.efb-forca-label{font-size:9px;color:var(--amber);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px;}
+.efb-forca-val{font-family:var(--font-head);font-size:38px;color:var(--white);line-height:1;margin-bottom:10px;
+  background:linear-gradient(180deg,#fff,var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.efb-forca-track{height:6px;background:var(--void);border-radius:4px;overflow:hidden;border:1px solid var(--line);}
+.efb-forca-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--amber));border-radius:4px;
+  transition:width .6s cubic-bezier(.25,.46,.45,.94);}
+.efb-empty-forca{font-size:12px;color:var(--grey-dim);background:rgba(255,255,255,.02);
+  border:1px dashed var(--line);border-radius:10px;padding:10px 14px;margin-bottom:14px;text-align:center;}
+.efb-estilo{display:flex;align-items:center;justify-content:space-between;
+  padding:8px 14px;margin-bottom:14px;font-size:12.5px;}
+.efb-estilo span{color:var(--grey-dim);font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;}
+.efb-estilo b{color:var(--white);font-family:var(--font-head);}
+.efb-destaque-card{background:linear-gradient(135deg,rgba(255,209,0,.1),rgba(255,209,0,.03));
+  border:1px solid rgba(255,209,0,.35);border-radius:14px;padding:16px;margin-bottom:14px;
+  display:flex;align-items:center;gap:14px;box-shadow:0 0 20px rgba(255,209,0,.08);}
+.efb-destaque-label{font-size:9px;color:var(--amber);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;}
+.efb-destaque-body{flex:1;min-width:0;}
+.efb-destaque-nome{font-family:var(--font-head);font-size:17px;color:var(--white);line-height:1.1;}
+.efb-destaque-meta{font-size:10.5px;color:var(--grey-dim);margin-top:2px;text-transform:uppercase;letter-spacing:.05em;}
+.efb-destaque-forca{font-family:var(--font-head);font-size:30px;color:var(--amber);flex-shrink:0;
+  background:rgba(255,209,0,.1);border:1px solid rgba(255,209,0,.3);
+  border-radius:12px;padding:6px 12px;text-align:center;min-width:56px;
+  text-shadow:0 0 16px rgba(255,209,0,.5);}
+
+/* elenco e formação tática */
+.squad-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;}
+.squad-card{background:linear-gradient(135deg,var(--panel),var(--panel-2));border:1px solid var(--line);
+  border-radius:12px;padding:11px 13px;display:flex;gap:10px;align-items:center;
+  transition:border-color .15s;}
+.squad-card.is-star{border-color:rgba(255,209,0,.45);background:linear-gradient(135deg,rgba(255,209,0,.06),var(--panel-2));}
+.squad-num{font-family:var(--font-head);font-size:20px;color:var(--grey-dim);width:24px;
+  text-align:center;flex-shrink:0;line-height:1;}
+.squad-card.is-star .squad-num{color:rgba(255,209,0,.5);}
+.squad-info{flex:1;min-width:0;}
+.squad-info b{display:block;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  font-family:var(--font-head);letter-spacing:.01em;}
+.squad-info span{font-size:9.5px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.04em;}
+.squad-rating{font-family:var(--font-head);font-size:17px;color:var(--cyan);flex-shrink:0;
+  background:rgba(30,155,255,.1);border:1px solid rgba(30,155,255,.25);border-radius:8px;
+  padding:3px 7px;min-width:36px;text-align:center;}
+.squad-rating.is-top{color:var(--amber);background:rgba(255,209,0,.1);border-color:rgba(255,209,0,.3);}
+
+/* formação tática */
+.formation-vis{margin:16px 0;border-radius:16px;padding:20px 12px 14px;text-align:center;
+  background:linear-gradient(180deg,rgba(49,227,155,.07) 0%,rgba(49,227,155,.02) 100%);
+  border:1px solid rgba(49,227,155,.2);position:relative;overflow:hidden;}
+.formation-vis::before{content:'';position:absolute;bottom:0;left:0;right:0;height:30%;
+  background:linear-gradient(0deg,rgba(49,227,155,.06),transparent);pointer-events:none;}
+.formation-vis .fv-label{font-family:var(--font-head);font-size:26px;color:var(--green);
+  letter-spacing:.1em;margin-bottom:16px;text-shadow:0 0 20px rgba(49,227,155,.4);}
+.fv-lines{display:flex;flex-direction:column;gap:12px;}
+.fv-line{display:flex;justify-content:center;gap:10px;}
+.fv-dot{width:32px;height:32px;border-radius:50%;
+  background:rgba(49,227,155,.12);border:1.5px solid rgba(49,227,155,.4);
+  display:flex;align-items:center;justify-content:center;
+  font-size:8.5px;color:var(--green);font-family:var(--font-head);letter-spacing:.02em;
+  box-shadow:0 0 8px rgba(49,227,155,.1);}
+.fv-dot.is-gk{background:rgba(255,209,0,.14);border-color:rgba(255,209,0,.45);
+  color:var(--amber);box-shadow:0 0 8px rgba(255,209,0,.2);}
+
+/* scout da liga */
+.scout-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px;}
+.scout-card{background:linear-gradient(145deg,var(--panel),var(--panel-2));border:1px solid var(--line);
+  border-radius:var(--radius-m);padding:15px;display:flex;flex-direction:column;gap:6px;
+  position:relative;overflow:hidden;}
+.scout-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--blue),transparent);}
+.sc-icon{font-size:24px;line-height:1;}
+.sc-label{font-size:9px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.08em;}
+.sc-value{font-family:var(--font-head);font-size:18px;color:var(--white);line-height:1.2;}
+.sc-sub{font-size:10.5px;color:var(--cyan);}
+
+/* raio-x e toggle ficha/raiox */
+.raiox-toggle-row{display:flex;gap:8px;margin-bottom:20px;
+  background:var(--void);border:1px solid var(--line);border-radius:22px;padding:4px;}
+.raiox-btn{flex:1;padding:9px 0;border-radius:18px;border:none;
+  background:transparent;color:var(--grey);font-size:12px;font-family:var(--font-head);
+  letter-spacing:.04em;cursor:pointer;transition:background .2s,color .2s;}
+.raiox-btn.active{background:linear-gradient(90deg,var(--blue),var(--cyan));color:#04101f;
+  box-shadow:0 2px 12px rgba(0,82,255,.4);}
+.raiox-block{border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:16px;}
+.raiox-row{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;
+  background:rgba(255,255,255,.02);border-bottom:1px solid rgba(255,255,255,.04);transition:background .1s;}
+.raiox-row:last-child{border-bottom:none;}
+.raiox-row:nth-child(odd){background:rgba(255,255,255,.015);}
+.raiox-row span{color:var(--grey-dim);font-size:12.5px;}
+.raiox-row b{color:var(--white);font-family:var(--font-head);font-size:14.5px;}
 
 /* palpite do próximo torneio */
 .predict-card{background:linear-gradient(135deg,rgba(49,227,155,.1),rgba(0,82,255,.05));
@@ -707,6 +804,9 @@ header.topbar{border-bottom:1px solid rgba(255,209,0,.14);box-shadow:0 1px 0 rgb
 .fancard-actions .btn-primary{background:linear-gradient(90deg,var(--amber),var(--amber-deep));border:none;color:#1a1206;
   box-shadow:0 6px 16px rgba(255,209,0,.3);}
 .fancard-actions .btn-ghost{background:var(--panel);color:var(--white);}
+.card-picker input{flex:1;min-width:0;background:var(--void);border:1px solid var(--line);color:var(--white);
+  padding:10px 12px;border-radius:10px;font-family:var(--font-body);font-size:13px;}
+.card-picker input::placeholder{color:var(--grey-dim);}
 
 /* =====================================================================
    NOVA FUNCIONALIDADE 3 — TROFÉUS DO TORCEDOR (CONQUISTAS)
@@ -920,6 +1020,18 @@ header.topbar{border-bottom:1px solid rgba(255,209,0,.14);box-shadow:0 1px 0 rgb
   </div>
 </section>
 
+<!-- ============ RANKING DE FORÇA eFOOTBALL ============ -->
+<section id="ranking-forca" class="section-alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">🎮 eFOOTBALL</div>
+      <h2>Ranking de Força eFootball</h2>
+      <p>Classificação pela força dos times cadastrada no eFootball — separada do ranking histórico da Liga.</p>
+    </div>
+    <div class="rank-list reveal" id="rankListForca"></div>
+  </div>
+</section>
+
 <!-- ============ ESTATÍSTICAS ============ -->
 <section id="estatisticas" class="section-alt">
   <div class="wrap">
@@ -935,6 +1047,18 @@ header.topbar{border-bottom:1px solid rgba(255,209,0,.14);box-shadow:0 1px 0 rgb
       <div class="chart-card"><h4>Participações por clube</h4><canvas id="chartPart" height="200"></canvas></div>
       <div class="chart-card"><h4>Posição por torneio (1º = campeão)</h4><canvas id="chartEvol" height="200"></canvas></div>
     </div>
+  </div>
+</section>
+
+<!-- ============ SCOUT DA LIGA ============ -->
+<section id="scout">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">🔎 ANÁLISE TÉCNICA</div>
+      <h2>Scout da Liga</h2>
+      <p>Panorama técnico dos clubes no eFootball — dados inseridos manualmente.</p>
+    </div>
+    <div class="reveal" id="scoutGrid"></div>
   </div>
 </section>
 
@@ -1051,6 +1175,28 @@ header.topbar{border-bottom:1px solid rgba(255,209,0,.14);box-shadow:0 1px 0 rgb
   </div>
 </section>
 
+<!-- ============ CARTEIRINHA DO TORCEDOR ============ -->
+<section id="carteirinha" class="section-alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">SUA IDENTIDADE NA LIGA</div>
+      <h2>Carteirinha do Torcedor</h2>
+      <p>Escolha seu clube, coloque seu nome e gere sua carteirinha pra compartilhar.</p>
+    </div>
+    <div class="card-picker reveal">
+      <select id="fancardClub"></select>
+      <input type="text" id="fancardName" placeholder="Seu nome" maxlength="24">
+    </div>
+    <div class="fancard-stage reveal">
+      <canvas id="fancardCanvas" width="320" height="500"></canvas>
+    </div>
+    <div class="fancard-actions reveal">
+      <button class="btn-ghost" id="fancardShare">Compartilhar</button>
+      <button class="btn-primary" id="fancardDownload">Baixar imagem</button>
+    </div>
+  </div>
+</section>
+
 <!-- ============ GUIA DE EDIÇÃO ============ -->
 <section id="guia">
   <div class="wrap">
@@ -1100,6 +1246,7 @@ header.topbar{border-bottom:1px solid rgba(255,209,0,.14);box-shadow:0 1px 0 rgb
     <a class="more-link" href="#noticias" data-close-more><span class="ic">📰</span>Notícias</a>
     <a class="more-link" href="#galeria" data-close-more><span class="ic">🖼️</span>Galeria</a>
     <a class="more-link" href="#quiz" data-close-more><span class="ic">🧠</span>Quiz da Liga</a>
+    <a class="more-link" href="#carteirinha" data-close-more><span class="ic">🪪</span>Carteirinha do Torcedor</a>
     <a class="more-link" href="#guia" data-close-more><span class="ic">🛠️</span>Guia de edição</a>
   </div>
 </div>
@@ -1149,7 +1296,7 @@ header.topbar{border-bottom:1px solid rgba(255,209,0,.14);box-shadow:0 1px 0 rgb
      Deixe como null (sem aspas) para esconder o contador regressivo.
 ------------------------------------------------------------------------------------------------- */
 const CONFIG = {
-  logoUrl: "https://i.imgur.com/dtPmRrp.png", // 👉 cole aqui o link direto (i.imgur.com/....png) do logo do campeonato
+  logoUrl: "https://imgur.com/dtPmRrp", // 👉 cole aqui o link direto (i.imgur.com/....png) do logo do campeonato
   proximaData: null // 👉 exemplo: "2026-11-20T20:00:00"
 };
 
@@ -1170,14 +1317,25 @@ const CONFIG = {
 ------------------------------------------------------------------------------------------------- */
 const clubes = [
   { id:"arsenal",   nome:"Arsenal",           dono:"João",    pais:"Inglaterra", escudo:"https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg", cor:"#EF0107",
-    descricao:"Um dos clubes fundadores da Liga Zé Prefeitura." },
+    descricao:"Um dos clubes fundadores da Liga Zé Prefeitura.",
+    efootballId:"", forca:0, formacao:"", tatica:"", tecnico:"", estiloJogo:"",
+    jogadorDestaque:{ nome:"", posicao:"", forca:0 }, elenco:[], historicoForca:[], obs:"" },
   { id:"bayer",     nome:"Bayer Leverkusen",  dono:"Marcos",  pais:"Alemanha", escudo:"https://upload.wikimedia.org/wikipedia/en/5/59/Bayer_04_Leverkusen_logo.svg", cor:"#E32219",
-    descricao:"Maior campeão e um dos clubes fundadores da Liga Zé Prefeitura." },
+    descricao:"Maior campeão e um dos clubes fundadores da Liga Zé Prefeitura.",
+    efootballId:"", forca:0, formacao:"", tatica:"", tecnico:"", estiloJogo:"",
+    jogadorDestaque:{ nome:"", posicao:"", forca:0 }, elenco:[], historicoForca:[], obs:"" },
   { id:"flamengo",  nome:"Flamengo",          dono:"Luis",    pais:"Brasil", escudo:"https://upload.wikimedia.org/wikipedia/commons/9/93/Flamengo-RJ_%28BRA%29.png", cor:"#C6102F",
-    descricao:"Um dos clubes fundadores da Liga Zé Prefeitura." },
+    descricao:"Um dos clubes fundadores da Liga Zé Prefeitura.",
+    efootballId:"", forca:0, formacao:"", tatica:"", tecnico:"", estiloJogo:"",
+    jogadorDestaque:{ nome:"", posicao:"", forca:0 }, elenco:[], historicoForca:[], obs:"" },
   { id:"kyoto",     nome:"Kyoto Sanga",       dono:"Nicolas", pais:"Japão", escudo:"https://thumb.wikimedia.org/wikipedia/en/thumb/a/a2/Kyoto_Sanga_FC_logo.svg/250px-Kyoto_Sanga_FC_logo.svg.png?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail", cor:"#7B2CBF",
-    descricao:"Primeiro campeão e um dos clubes fundadores da Liga Zé Prefeitura." }
+    descricao:"Primeiro campeão e um dos clubes fundadores da Liga Zé Prefeitura.",
+    efootballId:"", forca:0, formacao:"", tatica:"", tecnico:"", estiloJogo:"",
+    jogadorDestaque:{ nome:"", posicao:"", forca:0 }, elenco:[], historicoForca:[], obs:"" }
 ];
+/* Preencha os campos acima (efootballId, forca, formacao, tatica, tecnico, estiloJogo,
+   jogadorDestaque, elenco, historicoForca, obs) manualmente quando tiver os dados reais.
+   Campos vazios/zerados aparecem como "Não informado" no site — nada é inventado. */
 
 /* -------------------------------------------------------------------------------------------------
    3) TORNEIOS — cada edição da Copa Liga eFootball
@@ -1283,6 +1441,39 @@ const guiaFAQ = [
 
 const FAV_KEY = "ligaZP_favorito";
 const porId = id => clubes.find(c => c.id === id);
+/* ---------- helpers do perfil eFootball ---------- */
+const ni = v => (v===undefined || v===null || v==='' || v===0) ? 'Não informado' : v;
+function temDestaque(c){ return c.jogadorDestaque && c.jogadorDestaque.nome; }
+function efootballProfileHTML(c){
+  return `
+    <div class="club-detail-subhead">🎮 Perfil eFootball</div>
+    <div class="efb-id-row">
+      <span class="efb-id-label">ID eFootball</span>
+      <span class="efb-id-val">${c.efootballId||'Não informado'}</span>
+    </div>
+    ${c.forca>0 ? `<div class="efb-forca-bar">
+      <div class="efb-forca-label">FORÇA DO TIME</div>
+      <div class="efb-forca-val">${c.forca}</div>
+      <div class="efb-forca-track"><div class="efb-forca-fill" style="width:${Math.min(100,c.forca)}%"></div></div>
+    </div>` : `<div class="efb-empty-forca">Força não informada</div>`}
+    <div class="club-detail-stats" style="grid-template-columns:repeat(3,1fr)">
+      <div class="mini-stat"><b>${ni(c.formacao)}</b><span>Formação</span></div>
+      <div class="mini-stat"><b>${ni(c.tatica)}</b><span>Tática</span></div>
+      <div class="mini-stat"><b>${ni(c.tecnico)}</b><span>Técnico</span></div>
+    </div>
+    ${c.estiloJogo?`<div class="efb-estilo"><span>Estilo</span><b>${c.estiloJogo}</b></div>`:''}
+    ${temDestaque(c) ? `
+    <div class="efb-destaque-card">
+      <div class="efb-destaque-label">⚡ JOGADOR DESTAQUE</div>
+      <div class="efb-destaque-body">
+        <div class="efb-destaque-nome">${c.jogadorDestaque.nome}</div>
+        <div class="efb-destaque-meta">${c.jogadorDestaque.posicao||'—'}</div>
+      </div>
+      ${c.jogadorDestaque.forca?`<div class="efb-destaque-forca">${c.jogadorDestaque.forca}</div>`:''}
+    </div>` : ''}
+    ${c.obs ? `<p style="color:var(--grey);font-size:12.5px;margin:12px 0 4px;padding:10px 12px;background:rgba(255,255,255,.03);border-left:2px solid var(--cyan);border-radius:0 8px 8px 0">💬 ${c.obs}</p>` : ''}
+  `;
+}
 const escudoOf = id => { const c = porId(id); return c ? c.escudo : ""; };
 const nomeOf = id => { const c = porId(id); return c ? c.nome : "A definir"; };
 const corOf = id => { const c = porId(id); return c ? c.cor : "#1C2846"; };
@@ -1575,6 +1766,7 @@ function renderClubGrid(){
         <div class="club-info"><h3>${c.nome}</h3><div class="club-owner">Dono: ${c.dono}</div></div>
         <button class="star-btn ${c.id===favId?'active':''}" data-fav="${c.id}" aria-label="Favoritar ${c.nome}">${c.id===favId?'★':'☆'}</button>
       </div>
+      ${c.forca ? `<div class="badge-row"><span class="badge-chip is-gold" style="font-size:12px;padding:5px 12px">⭐ FORÇA ${c.forca}</span>${temDestaque(c)?`<span class="badge-chip" style="font-size:11px">⚡ ${c.jogadorDestaque.nome}${c.jogadorDestaque.forca?' '+c.jogadorDestaque.forca:''}</span>`:''}</div>` : ''}
       <div class="club-metrics">
         <div><b>${s.titulos}</b><span>Títulos</span></div>
         <div><b>${s.vices}</b><span>Vices</span></div>
@@ -1651,6 +1843,12 @@ function openClub(id){
       <button class="share-btn" id="shareClub" aria-label="Compartilhar">↗</button>
     </div>
     <p style="color:var(--grey);font-size:13px;margin-bottom:16px">${c.descricao||''}</p>
+    <div class="raiox-toggle-row">
+      <button class="raiox-btn" id="btnFicha" data-tab="ficha">📋 Ficha</button>
+      <button class="raiox-btn" id="btnRaiox" data-tab="raiox">📊 Raio-X</button>
+    </div>
+    <div id="tabFicha">
+    ${efootballProfileHTML(c)}
     <div class="club-detail-subhead">História do clube</div>
     <div class="club-history-auto">${historiaDoClube(id)}</div>
     <div class="club-detail-stats">
@@ -1691,9 +1889,45 @@ function openClub(id){
     <div class="h2h-list">
       ${confrontos.map(h=>`<div class="h2h-row"><span>vs ${nomeOf(h.id)}</span><span>${h.v}V ${h.e}E ${h.d}D</span></div>`).join('')}
     </div>` : ''}
+    ${c.formacao ? formacaoVisualHTML(c.formacao) : ''}
+    ${elencoHTML(c)}
+    </div>
+    <div id="tabRaiox" style="display:none">
+      <div class="raiox-block">
+        <div class="raiox-row"><span>🎮 ID eFootball</span><b>${ni(c.efootballId)}</b></div>
+        <div class="raiox-row"><span>⭐ Força</span><b>${c.forca||'—'}</b></div>
+        <div class="raiox-row"><span>🧩 Formação</span><b>${ni(c.formacao)}</b></div>
+        <div class="raiox-row"><span>⚡ Destaque</span><b>${temDestaque(c)?`${c.jogadorDestaque.nome} (${c.jogadorDestaque.forca||'—'})`:'—'}</b></div>
+        <div class="raiox-row"><span>🏆 Títulos</span><b>${s.titulos}</b></div>
+        <div class="raiox-row"><span>🥈 Vices</span><b>${s.vices}</b></div>
+        <div class="raiox-row"><span>🏅 Finais</span><b>${s.finais}</b></div>
+        <div class="raiox-row"><span>📅 Edições</span><b>${s.participacoes}</b></div>
+        <div class="raiox-row"><span>⚽ Gols pró</span><b>${s.golsPro}</b></div>
+        <div class="raiox-row"><span>🛡️ Gols contra</span><b>${s.golsContra}</b></div>
+        <div class="raiox-row"><span>📈 Aproveitamento</span><b>${s.aproveitamento}%</b></div>
+        <div class="raiox-row"><span>✅ Vitórias</span><b>${s.vitorias}</b></div>
+        <div class="raiox-row"><span>🤝 Empates</span><b>${s.empates}</b></div>
+        <div class="raiox-row"><span>❌ Derrotas</span><b>${s.derrotas}</b></div>
+        <div class="raiox-row"><span>🎯 Melhor campanha</span><b>${melhorCampanha(id)}</b></div>
+      </div>
+    </div>
   `;
   document.getElementById('overlay').classList.add('open');
   document.getElementById('closeClub').addEventListener('click', closeClub);
+  // toggle Ficha / Raio-X
+  const tabFicha = document.getElementById('tabFicha');
+  const tabRaiox = document.getElementById('tabRaiox');
+  document.getElementById('btnFicha').addEventListener('click', ()=>{
+    tabFicha.style.display=''; tabRaiox.style.display='none';
+    document.getElementById('btnFicha').classList.add('active');
+    document.getElementById('btnRaiox').classList.remove('active');
+  });
+  document.getElementById('btnRaiox').addEventListener('click', ()=>{
+    tabFicha.style.display='none'; tabRaiox.style.display='';
+    document.getElementById('btnRaiox').classList.add('active');
+    document.getElementById('btnFicha').classList.remove('active');
+  });
+  document.getElementById('btnFicha').classList.add('active');
   document.getElementById('shareClub').addEventListener('click', ()=>{
     const texto = `${c.nome} na Liga Zé Prefeitura: ${s.titulos} título(s), ${s.vices} vice(s) em ${s.participacoes} torneio(s)!`;
     if(navigator.share){ navigator.share({ title: c.nome, text: texto }).catch(()=>{}); }
@@ -1871,6 +2105,129 @@ function renderRanking(){
     row.addEventListener('click', ()=>openClub(c.id));
     list.appendChild(row);
   });
+}
+
+/* ---------- formação tática ---------- */
+function parseFormacao(str){
+  // Suporta "4-3-3", "4-2-3-1", "4-4-2", etc.
+  if(!str) return null;
+  const partes = str.split('-').map(Number).filter(n=>!isNaN(n)&&n>0);
+  if(partes.length<2) return null;
+  return partes;
+}
+const POSICOES_LINHA = ['ATA','ATA','ATA','ATA','MEI','MEI','MEI','MEI','ZAG','ZAG','ZAG','ZAG'];
+function formacaoVisualHTML(formacaoStr){
+  const linhas = parseFormacao(formacaoStr);
+  if(!linhas) return '';
+  // Montar linhas de frente pra trás + goleiro
+  const linhasExib = [...linhas].reverse(); // ataque → defesa
+  const linhasHTML = linhasExib.map((qtd, li)=>{
+    const isAtk = li===0 && linhas.length>2;
+    return `<div class="fv-line">${Array(qtd).fill(0).map(()=>`<div class="fv-dot">${isAtk?'ATA':'MEI'}</div>`).join('')}</div>`;
+  }).join('');
+  return `<div class="formation-vis">
+    <div class="fv-label">${formacaoStr}</div>
+    <div class="fv-lines">
+      <div class="fv-line"><div class="fv-dot is-gk">GOL</div></div>
+      ${[...linhas].map((qtd,li)=>{
+        const lbl = li===0?'ZAG': li===linhas.length-1?'ATA':'MEI';
+        return `<div class="fv-line">${Array(qtd).fill(0).map(()=>`<div class="fv-dot">${lbl}</div>`).join('')}</div>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+
+/* ---------- elenco ---------- */
+function elencoHTML(c){
+  if(!c.elenco || c.elenco.length===0) return '';
+  const sorted = [...c.elenco].sort((a,b)=>(b.rating||0)-(a.rating||0));
+  const cards = sorted.map(j=>{
+    const star = j.destaque || (c.jogadorDestaque && c.jogadorDestaque.nome===j.nome);
+    return `<div class="squad-card${star?' is-star':''}">
+      <div class="squad-num">${j.numero||'—'}</div>
+      <div class="squad-info"><b>${j.nome}</b><span>${j.posicao||''}${j.funcao?' · '+j.funcao:''}</span></div>
+      <div class="squad-rating${star?' is-top':''}">${j.rating||'—'}</div>
+    </div>`;
+  }).join('');
+  return `<div class="club-detail-subhead">👥 Elenco (${c.elenco.length})</div><div class="squad-grid">${cards}</div>`;
+}
+
+/* ---------- ranking de força eFootball (separado do ranking histórico) ---------- */
+function renderRankingForca(){
+  const list = document.getElementById('rankListForca');
+  if(!list) return;
+  const comForca = clubes.filter(c=>c.forca>0).sort((a,b)=>b.forca-a.forca);
+  if(comForca.length===0){
+    list.innerHTML = `<p style="color:var(--grey-dim);font-size:13px">Nenhuma força cadastrada ainda. Preencha o campo "forca" de cada clube para aparecer aqui.</p>`;
+    return;
+  }
+  list.innerHTML = '';
+  comForca.forEach((c,i)=>{
+    const row = document.createElement('div');
+    row.className = 'rank-row';
+    row.innerHTML = `
+      <div class="rank-pos">${i+1}</div>
+      <div class="rank-club"><img src="${c.escudo}" alt="" onerror="this.style.display='none'">${c.nome}</div>
+      <div class="rank-stats">
+        <div><b>⭐ ${c.forca}</b><span>Força</span></div>
+        <div style="flex:1.4"><span style="font-size:10px;color:var(--grey-dim)">${temDestaque(c)?`Destaque: ${c.jogadorDestaque.nome}`:'Sem destaque cadastrado'}</span></div>
+      </div>`;
+    row.addEventListener('click', ()=>openClub(c.id));
+    list.appendChild(row);
+  });
+}
+
+/* ---------- Scout da Liga ---------- */
+function renderScout(){
+  const el = document.getElementById('scoutGrid');
+  if(!el) return;
+  const comForca = clubes.filter(c=>c.forca>0);
+  if(comForca.length===0){
+    el.innerHTML=`<p style="color:var(--grey-dim);font-size:13px">Nenhum dado de força cadastrado ainda.</p>`;
+    return;
+  }
+  const sorted = [...comForca].sort((a,b)=>b.forca-a.forca);
+  const maior = sorted[0];
+  const menor = sorted[sorted.length-1];
+  const media = Math.round(comForca.reduce((s,c)=>s+c.forca,0)/comForca.length);
+  const dif = maior.forca - menor.forca;
+  const destaques = clubes.filter(c=>temDestaque(c)&&c.jogadorDestaque.forca>0)
+    .sort((a,b)=>b.jogadorDestaque.forca-a.jogadorDestaque.forca);
+  const topDestaque = destaques[0];
+
+  // histórico de força: maior evolução
+  let maiorEvolucao = null;
+  clubes.forEach(c=>{
+    if(c.historicoForca&&c.historicoForca.length>=2){
+      const vals = c.historicoForca.map(h=>h.forca).filter(v=>v>0);
+      if(vals.length>=2){ const evo=vals[vals.length-1]-vals[0]; if(!maiorEvolucao||evo>maiorEvolucao.evo) maiorEvolucao={clube:c,evo}; }
+    }
+  });
+
+  const stat = (icon,label,valor,sub='')=>`
+    <div class="scout-card">
+      <div class="sc-icon">${icon}</div>
+      <div class="sc-body"><div class="sc-label">${label}</div><div class="sc-value">${valor}</div>${sub?`<div class="sc-sub">${sub}</div>`:''}</div>
+    </div>`;
+
+  el.innerHTML=`<div class="scout-grid">
+    ${stat('🏆','Maior força',`${maior.forca}`,maior.nome)}
+    ${stat('📉','Menor força',`${menor.forca}`,menor.nome)}
+    ${stat('📊','Média de força',`${media}`,`${comForca.length} clube(s) com dados`)}
+    ${stat('⚖️','Diferença entre extremos',`${dif}`,`${maior.nome} × ${menor.nome}`)}
+    ${topDestaque?stat('⚡','Maior destaque',`${topDestaque.jogadorDestaque.nome} — ${topDestaque.jogadorDestaque.forca}`,topDestaque.nome):''}
+    ${maiorEvolucao?stat('📈','Maior evolução',`+${maiorEvolucao.evo}`,maiorEvolucao.clube.nome):''}
+  </div>
+  <div class="club-detail-subhead" style="margin-top:24px">Destaques cadastrados</div>
+  <div class="squad-grid">
+    ${destaques.length?destaques.map(c=>`
+      <div class="squad-card is-star">
+        <img src="${c.escudo}" alt="" style="width:28px;height:28px;object-fit:contain;flex-shrink:0" onerror="this.style.display='none'">
+        <div class="squad-info"><b>${c.jogadorDestaque.nome}</b><span>${c.nome} · ${c.jogadorDestaque.posicao||'—'}</span></div>
+        <div class="squad-rating is-top">${c.jogadorDestaque.forca||'—'}</div>
+      </div>`).join('')
+    :`<p style="color:var(--grey-dim);font-size:13px">Nenhum destaque cadastrado.</p>`}
+  </div>`;
 }
 
 /* ---------- recordes da Liga (Fase 7) ---------- */
@@ -2082,6 +2439,11 @@ function setupHTH(){
     }
     const sA = stats[idA], sB = stats[idB];
     const metrics = [ ['Títulos', sA.titulos, sB.titulos], ['Vices', sA.vices, sB.vices], ['Finais', sA.finais, sB.finais], ['Aproveitamento', sA.aproveitamento, sB.aproveitamento] ];
+    const cA = porId(idA), cB = porId(idB);
+    if(cA.forca>0 && cB.forca>0) metrics.push(['Força eFootball', cA.forca, cB.forca]);
+    if(temDestaque(cA) && temDestaque(cB) && cA.jogadorDestaque.forca>0 && cB.jogadorDestaque.forca>0){
+      metrics.push([`Destaque (${cA.jogadorDestaque.nome} × ${cB.jogadorDestaque.nome})`, cA.jogadorDestaque.forca, cB.jogadorDestaque.forca]);
+    }
     cmp.innerHTML = `<h4>${nomeOf(idA)} vs ${nomeOf(idB)} — carreira</h4>` + metrics.map(([label,va,vb])=>{
       const max = Math.max(va,vb,1);
       return `<div class="compare-row"><span class="compare-metric-name">${label}</span>
@@ -2498,10 +2860,162 @@ function renderQuizQuestion(){
   });
 }
 
+/* ---------- carteirinha do torcedor (Nova funcionalidade 2) ---------- */
+const FANCARD_NAME_KEY = "ligaZP_torcedor_nome";
+function setupFanCard(){
+  const selClub = document.getElementById('fancardClub');
+  const inputName = document.getElementById('fancardName');
+  if(!selClub || !inputName) return;
+  selClub.innerHTML = clubes.map(c=>`<option value="${c.id}">${c.nome}</option>`).join('');
+  const favId = getFavorito();
+  if(favId) selClub.value = favId;
+  let savedName = '';
+  try { savedName = localStorage.getItem(FANCARD_NAME_KEY) || ''; } catch(e){}
+  inputName.value = savedName;
+  function update(){
+    try { localStorage.setItem(FANCARD_NAME_KEY, inputName.value); } catch(e){}
+    drawFanCard(selClub.value, inputName.value);
+  }
+  selClub.addEventListener('change', update);
+  inputName.addEventListener('input', update);
+  update();
+
+  const btnDownload = document.getElementById('fancardDownload');
+  const btnShare = document.getElementById('fancardShare');
+  btnDownload.addEventListener('click', ()=>{
+    const canvas = document.getElementById('fancardCanvas');
+    try{
+      const url = canvas.toDataURL('image/png');
+      const a = document.createElement('a');
+      a.href = url; a.download = `carteirinha-${selClub.value}.png`;
+      a.click();
+      if(navigator.vibrate) navigator.vibrate(10);
+    } catch(e){
+      alert('Não foi possível baixar a imagem (restrição do navegador com imagens externas). Tente fazer print da tela.');
+    }
+  });
+  btnShare.addEventListener('click', ()=>{
+    const canvas = document.getElementById('fancardCanvas');
+    canvas.toBlob(blob=>{
+      if(!blob) return;
+      const file = new File([blob], 'carteirinha.png', { type:'image/png' });
+      if(navigator.share && navigator.canShare && navigator.canShare({ files:[file] })){
+        navigator.share({ files:[file], title:'Minha carteirinha da Liga Zé Prefeitura' }).catch(()=>{});
+      } else {
+        try{
+          const url = canvas.toDataURL('image/png');
+          const a = document.createElement('a'); a.href = url; a.download = 'carteirinha.png'; a.click();
+        } catch(e){
+          alert('Não foi possível compartilhar. Tente a opção de baixar.');
+        }
+      }
+    });
+  });
+}
+function drawFanCard(id, nomeTorcedor){
+  const c = porId(id); if(!c) return;
+  const s = stats[id];
+  const canvas = document.getElementById('fancardCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = 320, H = 500, dpr = window.devicePixelRatio || 1;
+  canvas.width = W*dpr; canvas.height = H*dpr;
+  canvas.style.width = W+'px'; canvas.style.height = H+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,W,H);
+  ctx.textAlign = 'center';
+
+  const cor = c.cor || '#1E9BFF';
+  const bg = ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#0F2040'); bg.addColorStop(1,'#040919');
+  ctx.fillStyle = bg;
+  ctx.beginPath();
+  ctx.roundRect ? ctx.roundRect(0,0,W,H,20) : ctx.rect(0,0,W,H);
+  ctx.fill();
+
+  ctx.fillStyle = cor;
+  ctx.fillRect(0,0,W,8);
+
+  ctx.fillStyle = '#7080AC';
+  ctx.font = '700 11px Rajdhani, sans-serif';
+  ctx.fillText('LIGA ZÉ PREFEITURA · COPA LIGA eFOOTBALL', W/2, 34);
+
+  ctx.strokeStyle = 'rgba(255,255,255,.15)';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(W/2, 130, 60, 0, Math.PI*2); ctx.stroke();
+
+  function finish(img){
+    if(img){
+      try{
+        ctx.save();
+        ctx.beginPath(); ctx.arc(W/2,130,54,0,Math.PI*2); ctx.clip();
+        ctx.drawImage(img, W/2-54, 130-54, 108,108);
+        ctx.restore();
+      } catch(e){}
+    }
+    ctx.fillStyle = '#F5F8FF';
+    ctx.font = '700 24px Rajdhani, sans-serif';
+    ctx.fillText(c.nome.toUpperCase(), W/2, 218);
+
+    ctx.fillStyle = '#93A3CC';
+    ctx.font = '600 11px Manrope, sans-serif';
+    ctx.fillText('CARTEIRINHA DO TORCEDOR', W/2, 240);
+
+    ctx.fillStyle = cor;
+    ctx.font = '700 20px Rajdhani, sans-serif';
+    const nome = (nomeTorcedor && nomeTorcedor.trim()) ? nomeTorcedor.trim().toUpperCase() : 'TORCEDOR ANÔNIMO';
+    ctx.fillText(nome, W/2, 275);
+
+    const statsList = [ [s.titulos,'TÍTULOS'], [s.vices,'VICES'], [s.aproveitamento+'%','APROVEIT.'] ];
+    const boxW = 90, gap = 10, totalW = boxW*3+gap*2, startX = (W-totalW)/2, y = 310;
+    statsList.forEach(([val,label],i)=>{
+      const x = startX + i*(boxW+gap);
+      ctx.fillStyle = 'rgba(255,255,255,.04)';
+      ctx.beginPath();
+      ctx.roundRect ? ctx.roundRect(x,y,boxW,60,10) : ctx.rect(x,y,boxW,60);
+      ctx.fill();
+      ctx.fillStyle = '#F5F8FF'; ctx.font = '700 20px Rajdhani, sans-serif';
+      ctx.fillText(String(val), x+boxW/2, y+30);
+      ctx.fillStyle = '#7080AC'; ctx.font = '600 9px Manrope, sans-serif';
+      ctx.fillText(label, x+boxW/2, y+48);
+    });
+
+    const badges = calcularConquistas(id).slice(0,3);
+    let by = 395;
+    badges.forEach(b=>{
+      ctx.font = '600 11px Manrope, sans-serif';
+      const txt = `${b.icon} ${b.label}`;
+      const tw = ctx.measureText(txt).width + 24;
+      const bx = W/2 - tw/2;
+      ctx.fillStyle = b.gold ? 'rgba(255,209,0,.12)' : 'rgba(30,155,255,.1)';
+      ctx.beginPath();
+      ctx.roundRect ? ctx.roundRect(bx,by,tw,26,13) : ctx.rect(bx,by,tw,26);
+      ctx.fill();
+      ctx.fillStyle = b.gold ? '#FFD100' : '#1E9BFF';
+      ctx.fillText(txt, W/2, by+17);
+      by += 34;
+    });
+
+    ctx.fillStyle = '#5B6584';
+    ctx.font = '600 10px Manrope, sans-serif';
+    ctx.fillText('Emitida em ' + new Date().toLocaleDateString('pt-BR'), W/2, H-20);
+  }
+
+  if(c.escudo){
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = ()=> finish(img);
+    img.onerror = ()=> finish(null);
+    img.src = c.escudo;
+  } else {
+    finish(null);
+  }
+}
+
 function renderAll(){
   renderHeroStats(); renderChampionShowcase(); renderQuickFacts(); renderLastResult();
   renderCrestRing(); renderFavPill(); renderHighlights(); renderClubGrid(); renderChampList();
-  renderResultFeed(); renderRankFilter(); renderRanking(); renderStatGrid2(); renderRecords(); renderRivalries(); renderTimeline();
+  renderResultFeed(); renderRankFilter(); renderRanking(); renderRankingForca(); renderScout(); renderStatGrid2(); renderRecords(); renderRivalries(); renderTimeline();
   renderGallery(); renderHeroTag(); renderPredictCard(); renderHallFama(); renderHomeNewsPreview();
 }
 
@@ -2519,6 +3033,7 @@ renderGalleryFilter();
 renderGuia();
 setupSimulador();
 setupQuiz();
+setupFanCard();
 window.addEventListener('resize', ()=>{ clearTimeout(window._rt); window._rt=setTimeout(renderCharts,200); });
 
 /* barra inferior + folha "mais" */
