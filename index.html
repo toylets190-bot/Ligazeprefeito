@@ -28,7 +28,7 @@
   --cyan:#1E9BFF;
   --white:#F5F8FF;
   --grey:#93A3CC;
-  --grey-dim:#5E6E97;
+  --grey-dim:#7080AC;
   --amber:#FFD100;
   --amber-deep:#F2A900;
   --danger:#FF4D6D;
@@ -213,6 +213,56 @@ section{padding:50px 0;position:relative;}
 .club-timeline li.is-title::before{background:var(--amber);box-shadow:0 0 8px var(--amber);}
 .club-timeline b{display:block;font-family:var(--font-head);font-size:14px;color:var(--white);}
 .club-timeline span{color:var(--grey);font-size:12.5px;}
+.club-detail-subhead{font-family:var(--font-head);font-size:12px;letter-spacing:.08em;color:var(--grey-dim);
+  text-transform:uppercase;margin:22px 0 10px;}
+.match-list, .h2h-list{display:flex;flex-direction:column;gap:6px;}
+.match-row{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.03);
+  border:1px solid var(--line);border-left:3px solid var(--line);border-radius:10px;padding:9px 12px;font-size:12.5px;}
+.match-row.is-vitoria{border-left-color:var(--green);}
+.match-row.is-derrota{border-left-color:var(--danger);}
+.match-row .mr-score{font-family:var(--font-head);color:var(--white);font-size:14px;}
+.h2h-row{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;color:var(--grey);
+  padding:8px 0;border-bottom:1px solid var(--line);}
+.h2h-row:last-child{border-bottom:none;}
+.tournament-meta{margin-bottom:16px;}
+.tournament-meta .tm-date{font-size:11.5px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
+.tm-participants{display:flex;gap:10px;flex-wrap:wrap;}
+.tm-participant{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.03);border:1px solid var(--line);
+  border-radius:20px;padding:5px 12px 5px 5px;font-size:11.5px;}
+.tm-participant img{width:20px;height:20px;object-fit:contain;}
+.tournament-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0 24px;}
+.rank-filter{display:flex;gap:8px;overflow-x:auto;margin-bottom:16px;padding-bottom:2px;}
+.rank-filter-btn{flex-shrink:0;padding:8px 14px;border-radius:20px;border:1px solid var(--line);
+  background:rgba(255,255,255,.03);color:var(--grey);font-size:12px;font-family:var(--font-head);letter-spacing:.02em;}
+.rank-filter-btn.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+.record-grid{display:grid;grid-template-columns:1fr;gap:12px;}
+.record-card{display:flex;align-items:center;gap:14px;background:linear-gradient(160deg,var(--panel),var(--panel-2));
+  border:1px solid var(--line);border-radius:var(--radius-m);padding:16px;}
+.record-card .rc-icon{font-size:26px;flex-shrink:0;}
+.record-card .rc-label{font-size:10.5px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.05em;}
+.record-card .rc-value{font-family:var(--font-head);font-size:16px;color:var(--white);margin-top:2px;}
+.record-card .rc-detail{font-size:11.5px;color:var(--cyan);margin-top:2px;}
+.hth-matches{margin:16px 0;}
+.hth-matches .hm-subhead{font-family:var(--font-head);font-size:12px;letter-spacing:.06em;color:var(--grey-dim);
+  text-transform:uppercase;margin:14px 0 8px;}
+.hth-matches .hm-empty{font-size:13px;color:var(--grey-dim);}
+
+/* hall da fama */
+.hof-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:26px;}
+.hof-block{margin-bottom:24px;}
+.hof-block h4{font-size:12px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;}
+.hof-founders{display:flex;flex-wrap:wrap;gap:10px;}
+.hof-founder-chip{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);
+  border-radius:999px;padding:7px 14px 7px 7px;font-size:13px;color:var(--white);}
+.hof-founder-chip img{width:22px;height:22px;object-fit:contain;border-radius:50%;background:var(--void);}
+.hof-empty{font-size:13px;color:var(--grey-dim);}
+
+/* preview de notícias na home */
+.home-news-preview{margin-top:22px;}
+.home-news-preview h4{font-size:11px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
+.home-news-preview .news-grid{gap:10px;}
+.home-news-preview .news-body h3{font-size:13px;}
+.home-news-preview .news-body p{display:none;}
 
 /* menu "mais" */
 .more-link{display:flex;align-items:center;gap:14px;padding:15px 4px;border-bottom:1px solid var(--line);font-family:var(--font-head);font-size:16px;}
@@ -282,6 +332,31 @@ section{padding:50px 0;position:relative;}
 .rank-stats span{font-size:8px;color:var(--grey-dim);text-transform:uppercase;}
 
 /* =====================================================================
+   PAINEL INICIAL (campeão atual, fatos rápidos, acessos rápidos)
+   ===================================================================== */
+.champion-showcase{background:linear-gradient(160deg,var(--panel),var(--panel-2));border:1px solid rgba(255,209,0,.35);
+  border-radius:var(--radius-l);padding:22px 18px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden;}
+.champion-showcase .cs-label{font-family:var(--font-head);font-size:11px;letter-spacing:.18em;color:var(--amber);margin-bottom:12px;}
+.champion-showcase .cs-crest{width:84px;height:84px;margin:0 auto 12px;border-radius:50%;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,209,0,.3);display:flex;align-items:center;justify-content:center;padding:12px;}
+.champion-showcase .cs-crest img{width:100%;height:100%;object-fit:contain;}
+.champion-showcase h3{font-size:22px;color:var(--white);}
+.champion-showcase .cs-sub{font-size:11.5px;color:var(--grey);margin-top:4px;}
+.quick-facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.home-links{display:flex;gap:10px;margin-bottom:30px;}
+.home-link-btn{flex:1;text-align:center;padding:13px 8px;border-radius:var(--radius-m);font-family:var(--font-head);
+  font-size:13px;letter-spacing:.02em;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--white);}
+.home-link-btn.is-primary{background:linear-gradient(90deg,var(--blue),var(--cyan));color:#04101f;border:none;}
+.last-result-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);padding:16px;
+  margin-bottom:14px;text-align:center;}
+.last-result-card .lr-label{font-size:10px;letter-spacing:.1em;color:var(--grey-dim);text-transform:uppercase;margin-bottom:10px;}
+.last-result-card .lr-teams{display:flex;align-items:center;justify-content:center;gap:14px;}
+.last-result-card .lr-team{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;}
+.last-result-card .lr-team img{width:36px;height:36px;object-fit:contain;}
+.last-result-card .lr-team span{font-size:11px;color:var(--grey);}
+.last-result-card .lr-score{font-family:var(--font-head);font-size:24px;color:var(--white);white-space:nowrap;}
+
+/* =====================================================================
    ESTATÍSTICAS / GRÁFICOS
    ===================================================================== */
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:30px;}
@@ -347,9 +422,15 @@ canvas{width:100%;}
   border:1px solid var(--line);padding:6px 14px;border-radius:20px;cursor:pointer;}
 .news-filter button.active{color:var(--void);background:var(--cyan);border-color:var(--cyan);}
 .news-grid{display:flex;flex-direction:column;gap:14px;}
-.news-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);overflow:hidden;display:flex;}
+.news-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);overflow:hidden;display:flex;cursor:pointer;}
 .news-thumb{width:78px;flex-shrink:0;background:linear-gradient(135deg,var(--blue-deep),var(--panel-2));
   display:flex;align-items:center;justify-content:center;font-size:26px;}
+.news-thumb img{width:100%;height:100%;object-fit:cover;}
+.news-detail img{width:100%;border-radius:var(--radius-m);margin-bottom:14px;object-fit:cover;max-height:200px;}
+.news-detail .news-cat{margin-bottom:8px;}
+.news-detail h3{font-size:19px;margin-bottom:6px;}
+.news-detail .news-date{display:block;margin-bottom:14px;}
+.news-detail p{font-size:14px;color:var(--grey);line-height:1.6;}
 .news-body{padding:14px 16px;min-width:0;}
 .news-cat{font-size:10px;color:var(--cyan);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;}
 .news-body h3{font-size:14.5px;margin-bottom:5px;line-height:1.25;}
@@ -420,6 +501,10 @@ footer .foot-guide-link{display:inline-block;margin-top:10px;color:var(--cyan);f
   transition:opacity .25s ease,transform .25s ease;}
 .fab-top.show{opacity:1;pointer-events:auto;transform:none;}
 @media (max-width:480px){ .fab-top{right:16px;} }
+@media (max-width:600px){
+  /* evita o zoom automático do iOS ao focar campos com fonte menor que 16px */
+  .hth-picker select, .sim-picker select, .predict-row select, .search-box input{ font-size:16px; }
+}
 
 /* conquistas / badges */
 .badge-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
@@ -460,6 +545,36 @@ footer .foot-guide-link{display:inline-block;margin-top:10px;color:var(--cyan);f
   transition:opacity .3s ease,transform .3s ease;}
 .sim-score.show{opacity:1;transform:none;}
 .sim-verdict{text-align:center;font-size:12px;color:var(--grey-dim);margin-top:10px;}
+.sim-probability{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--grey-dim);margin-bottom:10px;}
+.sim-probability .sp-bar{flex:1;height:6px;border-radius:4px;background:var(--danger);overflow:hidden;}
+.sim-probability .sp-fill{height:100%;background:var(--cyan);}
+.sim-history{font-size:11.5px;color:var(--grey-dim);text-align:center;margin-bottom:14px;}
+
+/* força do time no simulador */
+.sim-force{display:flex;justify-content:space-between;font-size:11.5px;color:var(--grey-dim);margin-bottom:14px;}
+.sim-force .sf-side{display:flex;align-items:center;gap:5px;}
+.sim-force .sf-stars{color:var(--amber);letter-spacing:1px;}
+
+/* disputa de pênaltis (simulador) */
+.pen-shootout{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);}
+.pen-shootout .pen-title{font-family:var(--font-head);font-size:11px;letter-spacing:.06em;color:var(--grey-dim);
+  text-transform:uppercase;margin-bottom:10px;text-align:center;}
+.pen-row{display:flex;justify-content:center;gap:5px;margin-bottom:6px;flex-wrap:wrap;}
+.pen-dot{width:16px;height:16px;border-radius:50%;font-size:10px;display:flex;align-items:center;justify-content:center;
+  background:var(--panel);border:1px solid var(--line);}
+.pen-dot.is-goal{background:var(--green);border-color:var(--green);color:#05130c;}
+.pen-dot.is-miss{background:var(--danger);border-color:var(--danger);color:#fff;}
+.pen-score{text-align:center;font-family:var(--font-head);font-size:13px;color:var(--white);margin-top:4px;}
+
+/* história automática do clube (perfil) */
+.club-history-auto{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);
+  padding:14px 16px;margin-bottom:18px;font-size:13px;color:var(--grey);line-height:1.55;}
+.club-history-auto b{color:var(--white);}
+.sim-btn.is-secondary{background:transparent;border:1px solid var(--line);color:var(--white);margin-top:16px;box-shadow:none;}
+.sim-btn.is-secondary::before{display:none;}
+.sim-bracket-result{margin-top:14px;font-size:12.5px;color:var(--grey);}
+.sim-bracket-result .sbr-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line);}
+.sim-bracket-result .sbr-champ{text-align:center;margin-top:10px;font-family:var(--font-head);color:var(--amber);font-size:15px;}
 
 /* quiz da liga */
 .quiz-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);padding:20px;}
@@ -645,6 +760,7 @@ header.topbar{border-bottom:1px solid rgba(255,209,0,.14);box-shadow:0 1px 0 rgb
 </header>
 
 <!-- ============ HERO ============ -->
+<main>
 <section class="hero" id="inicio">
   <div class="hero-dots"></div>
   <div class="hero-eyebrow">COPA LIGA eFOOTBALL</div>
@@ -667,9 +783,9 @@ header.topbar{border-bottom:1px solid rgba(255,209,0,.14);box-shadow:0 1px 0 rgb
   </div>
 
   <div class="hero-stats">
-    <div class="hero-stat"><b data-count="6">0</b><span>Torneios</span></div>
-    <div class="hero-stat"><b data-count="4">0</b><span>Clubes</span></div>
-    <div class="hero-stat"><b data-count="1">0</b><span>Taça</span></div>
+    <div class="hero-stat"><b id="heroStatTorneios" data-count="0">0</b><span>Torneios</span></div>
+    <div class="hero-stat"><b id="heroStatClubes" data-count="0">0</b><span>Clubes</span></div>
+    <div class="hero-stat"><b id="heroStatTitulos" data-count="0">0</b><span>Taças decididas</span></div>
   </div>
 
   <div class="countdown" id="countdownBox" style="display:none">
@@ -678,6 +794,20 @@ header.topbar{border-bottom:1px solid rgba(255,209,0,.14);box-shadow:0 1px 0 rgb
   </div>
 
   <div class="scroll-cue">ROLE PARA EXPLORAR<div class="stick"></div></div>
+</section>
+
+<!-- ============ PAINEL INICIAL (campeão atual, fatos rápidos) ============ -->
+<section id="painel">
+  <div class="wrap">
+    <div class="champion-showcase reveal" id="championShowcase"></div>
+    <div class="quick-facts reveal" id="quickFacts"></div>
+    <div class="last-result-card reveal" id="lastResultCard"></div>
+    <div class="home-news-preview reveal" id="homeNewsPreview"></div>
+    <div class="home-links reveal">
+      <a href="#clubes" class="home-link-btn">Ver clubes</a>
+      <a href="#torneios" class="home-link-btn is-primary">Ver torneios</a>
+    </div>
+  </div>
 </section>
 
 <!-- ============ BUSCA GLOBAL (nova funcionalidade 1) ============ -->
@@ -742,7 +872,9 @@ header.topbar{border-bottom:1px solid rgba(255,209,0,.14);box-shadow:0 1px 0 rgb
       <p>Selecione uma edição para ver como o torneio se desenrolou até o campeão.</p>
     </div>
     <div class="tournament-select reveal" id="tSelect"></div>
+    <div class="tournament-meta reveal" id="tournamentMeta"></div>
     <div class="bracket reveal" id="bracketView"></div>
+    <div class="tournament-stats reveal" id="tournamentStats"></div>
     <div class="result-feed reveal" id="resultFeed"></div>
     <div class="predict-card reveal" id="predictCard" style="display:none"></div>
   </div>
@@ -757,15 +889,20 @@ header.topbar{border-bottom:1px solid rgba(255,209,0,.14);box-shadow:0 1px 0 rgb
       <p>Escolha dois clubes e veja um placar aleatório. Não conta pro histórico oficial — é só diversão.</p>
     </div>
     <div class="sim-card reveal">
-      <p class="hint">Times com mais títulos têm uma leve vantagem na simulação.</p>
+      <p class="hint">A força de cada time considera títulos e aproveitamento. Em caso de empate, vai para os pênaltis.</p>
       <div class="sim-picker">
         <select id="simA"></select>
         <span class="hth-vs">×</span>
         <select id="simB"></select>
       </div>
+      <div class="sim-probability" id="simProbability"></div>
+      <div class="sim-force" id="simForce"></div>
+      <div class="sim-history" id="simHistory"></div>
       <button class="sim-btn" id="simRun">Simular partida ⚽</button>
       <div class="sim-result" id="simResult"></div>
       <div class="sim-verdict" id="simVerdict"></div>
+      <button class="sim-btn is-secondary" id="simBracketRun">Simular mata-mata com todos os clubes 🏆</button>
+      <div class="sim-bracket-result" id="simBracketResult"></div>
     </div>
   </div>
 </section>
@@ -776,8 +913,9 @@ header.topbar{border-bottom:1px solid rgba(255,209,0,.14);box-shadow:0 1px 0 rgb
     <div class="section-head reveal">
       <div class="section-kicker">CLASSIFICAÇÃO GERAL</div>
       <h2>Ranking da Liga</h2>
-      <p>Ordenado por títulos, depois vices, finais disputadas e participações.</p>
+      <p>Escolha o critério e veja a classificação da Liga sob diferentes ângulos.</p>
     </div>
+    <div class="rank-filter reveal" id="rankFilter"></div>
     <div class="rank-list reveal" id="rankList"></div>
   </div>
 </section>
@@ -800,6 +938,18 @@ header.topbar{border-bottom:1px solid rgba(255,209,0,.14);box-shadow:0 1px 0 rgb
   </div>
 </section>
 
+<!-- ============ RECORDES ============ -->
+<section id="recordes">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">MARCAS DA LIGA</div>
+      <h2>Recordes</h2>
+      <p>Calculados automaticamente a partir do histórico de todos os torneios.</p>
+    </div>
+    <div class="record-grid reveal" id="recordGrid"></div>
+  </div>
+</section>
+
 <!-- ============ CONFRONTO DIRETO ============ -->
 <section id="confronto">
   <div class="wrap">
@@ -815,6 +965,7 @@ header.topbar{border-bottom:1px solid rgba(255,209,0,.14);box-shadow:0 1px 0 rgb
       <select id="hthB"></select>
     </div>
     <div class="hth-result reveal" id="hthResult"></div>
+    <div class="hth-matches reveal" id="hthMatches"></div>
     <div class="compare-panel reveal" id="comparePanel"></div>
     <div class="rivalry-list reveal" id="rivalryList"></div>
   </div>
@@ -832,9 +983,33 @@ header.topbar{border-bottom:1px solid rgba(255,209,0,.14);box-shadow:0 1px 0 rgb
       <article><h3>O início</h3><p>A Liga Zé Prefeitura nasceu da vontade de dar um formato sério a partidas de eFootball entre amigos — com clubes fixos, edições numeradas e um lugar para guardar a memória de cada disputa.</p></article>
       <article><h3>Primeiras edições</h3><p>Os primeiros torneios estabeleceram o formato: quatro clubes, semifinais e uma grande final. Kyoto Sanga foi o primeiro campeão da Liga, no Torneio 1.</p></article>
       <article><h3>Rivalidades</h3><p id="rivalryText">Os confrontos diretos entre os quatro clubes vão, torneio após torneio, desenhando os duelos mais marcantes da Liga.</p></article>
-      <article><h3>Era atual</h3><p>Com seis torneios já disputados, a Copa Liga eFootball segue em expansão, com novas edições sempre a caminho.</p></article>
+      <article><h3>Era atual</h3><p id="eraAtualText">A Copa Liga eFootball segue em expansão, com novas edições sempre a caminho.</p></article>
     </div>
     <div class="timeline reveal" id="timeline"></div>
+  </div>
+</section>
+
+<!-- ============ HALL DA FAMA ============ -->
+<section id="hallfama" class="section-alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">OS NOMES QUE FICAM</div>
+      <h2>Hall da Fama</h2>
+      <p>Os destaques e recordes históricos da Liga, calculados a partir de todos os torneios já disputados.</p>
+    </div>
+    <div class="hof-grid reveal" id="hofGrid"></div>
+    <div class="hof-block reveal">
+      <h4>Clubes fundadores</h4>
+      <div class="hof-founders" id="hofFounders"></div>
+    </div>
+    <div class="hof-block reveal">
+      <h4>Jogadores históricos</h4>
+      <div id="hofPlayers"></div>
+    </div>
+    <div class="hof-block reveal">
+      <h4>Momentos marcantes</h4>
+      <div id="hofMoments"></div>
+    </div>
   </div>
 </section>
 
@@ -857,8 +1032,9 @@ header.topbar{border-bottom:1px solid rgba(255,209,0,.14);box-shadow:0 1px 0 rgb
     <div class="section-head reveal">
       <div class="section-kicker">ESCUDOS</div>
       <h2>Galeria</h2>
-      <p>Os símbolos dos clubes da Liga.</p>
+      <p>Escudos, finais, troféus e momentos da Liga, organizados por categoria.</p>
     </div>
+    <div class="news-filter reveal" id="galleryFilter"></div>
     <div class="gallery-grid reveal" id="galleryGrid"></div>
   </div>
 </section>
@@ -887,6 +1063,7 @@ header.topbar{border-bottom:1px solid rgba(255,209,0,.14);box-shadow:0 1px 0 rgb
   </div>
 </section>
 
+</main>
 <footer>
   <p><strong>Liga Zé Prefeitura</strong> — Copa Liga eFootball · Arquivo histórico não-oficial de uma competição entre amigos.</p>
   <a class="foot-guide-link" href="#guia">Como editar este site ↑</a>
@@ -915,9 +1092,11 @@ header.topbar{border-bottom:1px solid rgba(255,209,0,.14);box-shadow:0 1px 0 rgb
     <button class="sheet-close" id="closeMore">×</button>
     <a class="more-link" href="#titulos" data-close-more><span class="ic">🥇</span>Títulos</a>
     <a class="more-link" href="#ranking" data-close-more><span class="ic">📋</span>Ranking</a>
+    <a class="more-link" href="#recordes" data-close-more><span class="ic">🏅</span>Recordes</a>
     <a class="more-link" href="#confronto" data-close-more><span class="ic">⚔️</span>Confronto direto</a>
     <a class="more-link" href="#simulador" data-close-more><span class="ic">🎮</span>Simulador</a>
     <a class="more-link" href="#historia" data-close-more><span class="ic">📜</span>História</a>
+    <a class="more-link" href="#hallfama" data-close-more><span class="ic">⭐</span>Hall da Fama</a>
     <a class="more-link" href="#noticias" data-close-more><span class="ic">📰</span>Notícias</a>
     <a class="more-link" href="#galeria" data-close-more><span class="ic">🖼️</span>Galeria</a>
     <a class="more-link" href="#quiz" data-close-more><span class="ic">🧠</span>Quiz da Liga</a>
@@ -990,19 +1169,21 @@ const CONFIG = {
                  colorida no topo do card do clube e na galeria.
 ------------------------------------------------------------------------------------------------- */
 const clubes = [
-  { id:"arsenal",   nome:"Arsenal",           dono:"João",    escudo:"https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg", cor:"#EF0107",
+  { id:"arsenal",   nome:"Arsenal",           dono:"João",    pais:"Inglaterra", escudo:"https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg", cor:"#EF0107",
     descricao:"Um dos clubes fundadores da Liga Zé Prefeitura." },
-  { id:"bayer",     nome:"Bayer Leverkusen",  dono:"Marcos",  escudo:"https://upload.wikimedia.org/wikipedia/en/5/59/Bayer_04_Leverkusen_logo.svg", cor:"#E32219",
+  { id:"bayer",     nome:"Bayer Leverkusen",  dono:"Marcos",  pais:"Alemanha", escudo:"https://upload.wikimedia.org/wikipedia/en/5/59/Bayer_04_Leverkusen_logo.svg", cor:"#E32219",
     descricao:"Maior campeão e um dos clubes fundadores da Liga Zé Prefeitura." },
-  { id:"flamengo",  nome:"Flamengo",          dono:"Luis",    escudo:"https://upload.wikimedia.org/wikipedia/commons/9/93/Flamengo-RJ_%28BRA%29.png", cor:"#C6102F",
+  { id:"flamengo",  nome:"Flamengo",          dono:"Luis",    pais:"Brasil", escudo:"https://upload.wikimedia.org/wikipedia/commons/9/93/Flamengo-RJ_%28BRA%29.png", cor:"#C6102F",
     descricao:"Um dos clubes fundadores da Liga Zé Prefeitura." },
-  { id:"kyoto",     nome:"Kyoto Sanga",       dono:"Nicolas", escudo:"https://thumb.wikimedia.org/wikipedia/en/thumb/a/a2/Kyoto_Sanga_FC_logo.svg/250px-Kyoto_Sanga_FC_logo.svg.png?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail", cor:"#7B2CBF",
+  { id:"kyoto",     nome:"Kyoto Sanga",       dono:"Nicolas", pais:"Japão", escudo:"https://thumb.wikimedia.org/wikipedia/en/thumb/a/a2/Kyoto_Sanga_FC_logo.svg/250px-Kyoto_Sanga_FC_logo.svg.png?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail", cor:"#7B2CBF",
     descricao:"Primeiro campeão e um dos clubes fundadores da Liga Zé Prefeitura." }
 ];
 
 /* -------------------------------------------------------------------------------------------------
    3) TORNEIOS — cada edição da Copa Liga eFootball
    -------------------------------------------------------------------------------------------------
+   data      → data/período da edição, no formato "AAAA-MM-DD" (ex: "2026-03-15"). Deixe null
+               enquanto não for cadastrada — o site mostra "Data a definir" automaticamente.
    numero    → número da edição (1, 2, 3...).
    nome      → nome mostrado ("Torneio 6").
    campeao / vice → o "id" do clube (o mesmo id que você definiu lá em cima). Use null se ainda
@@ -1021,22 +1202,22 @@ const clubes = [
      aos poucos — o site sempre mostra "A definir" para o que ainda não foi preenchido.
 ------------------------------------------------------------------------------------------------- */
 const torneios = [
-  { numero:1, nome:"Torneio 1", campeao:"kyoto", vice:"arsenal",
+  { numero:1, nome:"Torneio 1", data:null, campeao:"kyoto", vice:"arsenal",
     chave:{ semifinais:[["kyoto","flamengo"],["bayer","arsenal"]], semifinaisPlacar:[[3,0],[1,0]],
              final:["kyoto","arsenal"], finalPlacar:[1,0] } },
-  { numero:2, nome:"Torneio 2", campeao:"bayer", vice:"kyoto",
+  { numero:2, nome:"Torneio 2", data:null, campeao:"bayer", vice:"kyoto",
     chave:{ semifinais:[["arsenal","bayer"],["flamengo","kyoto"]], semifinaisPlacar:[[1,2],[1,3]],
              final:["kyoto","bayer"], finalPlacar:[1,1] } },
-  { numero:3, nome:"Torneio 3", campeao:"bayer", vice:"flamengo",
+  { numero:3, nome:"Torneio 3", data:null, campeao:"bayer", vice:"flamengo",
     chave:{ semifinais:[["kyoto","bayer"],["flamengo","arsenal"]], semifinaisPlacar:[[1,2],[1,0]],
              final:["bayer","flamengo"], finalPlacar:[2,1] } },
-  { numero:4, nome:"Torneio 4", campeao:"flamengo", vice:"arsenal",
+  { numero:4, nome:"Torneio 4", data:null, campeao:"flamengo", vice:"arsenal",
     chave:{ semifinais:[["kyoto","flamengo"],["bayer","arsenal"]], semifinaisPlacar:[[0,2],[1,2]],
              final:["flamengo","arsenal"], finalPlacar:[1,0] } },
-  { numero:5, nome:"Torneio 5", campeao:"arsenal", vice:"kyoto",
+  { numero:5, nome:"Torneio 5", data:null, campeao:"arsenal", vice:"kyoto",
     chave:{ semifinais:[["arsenal","bayer"],["flamengo","kyoto"]], semifinaisPlacar:[[2,1],[1,1]],
              final:["kyoto","arsenal"], finalPlacar:[0,3] } },
-  { numero:6, nome:"Torneio 6", campeao:null, vice:null,
+  { numero:6, nome:"Torneio 6", data:null, campeao:null, vice:null,
     chave:{ semifinais:[[null,null],[null,null]], semifinaisPlacar:[null,null],
              final:[null,null], finalPlacar:null } }
 ];
@@ -1051,6 +1232,23 @@ const torneios = [
      categoria         → aparece como etiqueta colorida E vira um filtro clicável automaticamente.
      icone             → um emoji que representa a notícia (🔥 📰 🗂️ ⚽ 🏆 etc.).
 ------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------------------------------
+   HALL DA FAMA — jogadores históricos e momentos marcantes cadastrados manualmente
+   -------------------------------------------------------------------------------------------------
+   Os destaques automáticos (primeiro campeão, maior campeão, recordes) já são calculados sozinhos.
+   Estas duas listas abaixo são para o que NÃO pode ser calculado a partir dos placares — cadastre
+   quando quiser começar a preencher.
+
+   jogadoresHistoricos → { nome, clubeId (id do clube, o mesmo usado em "clubes"), destaque (texto curto) }
+   momentosMarcantes   → { titulo, data (texto livre), descricao }
+------------------------------------------------------------------------------------------------- */
+const jogadoresHistoricos = [
+  // Exemplo: { nome:"Nome do jogador", clubeId:"kyoto", destaque:"Artilheiro do Torneio 3" },
+];
+const momentosMarcantes = [
+  // Exemplo: { titulo:"A virada do Torneio 4", data:"Torneio 4", descricao:"Descrição do momento." },
+];
+
 const noticias = [
   { titulo:"Copa Liga eFootball chega à sua sexta edição", data:"Torneio 6", categoria:"Liga", icone:"📰",
     descricao:"Com cinco torneios já no histórico, a competição entre os clubes segue firme rumo à sua próxima grande final." },
@@ -1094,9 +1292,41 @@ if (CONFIG.logoUrl) document.getElementById('logoImg').src = CONFIG.logoUrl;
 function getFavorito(){ try { return localStorage.getItem(FAV_KEY); } catch(e){ return null; } }
 function setFavorito(id){ try { localStorage.setItem(FAV_KEY, id); } catch(e){} renderAll(); }
 
+/* -------------------------------------------------------------------------------------------------
+   PARTIDAS — NÃO é uma lista para editar. É gerada automaticamente a partir de "torneios": toda
+   semifinal e final com placar preenchido vira uma partida aqui. É a partir desta lista que o site
+   calcula vitórias, derrotas, empates e gols de cada clube (fonte única, sem números manuais).
+------------------------------------------------------------------------------------------------- */
+function gerarPartidas(){
+  const partidas = [];
+  torneios.forEach(t => {
+    const fases = [
+      { fase:"Semifinal 1", confronto: t.chave.semifinais[0], placar: t.chave.semifinaisPlacar[0] },
+      { fase:"Semifinal 2", confronto: t.chave.semifinais[1], placar: t.chave.semifinaisPlacar[1] },
+      { fase:"Final",       confronto: t.chave.final,          placar: t.chave.finalPlacar }
+    ];
+    fases.forEach(f => {
+      if(!f.confronto || !f.placar) return;
+      const [mandante, visitante] = f.confronto;
+      const [golsMandante, golsVisitante] = f.placar;
+      if(!mandante || !visitante || golsMandante==null || golsVisitante==null) return;
+      partidas.push({
+        torneioNumero: t.numero, torneioNome: t.nome, fase: f.fase, data: t.data,
+        mandante, visitante, golsMandante, golsVisitante,
+        resultado: golsMandante === golsVisitante ? "empate" : (golsMandante > golsVisitante ? "mandante" : "visitante")
+      });
+    });
+  });
+  return partidas;
+}
+const partidas = gerarPartidas();
+
 function calcularEstatisticas(){
   const stats = {};
-  clubes.forEach(c => stats[c.id] = { titulos:0, vices:0, finais:0, participacoes:0, linhaDoTempo:[] });
+  clubes.forEach(c => stats[c.id] = {
+    titulos:0, vices:0, finais:0, participacoes:0, linhaDoTempo:[],
+    jogos:0, vitorias:0, empates:0, derrotas:0, golsPro:0, golsContra:0, saldoGols:0, aproveitamento:0
+  });
   torneios.forEach(t => {
     clubes.forEach(c => stats[c.id].participacoes++);
     if (t.campeao) stats[t.campeao].titulos++;
@@ -1110,6 +1340,24 @@ function calcularEstatisticas(){
       else if (!t.campeao && !t.vice) resultado = "A definir";
       stats[c.id].linhaDoTempo.push({ torneio: t.nome, resultado });
     });
+  });
+  partidas.forEach(p => {
+    [
+      { id:p.mandante, golsPro:p.golsMandante, golsContra:p.golsVisitante, venceu:p.resultado==="mandante" },
+      { id:p.visitante, golsPro:p.golsVisitante, golsContra:p.golsMandante, venceu:p.resultado==="visitante" }
+    ].forEach(lado => {
+      const s = stats[lado.id];
+      if(!s) return;
+      s.jogos++; s.golsPro += lado.golsPro; s.golsContra += lado.golsContra;
+      if(p.resultado === "empate") s.empates++;
+      else if(lado.venceu) s.vitorias++;
+      else s.derrotas++;
+    });
+  });
+  clubes.forEach(c => {
+    const s = stats[c.id];
+    s.saldoGols = s.golsPro - s.golsContra;
+    s.aproveitamento = s.jogos ? Math.round((s.vitorias / s.jogos) * 1000) / 10 : 0;
   });
   return stats;
 }
@@ -1133,6 +1381,13 @@ function calcularMaiorSequencia(){
     if(atualCount>melhorCount){ melhorCount=atualCount; melhorId=atualId; }
   });
   return melhorId ? { clube: porId(melhorId), count: melhorCount } : null;
+}
+/* participantes de um torneio, descobertos a partir da própria chave (não precisa cadastrar à parte) */
+function participantesDe(t){
+  const ids = new Set();
+  t.chave.semifinais.forEach(par => par && par.forEach(id => id && ids.add(id)));
+  if (t.chave.final) t.chave.final.forEach(id => id && ids.add(id));
+  return [...ids].map(porId).filter(Boolean);
 }
 function calcularRivalidades(){
   const mapa = {};
@@ -1196,7 +1451,7 @@ function renderFavPill(){
   const c = porId(favId);
   if(!c){ pill.style.display='none'; return; }
   pill.style.display='flex';
-  pill.innerHTML = `<img src="${c.escudo}" onerror="this.style.display='none'">⭐ ${c.nome}`;
+  pill.innerHTML = `<img src="${c.escudo}" alt="" onerror="this.style.display='none'">⭐ ${c.nome}`;
 }
 
 /* ---------- contagem regressiva ---------- */
@@ -1221,6 +1476,71 @@ function renderCountdown(){
   tick();
   clearInterval(countdownTimer);
   countdownTimer = setInterval(tick, 1000);
+}
+
+/* ---------- painel inicial: campeão atual ---------- */
+function renderChampionShowcase(){
+  const box = document.getElementById('championShowcase');
+  const c = ultimoCampeao();
+  const ultimo = ultimoTorneioComCampeao();
+  if(!c){
+    box.innerHTML = `<div class="cs-label">CAMPEÃO ATUAL</div><h3>A definir</h3><p class="cs-sub">Nenhum torneio finalizado ainda.</p>`;
+    return;
+  }
+  box.innerHTML = `
+    <div class="cs-label">CAMPEÃO ATUAL</div>
+    <div class="cs-crest"><img src="${c.escudo}" alt="${c.nome}" onerror="this.style.opacity=0"></div>
+    <h3>${c.nome.toUpperCase()}</h3>
+    <p class="cs-sub">Campeão do ${ultimo.nome}</p>`;
+}
+
+/* ---------- painel inicial: fatos rápidos ---------- */
+function renderQuickFacts(){
+  const grid = document.getElementById('quickFacts');
+  const ultimo = ultimoTorneioComCampeao();
+  const pendente = torneios.find(t => !t.campeao);
+  let proximo = 'A definir';
+  if(CONFIG.proximaData){
+    const d = new Date(CONFIG.proximaData);
+    if(!isNaN(d)) proximo = d.toLocaleDateString('pt-BR', { day:'2-digit', month:'short', year:'numeric' });
+  } else if(pendente){
+    proximo = pendente.nome;
+  }
+  grid.innerHTML = `
+    <div class="stat-box"><b>${ultimo ? ultimo.nome : '—'}</b><span>Última edição</span></div>
+    <div class="stat-box"><b>${proximo}</b><span>Próximo torneio</span></div>
+    <div class="stat-box"><b>${torneios.length}</b><span>Edições</span></div>
+    <div class="stat-box"><b>${clubes.length}</b><span>Clubes</span></div>`;
+}
+
+/* ---------- painel inicial: último resultado (final do último torneio decidido) ---------- */
+function renderLastResult(){
+  const card = document.getElementById('lastResultCard');
+  const ultimo = ultimoTorneioComCampeao();
+  if(!ultimo || !ultimo.chave.finalPlacar){ card.style.display='none'; return; }
+  card.style.display='block';
+  const [aId, bId] = ultimo.chave.final;
+  const [golsA, golsB] = ultimo.chave.finalPlacar;
+  card.innerHTML = `
+    <div class="lr-label">Último resultado — Final do ${ultimo.nome}</div>
+    <div class="lr-teams">
+      <div class="lr-team"><img src="${escudoOf(aId)}" alt="${nomeOf(aId)}" onerror="this.style.opacity=0"><span>${nomeOf(aId)}</span></div>
+      <div class="lr-score">${golsA} — ${golsB}</div>
+      <div class="lr-team"><img src="${escudoOf(bId)}" alt="${nomeOf(bId)}" onerror="this.style.opacity=0"><span>${nomeOf(bId)}</span></div>
+    </div>`;
+}
+
+/* ---------- números do topo (hero) — sempre calculados, nunca escritos à mão ---------- */
+function renderHeroStats(){
+  const valores = {
+    heroStatTorneios: torneios.length,
+    heroStatClubes: clubes.length,
+    heroStatTitulos: torneios.filter(t => t.campeao).length
+  };
+  Object.entries(valores).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) el.dataset.count = val;
+  });
 }
 
 /* ---------- resumo / destaques ---------- */
@@ -1258,7 +1578,7 @@ function renderClubGrid(){
       <div class="club-metrics">
         <div><b>${s.titulos}</b><span>Títulos</span></div>
         <div><b>${s.vices}</b><span>Vices</span></div>
-        <div><b>${s.participacoes}</b><span>Jogos</span></div>
+        <div><b>${s.aproveitamento}%</b><span>Aproveit.</span></div>
       </div>
       ${badgesHTML(c.id)}`;
     card.querySelector('.club-top').addEventListener('click', (e)=>{ if(e.target.closest('.star-btn')) return; openClub(c.id); });
@@ -1272,28 +1592,105 @@ function renderClubGrid(){
   });
 }
 
+/* ---------- helpers do perfil do clube (Fase 5) ---------- */
+function partidasDoClube(id){
+  return partidas.filter(p => p.mandante === id || p.visitante === id)
+    .sort((a,b) => b.torneioNumero - a.torneioNumero);
+}
+function resultadoDaPartida(p, id){
+  const casa = p.mandante === id;
+  const golsPro = casa ? p.golsMandante : p.golsVisitante;
+  const golsContra = casa ? p.golsVisitante : p.golsMandante;
+  const adversario = casa ? p.visitante : p.mandante;
+  let status = 'empate';
+  if (golsPro > golsContra) status = 'vitoria'; else if (golsPro < golsContra) status = 'derrota';
+  return { adversario, golsPro, golsContra, status };
+}
+function melhorCampanha(id){
+  const s = stats[id];
+  if (s.titulos > 0) return 'Campeão';
+  if (s.vices > 0) return 'Vice-campeão';
+  if (s.finais > 0) return 'Finalista';
+  if (s.jogos > 0) return 'Semifinalista';
+  return 'Sem participações registradas';
+}
+function confrontosDoClube(id){
+  const mapa = {};
+  partidasDoClube(id).forEach(p => {
+    const r = resultadoDaPartida(p, id);
+    if (!mapa[r.adversario]) mapa[r.adversario] = { v:0, e:0, d:0 };
+    if (r.status === 'vitoria') mapa[r.adversario].v++;
+    else if (r.status === 'empate') mapa[r.adversario].e++;
+    else mapa[r.adversario].d++;
+  });
+  return Object.entries(mapa).map(([id, r]) => ({ id, ...r }));
+}
+
+/* ---------- história automática do clube, gerada a partir dos dados (Fase extra) ---------- */
+function historiaDoClube(id){
+  const c = porId(id), s = stats[id];
+  if(!s.jogos) return `${c.nome} ainda não tem partidas registradas na Liga Zé Prefeitura.`;
+  const primeiraAparicao = torneios.find(t => partidasDoClube(id).some(p=>p.torneioNumero===t.numero));
+  const desde = primeiraAparicao ? primeiraAparicao.nome : 'sua entrada na Liga';
+  let texto = `${c.nome} está na Liga desde o ${desde}, com <b>${s.titulos} título${s.titulos===1?'':'s'}</b> e ${s.vices} vice-campeonato${s.vices===1?'':'s'} em ${s.participacoes} edição${s.participacoes===1?'':'ões'} disputada${s.participacoes===1?'':'s'}.`;
+  texto += ` No total, soma ${s.vitorias} vitória${s.vitorias===1?'':'s'}, ${s.empates} empate${s.empates===1?'':'s'} e ${s.derrotas} derrota${s.derrotas===1?'':'s'} em ${s.jogos} jogo${s.jogos===1?'':'s'}, um aproveitamento de <b>${s.aproveitamento}%</b>.`;
+  texto += ` Sua melhor campanha até aqui: <b>${melhorCampanha(id)}</b>.`;
+  return texto;
+}
 function openClub(id){
   const c = porId(id), s = stats[id];
   const detail = document.getElementById('clubDetail');
+  const ultimosJogos = partidasDoClube(id).slice(0, 5);
+  const confrontos = confrontosDoClube(id);
   detail.innerHTML = `
     <div class="sheet-handle"></div>
     <button class="sheet-close" id="closeClub">×</button>
     <div class="club-detail-head">
       <div class="club-crest" style="width:70px;height:70px;border-radius:16px;background:var(--void);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;padding:8px;"><img src="${c.escudo}" alt="${c.nome}" onerror="this.style.opacity=0"></div>
-      <div><h2>${c.nome}</h2><div class="club-owner">Dono: ${c.dono}</div></div>
+      <div><h2>${c.nome}</h2><div class="club-owner">Dono: ${c.dono}${c.pais ? ` · ${c.pais}` : ''}</div></div>
       <button class="share-btn" id="shareClub" aria-label="Compartilhar">↗</button>
     </div>
-    <p style="color:var(--grey);font-size:13px;margin-bottom:20px">${c.descricao||''}</p>
+    <p style="color:var(--grey);font-size:13px;margin-bottom:16px">${c.descricao||''}</p>
+    <div class="club-detail-subhead">História do clube</div>
+    <div class="club-history-auto">${historiaDoClube(id)}</div>
     <div class="club-detail-stats">
       <div class="mini-stat"><b>${s.titulos}</b><span>Títulos</span></div>
       <div class="mini-stat"><b>${s.vices}</b><span>Vices</span></div>
       <div class="mini-stat"><b>${s.finais}</b><span>Finais</span></div>
-      <div class="mini-stat"><b>${s.participacoes}</b><span>Jogos</span></div>
+      <div class="mini-stat"><b>${s.participacoes}</b><span>Edições</span></div>
+    </div>
+    <div class="club-detail-stats">
+      <div class="mini-stat"><b>${s.vitorias}</b><span>Vitórias</span></div>
+      <div class="mini-stat"><b>${s.empates}</b><span>Empates</span></div>
+      <div class="mini-stat"><b>${s.derrotas}</b><span>Derrotas</span></div>
+      <div class="mini-stat"><b>${s.aproveitamento}%</b><span>Aproveit.</span></div>
+    </div>
+    <div class="club-detail-stats" style="grid-template-columns:repeat(3,1fr)">
+      <div class="mini-stat"><b>${s.golsPro}</b><span>Gols pró</span></div>
+      <div class="mini-stat"><b>${s.golsContra}</b><span>Gols contra</span></div>
+      <div class="mini-stat"><b>${s.saldoGols>0?'+':''}${s.saldoGols}</b><span>Saldo</span></div>
     </div>
     ${badgesHTML(id)}
-    <ul class="club-timeline" style="margin-top:20px">
+    <div class="club-detail-subhead">Melhor campanha: ${melhorCampanha(id)}</div>
+    <ul class="club-timeline">
       ${s.linhaDoTempo.map(x=>`<li class="${x.resultado==='Campeão' ? 'is-title' : ''}"><b>${x.torneio}</b><span>${x.resultado}</span></li>`).join('')}
     </ul>
+    ${ultimosJogos.length ? `
+    <div class="club-detail-subhead">Últimos jogos</div>
+    <div class="match-list">
+      ${ultimosJogos.map(p=>{
+        const r = resultadoDaPartida(p, id);
+        return `<div class="match-row is-${r.status}">
+          <span>${p.torneioNome} · ${p.fase} vs ${nomeOf(r.adversario)}</span>
+          <span class="mr-score">${r.golsPro}-${r.golsContra}</span>
+        </div>`;
+      }).join('')}
+    </div>` : ''}
+    ${confrontos.length ? `
+    <div class="club-detail-subhead">Confrontos diretos</div>
+    <div class="h2h-list">
+      ${confrontos.map(h=>`<div class="h2h-row"><span>vs ${nomeOf(h.id)}</span><span>${h.v}V ${h.e}E ${h.d}D</span></div>`).join('')}
+    </div>` : ''}
   `;
   document.getElementById('overlay').classList.add('open');
   document.getElementById('closeClub').addEventListener('click', closeClub);
@@ -1319,8 +1716,8 @@ function renderChampList(){
       <div class="champ-main">
         <div class="champ-title">${t.nome}${t===last ? '<span class="latest-pill">MAIS RECENTE</span>' : ''}</div>
         <div class="champ-teams">
-          <span class="tag-cup">${t.campeao ? `<img class="champ-crest-mini" src="${escudoOf(t.campeao)}" onerror="this.style.display='none'">🏆 ${nomeOf(t.campeao)}` : '🏆 A definir'}</span>
-          <span class="tag-vice">${t.vice ? `<img class="champ-crest-mini" src="${escudoOf(t.vice)}" onerror="this.style.display='none'">🥈 ${nomeOf(t.vice)}` : '🥈 A definir'}</span>
+          <span class="tag-cup">${t.campeao ? `<img class="champ-crest-mini" src="${escudoOf(t.campeao)}" alt="" onerror="this.style.display='none'">🏆 ${nomeOf(t.campeao)}` : '🏆 A definir'}</span>
+          <span class="tag-vice">${t.vice ? `<img class="champ-crest-mini" src="${escudoOf(t.vice)}" alt="" onerror="this.style.display='none'">🥈 ${nomeOf(t.vice)}` : '🥈 A definir'}</span>
         </div>
       </div>`;
     list.appendChild(row);
@@ -1328,6 +1725,49 @@ function renderChampList(){
 }
 
 /* ---------- chave dos torneios ---------- */
+/* ---------- helpers de cada edição (Fase 6) ---------- */
+function formatarData(dataStr){
+  if(!dataStr) return 'Data a definir';
+  const d = new Date(dataStr + 'T00:00:00');
+  if(isNaN(d)) return 'Data a definir';
+  return d.toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' });
+}
+function partidasDoTorneio(t){
+  return partidas.filter(p => p.torneioNumero === t.numero);
+}
+function statsDoTorneio(t){
+  const jogos = partidasDoTorneio(t);
+  if(!jogos.length) return null;
+  const totalGols = jogos.reduce((soma,p) => soma + p.golsMandante + p.golsVisitante, 0);
+  const media = Math.round((totalGols / jogos.length) * 10) / 10;
+  const maiorGoleada = jogos.reduce((max,p) => {
+    const dif = Math.abs(p.golsMandante - p.golsVisitante);
+    return (!max || dif > max.dif) ? { dif, partida:p } : max;
+  }, null);
+  return { jogosDisputados: jogos.length, totalGols, media, maiorGoleada };
+}
+function renderTournamentMeta(t){
+  const meta = document.getElementById('tournamentMeta');
+  const participantes = participantesDe(t);
+  meta.innerHTML = `
+    <div class="tm-date">📅 ${formatarData(t.data)}</div>
+    ${participantes.length ? `<div class="tm-participants">${participantes.map(c=>
+      `<div class="tm-participant"><img src="${c.escudo}" alt="" onerror="this.style.display='none'">${c.nome}</div>`).join('')}</div>` : ''}`;
+}
+function renderTournamentStats(t){
+  const box = document.getElementById('tournamentStats');
+  const s = statsDoTorneio(t);
+  if(!s){ box.innerHTML = ''; return; }
+  const goleada = s.maiorGoleada;
+  const goleadaTexto = goleada && goleada.dif > 0
+    ? `${nomeOf(goleada.partida.mandante)} ${goleada.partida.golsMandante}-${goleada.partida.golsVisitante} ${nomeOf(goleada.partida.visitante)}`
+    : '—';
+  box.innerHTML = `
+    <div class="stat-box"><b>${s.totalGols}</b><span>Gols na edição</span></div>
+    <div class="stat-box"><b>${s.media}</b><span>Gols por jogo</span></div>
+    <div class="stat-box" style="grid-column:span 1"><b style="font-size:14px">${goleadaTexto}</b><span>Maior goleada</span></div>`;
+}
+
 function renderTournaments(){
   const sel = document.getElementById('tSelect');
   sel.innerHTML = '';
@@ -1339,16 +1779,20 @@ function renderTournaments(){
       document.querySelectorAll('.t-btn').forEach(b=>b.classList.remove('active'));
       btn.classList.add('active');
       renderBracket(t);
+      renderTournamentMeta(t);
+      renderTournamentStats(t);
       if(navigator.vibrate) navigator.vibrate(8);
     });
     sel.appendChild(btn);
   });
   renderBracket(torneios[torneios.length-1]);
+  renderTournamentMeta(torneios[torneios.length-1]);
+  renderTournamentStats(torneios[torneios.length-1]);
 }
 function slotHTML(id, isWinner, score){
   if(!id) return `<div class="b-slot"><span class="tbd">A definir</span></div>`;
   const scoreHTML = (score!==undefined && score!==null) ? `<span class="score">${score}</span>` : '';
-  return `<div class="b-slot ${isWinner?'winner':''}"><img src="${escudoOf(id)}" onerror="this.style.display='none'"><b>${nomeOf(id)}</b>${scoreHTML}</div>`;
+  return `<div class="b-slot ${isWinner?'winner':''}"><img src="${escudoOf(id)}" alt="" onerror="this.style.display='none'"><b>${nomeOf(id)}</b>${scoreHTML}</div>`;
 }
 function renderBracket(t){
   const el = document.getElementById('bracketView');
@@ -1381,31 +1825,121 @@ function renderResultFeed(){
   feed.innerHTML = `<div class="col-label" style="margin-bottom:2px">Últimas finais</div>` + decididos.map(t=>{
     const [a,b] = t.chave.final, [pa,pb] = t.chave.finalPlacar;
     return `<div class="result-row"><span style="color:var(--grey-dim);font-family:var(--font-head);width:26px">${t.nome.replace('Torneio ','T')}</span>
-      <img src="${escudoOf(a)}" onerror="this.style.display='none'"><b>${nomeOf(a)}</b>
+      <img src="${escudoOf(a)}" alt="" onerror="this.style.display='none'"><b>${nomeOf(a)}</b>
       <span class="rf-score">${pa} — ${pb}</span>
-      <b>${nomeOf(b)}</b><img src="${escudoOf(b)}" onerror="this.style.display='none'"></div>`;
+      <b>${nomeOf(b)}</b><img src="${escudoOf(b)}" alt="" onerror="this.style.display='none'"></div>`;
   }).join('');
 }
 
-/* ---------- ranking ---------- */
+/* ---------- ranking (com critérios alternáveis) ---------- */
+const CRITERIOS_RANKING = [
+  { id:'titulos', label:'Títulos', calc:c=>stats[c.id].titulos, sub:c=>`${stats[c.id].vices} vice(s)` },
+  { id:'vitorias', label:'Vitórias', calc:c=>stats[c.id].vitorias, sub:c=>`${stats[c.id].jogos} jogo(s)` },
+  { id:'aproveitamento', label:'Aproveitamento', calc:c=>stats[c.id].aproveitamento, sub:c=>`${stats[c.id].jogos} jogo(s)` },
+  { id:'gols', label:'Gols', calc:c=>stats[c.id].golsPro, sub:c=>`saldo ${stats[c.id].saldoGols>0?'+':''}${stats[c.id].saldoGols}` },
+  { id:'participacoes', label:'Participações', calc:c=>stats[c.id].participacoes, sub:c=>`${stats[c.id].finais} final(is)` }
+];
+let criterioRankingAtual = 'titulos';
+function renderRankFilter(){
+  const box = document.getElementById('rankFilter');
+  box.innerHTML = CRITERIOS_RANKING.map(cr =>
+    `<button class="rank-filter-btn${cr.id===criterioRankingAtual?' active':''}" data-criterio="${cr.id}">${cr.label}</button>`
+  ).join('');
+  box.querySelectorAll('.rank-filter-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      criterioRankingAtual = btn.dataset.criterio;
+      renderRankFilter();
+      renderRanking();
+    });
+  });
+}
 function renderRanking(){
   const list = document.getElementById('rankList');
+  const criterio = CRITERIOS_RANKING.find(c=>c.id===criterioRankingAtual) || CRITERIOS_RANKING[0];
+  const ordenados = [...clubes].sort((a,b)=> criterio.calc(b) - criterio.calc(a) || (stats[b.id].titulos - stats[a.id].titulos));
   list.innerHTML = '';
-  ranking().forEach((c,i)=>{
-    const s = stats[c.id];
+  ordenados.forEach((c,i)=>{
     const row = document.createElement('div');
     row.className = 'rank-row';
     row.innerHTML = `
       <div class="rank-pos">${i+1}</div>
-      <div class="rank-club"><img src="${c.escudo}" onerror="this.style.display='none'">${c.nome}</div>
+      <div class="rank-club"><img src="${c.escudo}" alt="" onerror="this.style.display='none'">${c.nome}</div>
       <div class="rank-stats">
-        <div><b>${s.titulos}</b><span>Tít</span></div>
-        <div><b>${s.vices}</b><span>Vic</span></div>
-        <div><b>${s.finais}</b><span>Fin</span></div>
+        <div><b>${criterio.calc(c)}${criterio.id==='aproveitamento'?'%':''}</b><span>${criterio.label}</span></div>
+        <div style="flex:1.4"><span style="font-size:10px;color:var(--grey-dim)">${criterio.sub(c)}</span></div>
       </div>`;
     row.addEventListener('click', ()=>openClub(c.id));
     list.appendChild(row);
   });
+}
+
+/* ---------- recordes da Liga (Fase 7) ---------- */
+function sequenciasDoClube(id){
+  const jogos = partidas.filter(p => p.mandante===id || p.visitante===id)
+    .sort((a,b) => a.torneioNumero - b.torneioNumero || (a.fase==='Final'?1:0) - (b.fase==='Final'?1:0));
+  let invictaAtual=0, invictaMax=0, vitoriasAtual=0, vitoriasMax=0;
+  jogos.forEach(p => {
+    const r = resultadoDaPartida(p, id);
+    if(r.status==='derrota'){ invictaAtual=0; } else { invictaAtual++; invictaMax=Math.max(invictaMax,invictaAtual); }
+    if(r.status==='vitoria'){ vitoriasAtual++; vitoriasMax=Math.max(vitoriasMax,vitoriasAtual); } else { vitoriasAtual=0; }
+  });
+  return { invicta: invictaMax, vitoriasSeguidas: vitoriasMax };
+}
+function calcularRecordes(){
+  const recs = [];
+  const comJogos = clubes.filter(c => stats[c.id].jogos > 0);
+  const mc = maiorCampeao();
+  if(stats[mc.id].titulos > 0) recs.push({ icon:'👑', label:'Maior campeão', valor:mc.nome, detalhe:`${stats[mc.id].titulos} título(s)` });
+
+  if(comJogos.length){
+    const maisFinais = [...clubes].sort((a,b)=>stats[b.id].finais-stats[a.id].finais)[0];
+    if(stats[maisFinais.id].finais>0) recs.push({ icon:'🥈', label:'Mais finais disputadas', valor:maisFinais.nome, detalhe:`${stats[maisFinais.id].finais} final(is)` });
+
+    const maisVitorias = [...comJogos].sort((a,b)=>stats[b.id].vitorias-stats[a.id].vitorias)[0];
+    recs.push({ icon:'✅', label:'Mais vitórias', valor:maisVitorias.nome, detalhe:`${stats[maisVitorias.id].vitorias} vitória(s)` });
+
+    const maisGols = [...comJogos].sort((a,b)=>stats[b.id].golsPro-stats[a.id].golsPro)[0];
+    recs.push({ icon:'⚽', label:'Mais gols marcados', valor:maisGols.nome, detalhe:`${stats[maisGols.id].golsPro} gol(s)` });
+
+    const melhorAprov = [...comJogos].sort((a,b)=>stats[b.id].aproveitamento-stats[a.id].aproveitamento)[0];
+    recs.push({ icon:'📈', label:'Melhor aproveitamento', valor:melhorAprov.nome, detalhe:`${stats[melhorAprov.id].aproveitamento}%` });
+  }
+
+  if(partidas.length){
+    const maiorGoleada = partidas.reduce((max,p)=>{
+      const dif = Math.abs(p.golsMandante - p.golsVisitante);
+      return (!max || dif>max.dif) ? { dif, partida:p } : max;
+    }, null);
+    if(maiorGoleada && maiorGoleada.dif > 0){
+      const p = maiorGoleada.partida;
+      recs.push({ icon:'🔥', label:'Maior goleada', valor:`${nomeOf(p.mandante)} ${p.golsMandante}-${p.golsVisitante} ${nomeOf(p.visitante)}`, detalhe:p.torneioNome });
+    }
+  }
+
+  let melhorInvicta = { count:0, clube:null }, melhorSeqVitorias = { count:0, clube:null };
+  clubes.forEach(c => {
+    const seq = sequenciasDoClube(c.id);
+    if(seq.invicta > melhorInvicta.count) melhorInvicta = { count:seq.invicta, clube:c };
+    if(seq.vitoriasSeguidas > melhorSeqVitorias.count) melhorSeqVitorias = { count:seq.vitoriasSeguidas, clube:c };
+  });
+  if(melhorInvicta.count > 1) recs.push({ icon:'🛡️', label:'Maior sequência invicta', valor:melhorInvicta.clube.nome, detalhe:`${melhorInvicta.count} jogo(s)` });
+  if(melhorSeqVitorias.count > 1) recs.push({ icon:'🚀', label:'Maior sequência de vitórias', valor:melhorSeqVitorias.clube.nome, detalhe:`${melhorSeqVitorias.count} jogo(s)` });
+
+  return recs;
+}
+function renderRecords(){
+  const grid = document.getElementById('recordGrid');
+  const recs = calcularRecordes();
+  if(!recs.length){ grid.innerHTML = `<p style="color:var(--grey)">Ainda não há partidas suficientes para gerar recordes.</p>`; return; }
+  grid.innerHTML = recs.map(r => `
+    <div class="record-card">
+      <div class="rc-icon">${r.icon}</div>
+      <div>
+        <div class="rc-label">${r.label}</div>
+        <div class="rc-value">${r.valor}</div>
+        <div class="rc-detail">${r.detalhe}</div>
+      </div>
+    </div>`).join('');
 }
 
 /* ---------- estatísticas + gráficos ---------- */
@@ -1488,6 +2022,25 @@ function renderRivalries(){
   list.innerHTML = `<h4>Todas as finais registradas</h4>` + rivs.map(r=>`<div class="rivalry-row"><b>${nomeOf(r.a)} × ${nomeOf(r.b)}</b><span class="count">${r.total} final${r.total>1?'is':''} · ${r.titulosA}-${r.titulosB}</span></div>`).join('');
   if(historyText) historyText.textContent = `Os confrontos diretos entre os clubes já desenharam ${rivs.length} rivalidade${rivs.length>1?'s':''} em finais. A mais intensa até aqui é ${nomeOf(top.a)} × ${nomeOf(top.b)}, com ${top.total} decisão${top.total>1?'ões':''} de título entre eles.`;
 }
+/* ---------- confronto direto: retrospecto real entre dois clubes (Fase 8) ---------- */
+function headToHead(idA, idB){
+  const jogos = partidas.filter(p =>
+    (p.mandante===idA && p.visitante===idB) || (p.mandante===idB && p.visitante===idA)
+  ).sort((a,b) => a.torneioNumero - b.torneioNumero);
+  let vitoriasA=0, vitoriasB=0, empates=0, golsA=0, golsB=0, maiorGoleada=null;
+  jogos.forEach(p => {
+    const aEhMandante = p.mandante===idA;
+    const gA = aEhMandante ? p.golsMandante : p.golsVisitante;
+    const gB = aEhMandante ? p.golsVisitante : p.golsMandante;
+    golsA += gA; golsB += gB;
+    if(gA>gB) vitoriasA++; else if(gB>gA) vitoriasB++; else empates++;
+    const dif = Math.abs(gA-gB);
+    if(dif>0 && (!maiorGoleada || dif>maiorGoleada.dif)) maiorGoleada = { dif, gA, gB, torneioNome:p.torneioNome, fase:p.fase, vencedor: gA>gB?idA:idB };
+  });
+  const finaisDiretas = torneios.filter(t => t.chave.final && t.chave.finalPlacar &&
+    ((t.chave.final[0]===idA && t.chave.final[1]===idB) || (t.chave.final[0]===idB && t.chave.final[1]===idA)));
+  return { jogos, totalJogos:jogos.length, vitoriasA, vitoriasB, empates, golsA, golsB, maiorGoleada, finaisDiretas };
+}
 function setupHTH(){
   const a = document.getElementById('hthA'), b = document.getElementById('hthB');
   a.innerHTML=''; b.innerHTML='';
@@ -1496,19 +2049,40 @@ function setupHTH(){
   function update(){
     const idA = a.value, idB = b.value;
     const res = document.getElementById('hthResult');
+    const matchesBox = document.getElementById('hthMatches');
     const cmp = document.getElementById('comparePanel');
-    if(idA===idB){ res.innerHTML = `<p style="color:var(--grey-dim);font-size:13px">Escolha dois clubes diferentes.</p>`; cmp.innerHTML=''; return; }
-    const finais = torneios.filter(t => (t.campeao===idA && t.vice===idB) || (t.campeao===idB && t.vice===idA));
-    if(finais.length===0){
-      res.innerHTML = `<p style="color:var(--grey-dim);font-size:13px">Nenhum confronto direto em final registrado ainda entre ${nomeOf(idA)} e ${nomeOf(idB)}.</p>`;
+    if(idA===idB){
+      res.innerHTML = `<p style="color:var(--grey-dim);font-size:13px">Escolha dois clubes diferentes.</p>`;
+      matchesBox.innerHTML=''; cmp.innerHTML=''; return;
+    }
+    const h2h = headToHead(idA, idB);
+    if(h2h.totalJogos===0){
+      res.innerHTML = `<p style="color:var(--grey-dim);font-size:13px">Nenhum confronto registrado ainda entre ${nomeOf(idA)} e ${nomeOf(idB)}.</p>`;
+      matchesBox.innerHTML = '';
     } else {
-      const titA = finais.filter(t=>t.campeao===idA).length;
-      const titB = finais.filter(t=>t.campeao===idB).length;
-      res.innerHTML = `<div class="side"><b>${titA}</b><span>Títulos — ${nomeOf(idA)}</span></div><div class="side"><b>${finais.length}</b><span>Finais</span></div><div class="side"><b>${titB}</b><span>Títulos — ${nomeOf(idB)}</span></div>`;
+      res.innerHTML = `
+        <div class="side"><b>${h2h.vitoriasA}</b><span>Vitórias — ${nomeOf(idA)}</span></div>
+        <div class="side"><b>${h2h.empates}</b><span>Empates</span></div>
+        <div class="side"><b>${h2h.vitoriasB}</b><span>Vitórias — ${nomeOf(idB)}</span></div>`;
+      const ultimos = [...h2h.jogos].reverse().slice(0,5);
+      matchesBox.innerHTML = `
+        <div class="hm-subhead">${h2h.totalJogos} jogo(s) · Gols: ${nomeOf(idA)} ${h2h.golsA} — ${h2h.golsB} ${nomeOf(idB)}</div>
+        <div class="match-list">
+          ${ultimos.map(p=>{
+            const aEhMandante = p.mandante===idA;
+            const gA = aEhMandante ? p.golsMandante : p.golsVisitante;
+            const gB = aEhMandante ? p.golsVisitante : p.golsMandante;
+            const status = gA>gB ? 'vitoria' : (gA<gB ? 'derrota' : 'empate');
+            return `<div class="match-row is-${status}"><span>${p.torneioNome} · ${p.fase}</span><span class="mr-score">${gA}-${gB}</span></div>`;
+          }).join('')}
+        </div>
+        ${h2h.maiorGoleada ? `<div class="hm-subhead">Maior goleada</div><p style="font-size:13px">${nomeOf(idA===h2h.maiorGoleada.vencedor?idA:idB)} venceu por ${h2h.maiorGoleada.gA>h2h.maiorGoleada.gB?h2h.maiorGoleada.gA:h2h.maiorGoleada.gB}-${h2h.maiorGoleada.gA>h2h.maiorGoleada.gB?h2h.maiorGoleada.gB:h2h.maiorGoleada.gA} (${h2h.maiorGoleada.torneioNome})</p>` : ''}
+        ${h2h.finaisDiretas.length ? `<div class="hm-subhead">Confrontos em finais</div>${h2h.finaisDiretas.map(t=>`<p style="font-size:13px">${t.nome}: campeão ${nomeOf(t.campeao)} (${t.chave.finalPlacar[0]}-${t.chave.finalPlacar[1]})</p>`).join('')}` : ''}
+      `;
     }
     const sA = stats[idA], sB = stats[idB];
-    const metrics = [ ['Títulos', sA.titulos, sB.titulos], ['Vices', sA.vices, sB.vices], ['Finais', sA.finais, sB.finais], ['Participações', sA.participacoes, sB.participacoes] ];
-    cmp.innerHTML = `<h4>${nomeOf(idA)} vs ${nomeOf(idB)}</h4>` + metrics.map(([label,va,vb])=>{
+    const metrics = [ ['Títulos', sA.titulos, sB.titulos], ['Vices', sA.vices, sB.vices], ['Finais', sA.finais, sB.finais], ['Aproveitamento', sA.aproveitamento, sB.aproveitamento] ];
+    cmp.innerHTML = `<h4>${nomeOf(idA)} vs ${nomeOf(idB)} — carreira</h4>` + metrics.map(([label,va,vb])=>{
       const max = Math.max(va,vb,1);
       return `<div class="compare-row"><span class="compare-metric-name">${label}</span>
         <div class="compare-labels"><span>${va}</span><span>${vb}</span></div>
@@ -1543,25 +2117,109 @@ function renderNewsFilter(){
     el.appendChild(btn);
   });
 }
+function newsCardHTML(n){
+  return `<div class="news-thumb">${n.imagem ? `<img src="${n.imagem}" alt="${n.titulo}" onerror="this.parentElement.innerHTML='${n.icone}'">` : n.icone}</div><div class="news-body"><div class="news-cat">${n.categoria}</div><h3>${n.titulo}</h3><p>${n.descricao}</p><span class="news-date">${n.data}</span></div>`;
+}
 function renderNews(){
   const grid = document.getElementById('newsGrid'); grid.innerHTML='';
   const lista = filtroAtual==='Todas' ? noticias : noticias.filter(n=>n.categoria===filtroAtual);
   lista.forEach(n=>{
     const card = document.createElement('div'); card.className='news-card';
-    card.innerHTML = `<div class="news-thumb">${n.icone}</div><div class="news-body"><div class="news-cat">${n.categoria}</div><h3>${n.titulo}</h3><p>${n.descricao}</p><span class="news-date">${n.data}</span></div>`;
+    card.innerHTML = newsCardHTML(n);
+    card.addEventListener('click', ()=>openNews(n));
     grid.appendChild(card);
   });
 }
+function openNews(n){
+  const detail = document.getElementById('clubDetail');
+  detail.innerHTML = `
+    <div class="sheet-handle"></div>
+    <button class="sheet-close" id="closeClub">×</button>
+    <div class="news-detail">
+      ${n.imagem ? `<img src="${n.imagem}" alt="${n.titulo}" onerror="this.style.display='none'">` : ''}
+      <div class="news-cat">${n.categoria}</div>
+      <h3>${n.titulo}</h3>
+      <span class="news-date">${n.data}</span>
+      <p>${n.conteudo || n.descricao}</p>
+    </div>`;
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('closeClub').addEventListener('click', closeClub);
+}
+/* prévia das notícias mais recentes, mostrada na Home (Fase 9) */
+function renderHomeNewsPreview(){
+  const box = document.getElementById('homeNewsPreview');
+  if(!noticias.length){ box.innerHTML=''; return; }
+  const recentes = noticias.slice(0,2);
+  box.innerHTML = `<h4>Últimas notícias</h4><div class="news-grid">${recentes.map(n=>`<div class="news-card" data-idx="${noticias.indexOf(n)}">${newsCardHTML(n)}</div>`).join('')}</div>`;
+  box.querySelectorAll('.news-card').forEach(el=>{
+    el.addEventListener('click', ()=> openNews(noticias[+el.dataset.idx]));
+  });
+}
 
-/* ---------- galeria ---------- */
+/* ---------- galeria por categorias (Fase 9) ---------- */
+/* "Escudos" é gerado automaticamente a partir dos clubes cadastrados. As demais categorias
+   (finais, troféus, momentos, jogadores) aparecem vazias até que imagens sejam cadastradas —
+   basta adicionar objetos { categoria, titulo, imagem } no array galeriaExtra abaixo. */
+const galeriaExtra = [
+  // Exemplo: { categoria:"Finais", titulo:"Final do Torneio 3", imagem:"URL_DA_IMAGEM" },
+];
+let galeriaCategoriaAtual = 'Escudos';
+function galeriaItens(){
+  const escudos = clubes.map(c=>({ categoria:'Escudos', titulo:c.nome, imagem:c.escudo, cor:c.cor }));
+  return [...escudos, ...galeriaExtra];
+}
+function renderGalleryFilter(){
+  const cats = ['Escudos', 'Finais', 'Troféus', 'Momentos', 'Jogadores'];
+  const el = document.getElementById('galleryFilter'); el.innerHTML='';
+  cats.forEach(cat=>{
+    const btn = document.createElement('button');
+    btn.textContent = cat; btn.className = cat===galeriaCategoriaAtual ? 'active' : '';
+    btn.addEventListener('click', ()=>{ galeriaCategoriaAtual = cat; renderGalleryFilter(); renderGallery(); });
+    el.appendChild(btn);
+  });
+}
 function renderGallery(){
   const grid = document.getElementById('galleryGrid'); grid.innerHTML='';
-  clubes.forEach(c=>{
+  const itens = galeriaItens().filter(i=>i.categoria===galeriaCategoriaAtual);
+  if(!itens.length){
+    grid.innerHTML = `<p class="hof-empty">Nenhuma imagem cadastrada em "${galeriaCategoriaAtual}" ainda.</p>`;
+    return;
+  }
+  itens.forEach(i=>{
     const item = document.createElement('div'); item.className='gallery-item';
-    item.style.setProperty('--card-cor', c.cor || '#1E3B72');
-    item.innerHTML = `<img src="${c.escudo}" alt="${c.nome}" onerror="this.style.opacity=0"><span class="gallery-tag">${c.nome}</span>`;
+    item.style.setProperty('--card-cor', i.cor || '#1E3B72');
+    item.innerHTML = `<img src="${i.imagem}" alt="${i.titulo}" onerror="this.style.opacity=0"><span class="gallery-tag">${i.titulo}</span>`;
     grid.appendChild(item);
   });
+}
+
+/* ---------- hall da fama (Fase 9) ---------- */
+function renderHallFama(){
+  const grid = document.getElementById('hofGrid');
+  const eraTexto = document.getElementById('eraAtualText');
+  if(eraTexto) eraTexto.textContent = `Com ${torneios.length} edições no histórico, a Copa Liga eFootball segue em expansão, com novas edições sempre a caminho.`;
+
+  const primeiroT = torneios.find(t=>t.campeao);
+  const mc = maiorCampeao();
+  const cards = [];
+  if(primeiroT) cards.push({ icon:'🥇', label:'Primeiro campeão', valor:nomeOf(primeiroT.campeao), detalhe:primeiroT.nome });
+  if(mc && stats[mc.id].titulos>0) cards.push({ icon:'👑', label:'Maior campeão', valor:mc.nome, detalhe:`${stats[mc.id].titulos} título(s)` });
+  calcularRecordes().slice(0,2).forEach(r=> cards.push(r));
+  grid.innerHTML = cards.length ? cards.map(r=>`
+    <div class="record-card"><div class="rc-icon">${r.icon}</div><div>
+      <div class="rc-label">${r.label}</div><div class="rc-value">${r.valor}</div><div class="rc-detail">${r.detalhe}</div>
+    </div></div>`).join('') : `<p class="hof-empty">Ainda não há torneios decididos para gerar o Hall da Fama.</p>`;
+
+  document.getElementById('hofFounders').innerHTML = clubes.map(c=>
+    `<div class="hof-founder-chip"><img src="${c.escudo}" alt="${c.nome}" onerror="this.style.display='none'">${c.nome}</div>`).join('');
+
+  document.getElementById('hofPlayers').innerHTML = jogadoresHistoricos.length
+    ? jogadoresHistoricos.map(j=>`<div class="record-card"><div class="rc-icon">⭐</div><div><div class="rc-label">${nomeOf(j.clubeId)}</div><div class="rc-value">${j.nome}</div><div class="rc-detail">${j.destaque}</div></div></div>`).join('')
+    : `<p class="hof-empty">Nenhum jogador histórico cadastrado ainda.</p>`;
+
+  document.getElementById('hofMoments').innerHTML = momentosMarcantes.length
+    ? momentosMarcantes.map(m=>`<div class="record-card"><div class="rc-icon">✨</div><div><div class="rc-label">${m.data}</div><div class="rc-value">${m.titulo}</div><div class="rc-detail">${m.descricao}</div></div></div>`).join('')
+    : `<p class="hof-empty">Nenhum momento marcante cadastrado ainda.</p>`;
 }
 
 /* ---------- guia (perguntas e respostas) ---------- */
@@ -1645,27 +2303,129 @@ function renderPredictCard(){
   }
 }
 
-/* ---------- simulador de confronto amigável ---------- */
+/* ---------- simulador de confronto amigável (Fase 8) ---------- */
+/* ---------- força do time: leva em conta títulos, aproveitamento e saldo de gols, não só taças ---------- */
+function pesoDoClube(id){
+  const s = stats[id];
+  const porTitulos = s.titulos * 0.5;
+  const porAproveitamento = (s.aproveitamento/100) * 1.5;
+  const porSaldo = Math.max(-1, Math.min(1, s.jogos ? s.saldoGols/s.jogos/2 : 0)) * 0.6;
+  return 1 + porTitulos + porAproveitamento + porSaldo;
+}
+function forcaStars(id){
+  const peso = pesoDoClube(id);
+  const nota = Math.max(1, Math.min(5, Math.round(peso)));
+  return '★'.repeat(nota) + '☆'.repeat(5-nota);
+}
+function renderSimForce(idA, idB){
+  const box = document.getElementById('simForce');
+  if(idA===idB){ box.innerHTML=''; return; }
+  box.innerHTML = `
+    <div class="sf-side"><span>${nomeOf(idA)}</span><span class="sf-stars">${forcaStars(idA)}</span></div>
+    <div class="sf-side"><span class="sf-stars">${forcaStars(idB)}</span><span>${nomeOf(idB)}</span></div>`;
+}
+function sortearPlacar(idA, idB){
+  const pesoA = pesoDoClube(idA), pesoB = pesoDoClube(idB);
+  const golsA = Math.min(6, Math.round(Math.random()*3*pesoA));
+  const golsB = Math.min(6, Math.round(Math.random()*3*pesoB));
+  return [golsA, golsB];
+}
+/* disputa de pênaltis recreativa — usada só quando o simulador empata, nunca vira estatística oficial */
+function sortearPenaltis(idA, idB){
+  const pesoA = pesoDoClube(idA), pesoB = pesoDoClube(idB);
+  const chanceA = 0.7 + Math.max(-0.1, Math.min(0.1, (pesoA-pesoB)*0.04));
+  const chanceB = 0.7 + Math.max(-0.1, Math.min(0.1, (pesoB-pesoA)*0.04));
+  let golsA = 0, golsB = 0;
+  const cobrancas = [];
+  for(let r=1; r<=5; r++){
+    const a = Math.random() < chanceA, b = Math.random() < chanceB;
+    if(a) golsA++; if(b) golsB++;
+    cobrancas.push({ a, b });
+  }
+  let extra = 0;
+  while(golsA===golsB && extra < 8){
+    extra++;
+    const a = Math.random() < chanceA, b = Math.random() < chanceB;
+    if(a) golsA++; if(b) golsB++;
+    cobrancas.push({ a, b, subita:true });
+  }
+  if(golsA===golsB){ if(pesoA>=pesoB) golsA++; else golsB++; } // desempate final de segurança
+  return { golsA, golsB, cobrancas, vencedor: golsA>golsB ? idA : idB };
+}
+function penaltiShootoutHTML(idA, idB, pen){
+  const linhaA = pen.cobrancas.map(c=>`<div class="pen-dot ${c.a?'is-goal':'is-miss'}">${c.a?'●':'×'}</div>`).join('');
+  const linhaB = pen.cobrancas.map(c=>`<div class="pen-dot ${c.b?'is-goal':'is-miss'}">${c.b?'●':'×'}</div>`).join('');
+  return `
+    <div class="pen-shootout">
+      <div class="pen-title">🥅 Disputa de pênaltis</div>
+      <div class="pen-row">${linhaA}</div>
+      <div class="pen-row">${linhaB}</div>
+      <div class="pen-score">${nomeOf(idA)} ${pen.golsA} — ${pen.golsB} ${nomeOf(idB)}</div>
+    </div>`;
+}
+function renderSimProbability(idA, idB){
+  const box = document.getElementById('simProbability');
+  if(idA===idB){ box.innerHTML=''; return; }
+  const pesoA = pesoDoClube(idA), pesoB = pesoDoClube(idB);
+  const pctA = Math.round((pesoA/(pesoA+pesoB))*100);
+  box.innerHTML = `<span>${nomeOf(idA)} ${pctA}%</span><div class="sp-bar"><div class="sp-fill" style="width:${pctA}%"></div></div><span>${100-pctA}% ${nomeOf(idB)}</span>`;
+}
+function renderSimHistory(idA, idB){
+  const box = document.getElementById('simHistory');
+  if(idA===idB){ box.innerHTML=''; return; }
+  const h2h = headToHead(idA, idB);
+  box.innerHTML = h2h.totalJogos===0
+    ? `Sem confrontos oficiais registrados entre eles ainda.`
+    : `Histórico oficial: ${h2h.totalJogos} jogo(s) — ${h2h.vitoriasA}V ${h2h.empates}E ${h2h.vitoriasB}D (${nomeOf(idA)} x ${nomeOf(idB)})`;
+}
 function setupSimulador(){
   const a = document.getElementById('simA'), b = document.getElementById('simB');
   a.innerHTML=''; b.innerHTML='';
   clubes.forEach(c=>{ a.innerHTML += `<option value="${c.id}">${c.nome}</option>`; b.innerHTML += `<option value="${c.id}">${c.nome}</option>`; });
   b.selectedIndex = 1;
+  function atualizarPrévia(){ renderSimProbability(a.value, b.value); renderSimForce(a.value, b.value); renderSimHistory(a.value, b.value); }
+  a.addEventListener('change', atualizarPrévia); b.addEventListener('change', atualizarPrévia);
+  atualizarPrévia();
+
   document.getElementById('simRun').addEventListener('click', ()=>{
     const idA = a.value, idB = b.value;
     const result = document.getElementById('simResult'), verdict = document.getElementById('simVerdict');
     if(idA===idB){ verdict.textContent='Escolha dois clubes diferentes.'; result.innerHTML=''; return; }
-    const pesoA = 1 + stats[idA].titulos*0.4, pesoB = 1 + stats[idB].titulos*0.4;
-    const golsA = Math.min(6, Math.round(Math.random()*3*pesoA));
-    const golsB = Math.min(6, Math.round(Math.random()*3*pesoB));
+    const [golsA, golsB] = sortearPlacar(idA, idB);
     result.innerHTML = `
-      <div class="sim-side"><img src="${escudoOf(idA)}" onerror="this.style.display='none'"><b>${nomeOf(idA)}</b></div>
+      <div class="sim-side"><img src="${escudoOf(idA)}" alt="" onerror="this.style.display='none'"><b>${nomeOf(idA)}</b></div>
       <div class="sim-score" id="simScoreEl">${golsA} — ${golsB}</div>
-      <div class="sim-side"><img src="${escudoOf(idB)}" onerror="this.style.display='none'"><b>${nomeOf(idB)}</b></div>`;
+      <div class="sim-side"><img src="${escudoOf(idB)}" alt="" onerror="this.style.display='none'"><b>${nomeOf(idB)}</b></div>`;
     requestAnimationFrame(()=> document.getElementById('simScoreEl').classList.add('show'));
-    if(golsA===golsB) verdict.textContent = 'Empate! No eFootball ia pros pênaltis 🥅';
-    else verdict.textContent = `${golsA>golsB ? nomeOf(idA) : nomeOf(idB)} levaria essa simulação.`;
-    if(navigator.vibrate) navigator.vibrate(golsA===golsB ? 8 : [8,30,8]);
+    if(golsA===golsB){
+      const pen = sortearPenaltis(idA, idB);
+      result.innerHTML += penaltiShootoutHTML(idA, idB, pen);
+      verdict.textContent = `Empate no tempo normal — ${nomeOf(pen.vencedor)} levaria nos pênaltis!`;
+      if(navigator.vibrate) navigator.vibrate([8,20,8,20,8]);
+    } else {
+      verdict.textContent = `${golsA>golsB ? nomeOf(idA) : nomeOf(idB)} levaria essa simulação.`;
+      if(navigator.vibrate) navigator.vibrate([8,30,8]);
+    }
+  });
+
+  /* mata-mata recreativo com todos os clubes (só aparece quando há 4+ clubes cadastrados) */
+  const bracketBtn = document.getElementById('simBracketRun');
+  if(clubes.length < 4){ bracketBtn.style.display = 'none'; return; }
+  bracketBtn.addEventListener('click', ()=>{
+    const sorteados = shuffle(clubes);
+    const [c1,c2,c3,c4] = sorteados;
+    const sf1 = sortearPlacar(c1.id, c2.id), sf2 = sortearPlacar(c3.id, c4.id);
+    const finalistaA = sf1[0]===sf1[1] ? porId(sortearPenaltis(c1.id,c2.id).vencedor) : (sf1[0]>sf1[1] ? c1 : c2);
+    const finalistaB = sf2[0]===sf2[1] ? porId(sortearPenaltis(c3.id,c4.id).vencedor) : (sf2[0]>sf2[1] ? c3 : c4);
+    const final = sortearPlacar(finalistaA.id, finalistaB.id);
+    const campeao = final[0]===final[1] ? porId(sortearPenaltis(finalistaA.id,finalistaB.id).vencedor) : (final[0]>final[1] ? finalistaA : finalistaB);
+    const box = document.getElementById('simBracketResult');
+    box.innerHTML = `
+      <div class="sbr-row"><span>${c1.nome} x ${c2.nome}</span><span>${sf1[0]}-${sf1[1]}${sf1[0]===sf1[1]?' (pên.)':''}</span></div>
+      <div class="sbr-row"><span>${c3.nome} x ${c4.nome}</span><span>${sf2[0]}-${sf2[1]}${sf2[0]===sf2[1]?' (pên.)':''}</span></div>
+      <div class="sbr-row"><span>${finalistaA.nome} x ${finalistaB.nome} (final)</span><span>${final[0]}-${final[1]}${final[0]===final[1]?' (pên.)':''}</span></div>
+      <div class="sbr-champ">🏆 ${campeao.nome} — campeão do mata-mata simulado</div>`;
+    if(navigator.vibrate) navigator.vibrate([8,30,8,30,8]);
   });
 }
 
@@ -1739,9 +2499,10 @@ function renderQuizQuestion(){
 }
 
 function renderAll(){
+  renderHeroStats(); renderChampionShowcase(); renderQuickFacts(); renderLastResult();
   renderCrestRing(); renderFavPill(); renderHighlights(); renderClubGrid(); renderChampList();
-  renderResultFeed(); renderRanking(); renderStatGrid2(); renderRivalries(); renderTimeline();
-  renderGallery(); renderHeroTag(); renderPredictCard();
+  renderResultFeed(); renderRankFilter(); renderRanking(); renderStatGrid2(); renderRecords(); renderRivalries(); renderTimeline();
+  renderGallery(); renderHeroTag(); renderPredictCard(); renderHallFama(); renderHomeNewsPreview();
 }
 
 /* =====================================================================================================
@@ -1754,6 +2515,7 @@ renderCharts();
 setupHTH();
 renderNewsFilter();
 renderNews();
+renderGalleryFilter();
 renderGuia();
 setupSimulador();
 setupQuiz();
