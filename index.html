@@ -1,0 +1,1819 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#040919">
+<meta name="description" content="Liga Zé Prefeitura — arquivo histórico não-oficial da Copa Liga eFootball entre amigos: clubes, campeões, chaves de cada torneio, estatísticas, simulador de confronto e quiz.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Liga Zé Prefeitura — Copa Liga eFootball">
+<meta property="og:description" content="O arquivo histórico da Copa Liga eFootball: clubes, campeões, chaves, estatísticas, simulador e quiz.">
+<title>Liga Zé Prefeitura — Copa Liga eFootball</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%86%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* =====================================================================
+   FONTE + CORES — para trocar a cor geral do site, mexa só aqui.
+   ===================================================================== */
+:root{
+  --void:#040919;
+  --deep:#071029;
+  --panel:#0B1836;
+  --panel-2:#0F2040;
+  --line:#1E3B72;
+  --blue-deep:#062B8F;
+  --blue:#0052FF;
+  --cyan:#1E9BFF;
+  --white:#F5F8FF;
+  --grey:#93A3CC;
+  --grey-dim:#5E6E97;
+  --amber:#FFD100;
+  --amber-deep:#F2A900;
+  --danger:#FF4D6D;
+  --green:#31E39B;
+  --radius-s:8px;
+  --radius-m:16px;
+  --radius-l:24px;
+  --font-head:'Rajdhani',sans-serif;
+  --font-body:'Manrope',sans-serif;
+  --appw:480px;
+  --safe-b:env(safe-area-inset-bottom, 0px);
+  --safe-t:env(safe-area-inset-top, 0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--void);
+  color:var(--white);
+  font-family:var(--font-body);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  min-height:100svh;
+}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+h1,h2,h3,h4{font-family:var(--font-head);font-weight:700;letter-spacing:.01em;}
+button{font-family:inherit;}
+.reduced-motion *{animation-duration:.001ms !important;transition-duration:.001ms !important;}
+::selection{background:var(--blue);color:#fff;}
+a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:4px;}
+
+/* =====================================================================
+   ESQUELETO "SÓ MOBILE" — o conteúdo fica sempre dentro de uma faixa
+   estreita (como uma tela de celular), mesmo se alguém abrir num PC.
+   ===================================================================== */
+.app{max-width:var(--appw);margin:0 auto;position:relative;background:var(--void);min-height:100svh;
+  box-shadow:0 0 60px rgba(0,0,0,.6);overflow-x:hidden;}
+.wrap{padding:0 18px;}
+.desk-fill{position:fixed;inset:0;z-index:-1;background:
+  radial-gradient(ellipse 700px 500px at 50% -10%,rgba(0,82,255,.10),transparent 60%),#030A18;}
+
+/* barra de progresso de leitura */
+.scroll-progress{position:fixed;top:0;left:50%;transform:translateX(-50%);height:2px;width:0%;
+  max-width:var(--appw);z-index:600;background:linear-gradient(90deg,var(--blue),var(--cyan));
+  box-shadow:0 0 8px rgba(30,155,255,.7);transition:width .1s linear;}
+
+/* =====================================================================
+   TOPO (logo do campeonato + nome)
+   ===================================================================== */
+header.topbar{
+  position:sticky;top:0;z-index:400;padding-top:calc(var(--safe-t) + 12px);
+  background:rgba(5,7,13,.82);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.topbar-inner{display:flex;align-items:center;gap:12px;padding:0 18px 12px;}
+.topbar-logo{width:38px;height:38px;border-radius:11px;background:var(--panel);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;box-shadow:0 0 14px rgba(30,155,255,.25);}
+.topbar-logo img{width:100%;height:100%;object-fit:contain;padding:4px;}
+.topbar-text{flex:1;min-width:0;}
+.topbar-text b{display:block;font-family:var(--font-head);font-size:15.5px;letter-spacing:.02em;line-height:1.1;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.topbar-text span{font-size:10.5px;color:var(--cyan);letter-spacing:.14em;}
+.fav-pill{display:flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--line);
+  border-radius:20px;padding:6px 12px 6px 8px;font-size:12px;color:var(--grey);flex-shrink:0;}
+.fav-pill img{width:18px;height:18px;object-fit:contain;}
+
+/* =====================================================================
+   HERO
+   ===================================================================== */
+.hero{position:relative;padding:36px 18px 30px;text-align:center;overflow:hidden;
+  background:radial-gradient(ellipse 500px 320px at 50% 0%,rgba(0,82,255,.30),transparent 65%);}
+.hero::before{content:'';position:absolute;top:-30%;left:50%;width:900px;height:600px;transform:translateX(-50%);
+  background:repeating-conic-gradient(from 0deg at 50% 0%,rgba(30,155,255,.05) 0deg 2deg,transparent 2deg 14deg);
+  opacity:.5;pointer-events:none;}
+.hero-eyebrow{display:inline-block;font-family:var(--font-head);font-size:11.5px;letter-spacing:.24em;color:var(--cyan);
+  padding:5px 14px;border:1px solid rgba(30,155,255,.35);border-radius:20px;margin-bottom:20px;position:relative;z-index:2;}
+.hero h1{font-size:clamp(38px,11vw,54px);line-height:.96;position:relative;z-index:2;
+  background:linear-gradient(180deg,#fff 30%,#B9CBFF 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hero-sub{font-family:var(--font-head);font-size:15px;color:var(--grey);margin-top:10px;letter-spacing:.05em;position:relative;z-index:2;}
+.hero-tag{margin-top:10px;color:var(--grey-dim);font-size:13.5px;position:relative;z-index:2;padding:0 8px;}
+
+.crest-ring{position:relative;width:min(300px,78vw);height:min(300px,78vw);margin:34px auto 22px;z-index:2;}
+.crest-ring svg.lines{position:absolute;inset:0;width:100%;height:100%;}
+.crest-node{position:absolute;width:66px;height:66px;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.crest-node .disc{width:100%;height:100%;border-radius:50%;background:var(--panel);border:2px solid var(--line);
+  display:flex;align-items:center;justify-content:center;transition:box-shadow .3s ease,transform .2s ease,border-color .3s ease;overflow:hidden;position:relative;}
+.crest-node img{width:60%;height:60%;object-fit:contain;}
+.crest-node:active .disc{transform:scale(.94);}
+.crest-node.is-champion .disc{border-color:var(--amber);box-shadow:0 0 20px rgba(255,209,0,.55);animation:championPulse 2.6s ease-in-out infinite;}
+.crest-node.is-favorito .disc{border-color:var(--cyan);}
+.crest-node .lbl{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-family:var(--font-head);
+  font-size:9.5px;letter-spacing:.06em;color:var(--grey);white-space:nowrap;}
+.crest-node.is-champion .lbl{color:var(--amber);}
+@keyframes championPulse{0%,100%{box-shadow:0 0 16px rgba(255,209,0,.4);}50%{box-shadow:0 0 26px rgba(255,209,0,.75);}}
+.crest-node .champion-tag{position:absolute;top:-8px;right:-4px;background:var(--amber);color:#1a1206;font-size:11px;
+  width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 8px rgba(255,209,0,.7);}
+.crest-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;border-radius:50%;
+  background:radial-gradient(circle,var(--blue) 0%,var(--blue-deep) 70%);display:flex;align-items:center;justify-content:center;
+  font-size:24px;box-shadow:0 0 34px rgba(0,82,255,.6);}
+
+.hero-stats{display:flex;gap:8px;justify-content:center;position:relative;z-index:2;}
+.hero-stat{flex:1;max-width:110px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:14px;padding:12px 4px;}
+.hero-stat b{display:block;font-family:var(--font-head);font-size:26px;color:var(--white);}
+.hero-stat span{font-size:9.5px;letter-spacing:.08em;color:var(--grey-dim);text-transform:uppercase;}
+
+/* contador regressivo pro próximo torneio */
+.countdown{position:relative;z-index:2;margin-top:22px;background:linear-gradient(135deg,rgba(0,82,255,.15),rgba(30,155,255,.05));
+  border:1px solid rgba(30,155,255,.3);border-radius:var(--radius-m);padding:16px;}
+.countdown-label{font-size:11px;letter-spacing:.12em;color:var(--cyan);text-transform:uppercase;margin-bottom:10px;}
+.countdown-grid{display:flex;justify-content:center;gap:10px;}
+.countdown-cell{background:var(--void);border:1px solid var(--line);border-radius:10px;padding:8px 4px;min-width:52px;}
+.countdown-cell b{display:block;font-family:var(--font-head);font-size:22px;}
+.countdown-cell span{font-size:9px;color:var(--grey-dim);text-transform:uppercase;}
+
+.scroll-cue{margin:22px auto 0;color:var(--grey-dim);font-size:10.5px;letter-spacing:.14em;position:relative;z-index:2;text-align:center;}
+.scroll-cue .stick{width:1px;height:22px;background:linear-gradient(var(--cyan),transparent);margin:6px auto 0;}
+
+/* =====================================================================
+   SEÇÕES GENÉRICAS
+   ===================================================================== */
+section{padding:50px 0;position:relative;}
+.section-head{margin-bottom:26px;}
+.section-kicker{font-family:var(--font-head);font-size:11.5px;letter-spacing:.18em;color:var(--cyan);margin-bottom:8px;}
+.section-head h2{font-size:24px;color:var(--white);}
+.section-head p{color:var(--grey);margin-top:8px;font-size:13.5px;}
+.section-alt{background:linear-gradient(180deg,transparent,rgba(14,21,38,.55) 10%,rgba(14,21,38,.55) 90%,transparent);}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease;}
+.reveal.in{opacity:1;transform:none;}
+
+/* =====================================================================
+   CLUBES
+   ===================================================================== */
+.club-grid{display:flex;flex-direction:column;gap:14px;}
+.club-card{background:linear-gradient(160deg,var(--panel),var(--panel-2));border:1px solid var(--line);
+  border-radius:var(--radius-m);padding:18px;position:relative;overflow:hidden;
+  border-top:3px solid var(--card-cor,var(--line));transition:transform .15s ease;}
+.club-card:active{transform:scale(.98);}
+.club-card.is-champion{border-color:rgba(255,209,0,.5);}
+.club-top{display:flex;gap:14px;align-items:center;}
+.club-crest{width:58px;height:58px;border-radius:14px;background:var(--void);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;padding:8px;flex-shrink:0;position:relative;}
+.club-crest img{width:100%;height:100%;object-fit:contain;}
+.club-rankbadge{position:absolute;top:-8px;left:-8px;width:24px;height:24px;border-radius:50%;background:var(--void);
+  border:2px solid var(--cyan);font-family:var(--font-head);font-size:12px;display:flex;align-items:center;justify-content:center;color:var(--cyan);}
+.club-info{flex:1;min-width:0;}
+.club-info h3{font-size:19px;line-height:1.1;}
+.club-owner{font-size:12px;color:var(--grey-dim);margin-top:2px;}
+.star-btn{background:none;border:none;color:var(--grey-dim);font-size:20px;cursor:pointer;padding:4px;line-height:1;flex-shrink:0;}
+.star-btn.active{color:var(--amber);}
+.club-metrics{display:flex;gap:10px;margin-top:14px;}
+.club-metrics div{flex:1;text-align:center;background:rgba(255,255,255,.03);border-radius:10px;padding:8px 2px;}
+.club-metrics b{display:block;font-family:var(--font-head);font-size:18px;}
+.club-metrics span{font-size:9px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.04em;}
+.champion-badge{position:absolute;top:12px;right:12px;background:rgba(255,209,0,.15);color:var(--amber);
+  font-size:10px;padding:4px 9px;border-radius:14px;letter-spacing:.04em;}
+
+/* =====================================================================
+   FOLHA INFERIOR (bottom sheet) — usada pro detalhe do clube e pro menu "Mais"
+   ===================================================================== */
+.overlay{position:fixed;inset:0;z-index:800;background:rgba(3,4,8,.72);backdrop-filter:blur(4px);
+  display:none;align-items:flex-end;justify-content:center;}
+.overlay.open{display:flex;}
+.sheet{width:100%;max-width:var(--appw);max-height:88svh;overflow-y:auto;background:linear-gradient(180deg,var(--panel),var(--deep));
+  border:1px solid var(--line);border-bottom:none;border-radius:22px 22px 0 0;padding:10px 22px calc(30px + var(--safe-b));
+  position:relative;transform:translateY(16px);opacity:0;transition:transform .25s ease,opacity .25s ease;}
+.overlay.open .sheet{transform:translateY(0);opacity:1;}
+.sheet-handle{width:38px;height:4px;border-radius:3px;background:var(--line);margin:8px auto 16px;}
+.sheet-close{position:absolute;top:14px;right:16px;background:rgba(255,255,255,.06);border:none;color:var(--white);
+  width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;}
+.club-detail-head{display:flex;align-items:center;gap:16px;margin-bottom:22px;}
+.club-detail-head .club-crest{width:78px;height:78px;}
+.club-detail-head h2{font-size:25px;}
+.share-btn{margin-left:auto;background:var(--panel-2);border:1px solid var(--line);color:var(--cyan);
+  width:38px;height:38px;border-radius:50%;font-size:15px;cursor:pointer;flex-shrink:0;}
+.club-detail-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px;}
+.mini-stat{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;padding:10px 2px;text-align:center;}
+.mini-stat b{display:block;font-family:var(--font-head);font-size:19px;}
+.mini-stat span{font-size:9px;color:var(--grey-dim);text-transform:uppercase;}
+.club-timeline{list-style:none;border-left:2px solid var(--line);padding-left:18px;}
+.club-timeline li{position:relative;padding-bottom:16px;font-size:14px;}
+.club-timeline li::before{content:'';position:absolute;left:-24px;top:4px;width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+.club-timeline li.is-title::before{background:var(--amber);box-shadow:0 0 8px var(--amber);}
+.club-timeline b{display:block;font-family:var(--font-head);font-size:14px;color:var(--white);}
+.club-timeline span{color:var(--grey);font-size:12.5px;}
+
+/* menu "mais" */
+.more-link{display:flex;align-items:center;gap:14px;padding:15px 4px;border-bottom:1px solid var(--line);font-family:var(--font-head);font-size:16px;}
+.more-link .ic{font-size:19px;width:26px;text-align:center;}
+.more-link:last-child{border-bottom:none;}
+
+/* =====================================================================
+   TÍTULOS
+   ===================================================================== */
+.champ-list{display:flex;flex-direction:column;gap:10px;}
+.champ-row{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--line);
+  border-radius:var(--radius-m);padding:13px 16px;position:relative;}
+.champ-row.is-latest{border-color:rgba(255,209,0,.5);box-shadow:0 0 0 1px rgba(255,209,0,.15) inset;}
+.champ-num{font-family:var(--font-head);font-size:21px;color:var(--grey-dim);width:26px;flex-shrink:0;}
+.champ-row.is-latest .champ-num{color:var(--amber);}
+.champ-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;}
+.champ-title{font-size:11px;color:var(--grey-dim);letter-spacing:.06em;text-transform:uppercase;display:flex;justify-content:space-between;}
+.champ-teams{display:flex;flex-direction:column;gap:3px;font-family:var(--font-head);font-size:14.5px;}
+.champ-teams .tag-cup{color:var(--amber);}
+.champ-teams .tag-vice{color:var(--grey);}
+.champ-crest-mini{width:18px;height:18px;border-radius:50%;object-fit:contain;background:var(--void);border:1px solid var(--line);vertical-align:-4px;margin-right:5px;padding:2px;}
+.latest-pill{font-size:9.5px;background:rgba(255,209,0,.15);color:var(--amber);padding:3px 9px;border-radius:20px;letter-spacing:.04em;white-space:nowrap;}
+
+/* =====================================================================
+   TORNEIOS / CHAVE
+   ===================================================================== */
+.tournament-select{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:22px;scrollbar-width:none;}
+.tournament-select::-webkit-scrollbar{display:none;}
+.t-btn{flex-shrink:0;font-family:var(--font-head);font-size:13.5px;color:var(--grey);background:var(--panel);
+  border:1px solid var(--line);padding:8px 16px;border-radius:20px;cursor:pointer;}
+.t-btn.active{color:var(--void);border-color:var(--cyan);background:var(--cyan);}
+.bracket{display:flex;flex-direction:column;gap:16px;scroll-snap-type:x mandatory;}
+.col-label{font-size:10.5px;letter-spacing:.12em;color:var(--grey-dim);text-transform:uppercase;margin-bottom:6px;}
+.b-match{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:6px;margin-bottom:14px;}
+.b-slot{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;}
+.b-slot.winner{background:rgba(30,155,255,.08);}
+.b-slot img{width:24px;height:24px;object-fit:contain;background:var(--void);border-radius:50%;border:1px solid var(--line);padding:2px;}
+.b-slot b{font-family:var(--font-head);font-size:14px;flex:1;}
+.b-slot.winner b{color:var(--cyan);}
+.b-slot .tbd{color:var(--grey-dim);font-style:normal;}
+.b-slot .score{font-family:var(--font-head);font-size:15px;color:var(--white);background:rgba(255,255,255,.05);
+  border-radius:6px;padding:1px 8px;min-width:24px;text-align:center;}
+.trophy-slot{display:flex;flex-direction:column;align-items:center;gap:8px;background:linear-gradient(160deg,rgba(255,209,0,.12),transparent);
+  border:1px solid rgba(255,209,0,.3);border-radius:14px;padding:18px 10px;}
+.trophy-slot .cup{font-size:38px;}
+.trophy-slot b{font-family:var(--font-head);font-size:17px;color:var(--amber);}
+.result-feed{display:flex;flex-direction:column;gap:8px;margin-top:24px;}
+.result-row{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:12.5px;}
+.result-row img{width:18px;height:18px;object-fit:contain;background:var(--void);border-radius:50%;border:1px solid var(--line);padding:2px;}
+.result-row b{font-family:var(--font-head);font-size:13.5px;}
+.result-row .rf-score{margin-left:auto;font-family:var(--font-head);color:var(--cyan);font-size:14px;}
+
+/* =====================================================================
+   RANKING (lista de cartões, sem tabela larga — melhor pro celular)
+   ===================================================================== */
+.rank-list{display:flex;flex-direction:column;gap:8px;}
+.rank-row{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);
+  border-radius:12px;padding:11px 14px;}
+.rank-row:first-child{border-color:rgba(255,209,0,.4);}
+.rank-pos{font-family:var(--font-head);font-size:18px;color:var(--grey-dim);width:20px;flex-shrink:0;}
+.rank-row:first-child .rank-pos{color:var(--amber);}
+.rank-club{display:flex;align-items:center;gap:9px;font-family:var(--font-head);font-size:14.5px;flex:1;min-width:0;}
+.rank-club img{width:24px;height:24px;object-fit:contain;background:var(--void);border-radius:50%;border:1px solid var(--line);padding:3px;flex-shrink:0;}
+.rank-stats{display:flex;gap:12px;flex-shrink:0;}
+.rank-stats div{text-align:center;min-width:26px;}
+.rank-stats b{display:block;font-family:var(--font-head);font-size:14px;}
+.rank-stats span{font-size:8px;color:var(--grey-dim);text-transform:uppercase;}
+
+/* =====================================================================
+   ESTATÍSTICAS / GRÁFICOS
+   ===================================================================== */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:30px;}
+.stat-box{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);padding:16px;text-align:center;}
+.stat-box b{display:block;font-family:var(--font-head);font-size:22px;background:linear-gradient(180deg,#fff,#9FC2FF);
+  -webkit-background-clip:text;background-clip:text;color:transparent;}
+.stat-box span{font-size:10px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.04em;}
+.chart-grid{display:flex;flex-direction:column;gap:16px;}
+.chart-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);padding:18px;}
+.chart-card h4{font-size:13.5px;color:var(--white);margin-bottom:14px;font-weight:700;}
+canvas{width:100%;}
+
+/* confronto direto */
+.rivalry-callout{background:linear-gradient(135deg,rgba(255,209,0,.12),rgba(30,155,255,.06));
+  border:1px solid rgba(255,209,0,.35);border-radius:var(--radius-m);padding:16px;margin-bottom:22px;display:flex;align-items:center;gap:12px;}
+.rivalry-callout .icon{font-size:24px;flex-shrink:0;}
+.rivalry-callout b{font-family:var(--font-head);font-size:15px;color:var(--white);display:block;}
+.rivalry-callout span{color:var(--grey);font-size:12px;}
+.hth-picker{display:flex;gap:10px;align-items:center;margin-bottom:20px;}
+.hth-picker select{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);color:var(--white);
+  padding:10px 8px;border-radius:10px;font-family:var(--font-body);font-size:13px;}
+.hth-vs{font-family:var(--font-head);color:var(--grey-dim);flex-shrink:0;}
+.hth-result{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);padding:20px;
+  display:flex;justify-content:space-around;text-align:center;margin-bottom:22px;}
+.hth-result .side b{display:block;font-family:var(--font-head);font-size:22px;}
+.hth-result .side span{font-size:10px;color:var(--grey-dim);text-transform:uppercase;}
+.compare-panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);padding:18px;margin-bottom:22px;}
+.compare-panel h4{font-size:11px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;}
+.compare-row{margin-bottom:13px;}
+.compare-row .compare-labels{display:flex;justify-content:space-between;font-family:var(--font-head);font-size:12.5px;margin-bottom:5px;}
+.compare-row .compare-labels span:first-child{color:var(--cyan);}
+.compare-row .compare-labels span:last-child{color:#FF9AB4;}
+.compare-track{display:flex;height:7px;border-radius:4px;overflow:hidden;background:var(--void);border:1px solid var(--line);}
+.compare-track .fillA{background:linear-gradient(90deg,var(--blue),var(--cyan));}
+.compare-track .fillB{background:linear-gradient(90deg,#FF4D6D,#FF9AB4);}
+.compare-metric-name{font-size:9.5px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px;display:block;text-align:center;}
+.rivalry-list h4{font-size:11px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;}
+.rivalry-row{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;background:var(--panel);
+  border:1px solid var(--line);border-radius:10px;margin-bottom:7px;font-size:12.5px;}
+.rivalry-row b{font-family:var(--font-head);font-size:13.5px;}
+.rivalry-row .count{color:var(--cyan);font-family:var(--font-head);font-size:12.5px;white-space:nowrap;}
+
+/* =====================================================================
+   HISTÓRIA
+   ===================================================================== */
+.history-copy{display:flex;flex-direction:column;gap:20px;margin-bottom:36px;}
+.history-copy article h3{font-size:16.5px;margin-bottom:6px;color:var(--cyan);}
+.history-copy article p{color:var(--grey);font-size:13.5px;}
+.timeline{position:relative;padding-left:22px;}
+.timeline::before{content:'';position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--cyan),var(--blue-deep));}
+.tl-item{position:relative;padding-bottom:26px;}
+.tl-item::before{content:'';position:absolute;left:-22px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--void);border:2px solid var(--cyan);}
+.tl-item.is-title::before{border-color:var(--amber);background:var(--amber);}
+.tl-item h4{font-family:var(--font-head);font-size:15.5px;}
+.tl-item p{color:var(--grey);font-size:12.5px;margin-top:3px;}
+
+/* =====================================================================
+   NOTÍCIAS
+   ===================================================================== */
+.news-filter{display:flex;gap:8px;overflow-x:auto;margin-bottom:16px;scrollbar-width:none;}
+.news-filter::-webkit-scrollbar{display:none;}
+.news-filter button{flex-shrink:0;font-family:var(--font-head);font-size:12px;color:var(--grey);background:var(--panel);
+  border:1px solid var(--line);padding:6px 14px;border-radius:20px;cursor:pointer;}
+.news-filter button.active{color:var(--void);background:var(--cyan);border-color:var(--cyan);}
+.news-grid{display:flex;flex-direction:column;gap:14px;}
+.news-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);overflow:hidden;display:flex;}
+.news-thumb{width:78px;flex-shrink:0;background:linear-gradient(135deg,var(--blue-deep),var(--panel-2));
+  display:flex;align-items:center;justify-content:center;font-size:26px;}
+.news-body{padding:14px 16px;min-width:0;}
+.news-cat{font-size:10px;color:var(--cyan);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;}
+.news-body h3{font-size:14.5px;margin-bottom:5px;line-height:1.25;}
+.news-body p{font-size:12px;color:var(--grey);}
+.news-date{font-size:10.5px;color:var(--grey-dim);margin-top:8px;display:block;}
+
+/* =====================================================================
+   GALERIA
+   ===================================================================== */
+.gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.gallery-item{aspect-ratio:1;border-radius:12px;border:1px solid var(--line);background:var(--panel);
+  display:flex;align-items:center;justify-content:center;padding:18px;position:relative;border-top:3px solid var(--card-cor,var(--line));}
+.gallery-item img{width:65%;height:65%;object-fit:contain;}
+.gallery-item .gallery-tag{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:10px;color:var(--grey-dim);letter-spacing:.03em;text-transform:uppercase;}
+
+/* =====================================================================
+   GUIA DE EDIÇÃO (dentro do próprio site)
+   ===================================================================== */
+.guia-item{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden;}
+.guia-q{width:100%;text-align:left;background:none;border:none;color:var(--white);padding:14px 16px;font-family:var(--font-head);
+  font-size:14.5px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:10px;}
+.guia-q .plus{color:var(--cyan);font-size:18px;flex-shrink:0;transition:transform .2s ease;}
+.guia-item.open .guia-q .plus{transform:rotate(45deg);}
+.guia-a{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+.guia-item.open .guia-a{max-height:400px;}
+.guia-a-inner{padding:0 16px 16px;font-size:13px;color:var(--grey);}
+.guia-a-inner code{background:var(--void);border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:12px;color:var(--cyan);}
+
+/* =====================================================================
+   RODAPÉ
+   ===================================================================== */
+footer{padding:40px 18px calc(100px + var(--safe-b));border-top:1px solid var(--line);color:var(--grey-dim);font-size:12px;text-align:center;}
+footer strong{color:var(--grey);}
+footer .foot-guide-link{display:inline-block;margin-top:10px;color:var(--cyan);font-size:12.5px;}
+
+/* =====================================================================
+   BARRA INFERIOR FIXA (navegação estilo app)
+   ===================================================================== */
+.tabbar{position:fixed;bottom:0;left:0;right:0;z-index:500;display:flex;max-width:var(--appw);margin:0 auto;
+  background:rgba(9,14,27,.92);backdrop-filter:blur(16px);border-top:1px solid var(--line);
+  padding:8px 4px calc(6px + var(--safe-b));}
+.tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;
+  color:var(--grey-dim);cursor:pointer;padding:6px 2px;border-radius:10px;}
+.tab-btn .ic{font-size:19px;line-height:1;}
+.tab-btn span{font-size:9.5px;font-family:var(--font-head);letter-spacing:.02em;}
+.tab-btn.active{color:var(--cyan);}
+
+/* =====================================================================
+   TOQUES FINAIS — textura do hero, hover em telas grandes, botão de topo
+   ===================================================================== */
+.hero{position:relative;}
+.hero-dots{position:absolute;inset:0;z-index:1;opacity:.55;pointer-events:none;
+  background-image:radial-gradient(rgba(30,155,255,.35) 1px, transparent 1px);
+  background-size:26px 26px;
+  -webkit-mask-image:radial-gradient(ellipse 380px 260px at 50% 10%, #000 0%, transparent 72%);
+  mask-image:radial-gradient(ellipse 380px 260px at 50% 10%, #000 0%, transparent 72%);}
+@media (hover:hover){
+  .club-card:hover{transform:translateY(-2px);border-color:rgba(30,155,255,.35);}
+  .rank-row:hover, .champ-row:hover, .news-card:hover, .gallery-item:hover{border-color:rgba(30,155,255,.3);}
+  .t-btn:hover{color:var(--white);}
+  .guia-q:hover{color:var(--cyan);}
+}
+
+.fab-top{position:fixed;right:calc(50% - var(--appw)/2 + 16px);bottom:calc(84px + var(--safe-b));z-index:490;
+  width:42px;height:42px;border-radius:50%;background:rgba(14,21,38,.9);border:1px solid var(--line);
+  color:var(--cyan);font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  backdrop-filter:blur(8px);opacity:0;pointer-events:none;transform:translateY(8px);
+  transition:opacity .25s ease,transform .25s ease;}
+.fab-top.show{opacity:1;pointer-events:auto;transform:none;}
+@media (max-width:480px){ .fab-top{right:16px;} }
+
+/* conquistas / badges */
+.badge-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+.badge-chip{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;letter-spacing:.02em;
+  background:rgba(30,155,255,.08);border:1px solid rgba(30,155,255,.25);color:var(--cyan);
+  padding:4px 10px;border-radius:20px;white-space:nowrap;}
+.badge-chip.is-gold{background:rgba(255,209,0,.1);border-color:rgba(255,209,0,.35);color:var(--amber);}
+
+/* palpite do próximo torneio */
+.predict-card{background:linear-gradient(135deg,rgba(49,227,155,.1),rgba(0,82,255,.05));
+  border:1px solid rgba(49,227,155,.3);border-radius:var(--radius-m);padding:16px;margin-top:22px;}
+.predict-card h4{font-size:13.5px;color:var(--white);margin-bottom:4px;}
+.predict-card p{font-size:12px;color:var(--grey);margin-bottom:12px;}
+.predict-row{display:flex;gap:8px;}
+.predict-row select{flex:1;background:var(--void);border:1px solid var(--line);color:var(--white);
+  padding:10px 8px;border-radius:10px;font-family:var(--font-body);font-size:13px;}
+.predict-row button{flex-shrink:0;background:var(--green);color:#05130c;border:none;font-family:var(--font-head);
+  font-size:13px;padding:0 16px;border-radius:10px;cursor:pointer;}
+.predict-chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--green);
+  background:rgba(49,227,155,.1);border:1px solid rgba(49,227,155,.3);padding:6px 12px;border-radius:20px;}
+.predict-result{font-size:12.5px;margin-top:2px;}
+.predict-result.hit{color:var(--green);}
+.predict-result.miss{color:var(--danger);}
+
+/* simulador de confronto */
+.sim-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);padding:18px;margin-top:22px;}
+.sim-card p.hint{font-size:11.5px;color:var(--grey-dim);margin-bottom:14px;}
+.sim-picker{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.sim-picker select{flex:1;min-width:0;background:var(--void);border:1px solid var(--line);color:var(--white);
+  padding:10px 8px;border-radius:10px;font-family:var(--font-body);font-size:13px;}
+.sim-btn{display:block;width:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));color:#04101f;border:none;
+  font-family:var(--font-head);font-size:14.5px;letter-spacing:.03em;padding:13px;border-radius:12px;cursor:pointer;}
+.sim-result{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:18px;min-height:64px;}
+.sim-side{flex:1;text-align:center;}
+.sim-side img{width:34px;height:34px;object-fit:contain;margin:0 auto 6px;background:var(--void);border-radius:50%;border:1px solid var(--line);padding:4px;}
+.sim-side b{display:block;font-family:var(--font-head);font-size:13px;}
+.sim-score{font-family:var(--font-head);font-size:30px;color:var(--white);flex-shrink:0;opacity:0;transform:scale(.7);
+  transition:opacity .3s ease,transform .3s ease;}
+.sim-score.show{opacity:1;transform:none;}
+.sim-verdict{text-align:center;font-size:12px;color:var(--grey-dim);margin-top:10px;}
+
+/* quiz da liga */
+.quiz-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);padding:20px;}
+.quiz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.quiz-progress-label{font-size:11px;color:var(--grey-dim);letter-spacing:.06em;text-transform:uppercase;}
+.quiz-score-label{font-family:var(--font-head);font-size:13px;color:var(--cyan);}
+.quiz-bar{height:4px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;margin-bottom:20px;}
+.quiz-bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .3s ease;}
+.quiz-question{font-family:var(--font-head);font-size:17px;margin-bottom:16px;line-height:1.3;}
+.quiz-options{display:flex;flex-direction:column;gap:9px;}
+.quiz-option{text-align:left;background:var(--panel-2);border:1px solid var(--line);color:var(--white);
+  font-family:var(--font-body);font-size:13.5px;padding:12px 14px;border-radius:10px;cursor:pointer;}
+.quiz-option:disabled{cursor:default;}
+.quiz-option.correct{border-color:var(--green);background:rgba(49,227,155,.12);color:var(--green);}
+.quiz-option.wrong{border-color:var(--danger);background:rgba(255,77,109,.12);color:var(--danger);}
+.quiz-next{margin-top:16px;width:100%;background:var(--cyan);color:#04101f;border:none;font-family:var(--font-head);
+  font-size:13.5px;padding:12px;border-radius:10px;cursor:pointer;}
+.quiz-done{text-align:center;}
+.quiz-done .cup{font-size:40px;margin-bottom:10px;}
+.quiz-done h3{font-family:var(--font-head);font-size:22px;margin-bottom:6px;}
+.quiz-done p{color:var(--grey);font-size:13px;margin-bottom:18px;}
+
+/* confete */
+.confetti-layer{position:fixed;inset:0;z-index:900;pointer-events:none;overflow:hidden;}
+.confetti-piece{position:absolute;top:-20px;font-size:18px;animation:confettiFall linear forwards;}
+@keyframes confettiFall{to{transform:translateY(110vh) rotate(360deg);opacity:0;}}
+
+@media (min-width:481px){
+  body{background:#030A18;}
+}
+
+/* =====================================================================================================
+   ██████████████████████████████████████████████████████████████████████████████████████████████████
+   CAMADA VISUAL EXTRA — efeitos "estilo eFootball": azul saturado + amarelo saturado, brilhos, texturas.
+   Tudo aqui é aditivo (não mexe nas regras acima), então é seguro editar só o necessário.
+   ██████████████████████████████████████████████████████████████████████████████████████████████████
+   ===================================================================================================== */
+
+/* textura diagonal estilo "menu de jogo" atrás de tudo */
+body::before{content:'';position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+    repeating-linear-gradient(115deg, rgba(0,82,255,.05) 0px, rgba(0,82,255,.05) 2px, transparent 2px, transparent 46px),
+    radial-gradient(ellipse 900px 500px at 8% -10%, rgba(0,82,255,.22), transparent 55%),
+    radial-gradient(ellipse 700px 420px at 100% 8%, rgba(255,209,0,.10), transparent 60%);
+}
+.app{background:transparent;}
+
+/* barra de progresso com brilho duplo azul→amarelo */
+.scroll-progress{background:linear-gradient(90deg,var(--blue),var(--cyan) 55%,var(--amber));
+  box-shadow:0 0 10px rgba(30,155,255,.8), 0 0 16px rgba(255,209,0,.35);}
+
+/* topo com friso amarelo fino */
+header.topbar{border-bottom:1px solid rgba(255,209,0,.14);box-shadow:0 1px 0 rgba(0,82,255,.25);}
+.topbar-logo{box-shadow:0 0 16px rgba(30,155,255,.35), inset 0 0 0 1px rgba(255,209,0,.12);}
+
+/* hero: brilho amarelo somado ao azul existente + título com contorno sutil */
+.hero{background:
+  radial-gradient(ellipse 520px 330px at 50% 0%, rgba(0,82,255,.34), transparent 65%),
+  radial-gradient(ellipse 360px 220px at 90% 15%, rgba(255,209,0,.14), transparent 70%);}
+.hero-eyebrow{border-color:rgba(255,209,0,.4);color:var(--amber);background:rgba(255,209,0,.06);}
+.hero h1{background:linear-gradient(180deg,#fff 20%, var(--cyan) 78%, var(--amber) 130%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 4px 18px rgba(0,82,255,.45));}
+.crest-center{box-shadow:0 0 0 3px rgba(255,209,0,.35), 0 0 34px rgba(0,82,255,.65);}
+.hero-stat{border-color:rgba(255,209,0,.16);}
+.hero-stat b{background:linear-gradient(180deg,var(--white),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+/* cards com friso superior em degradê azul→amarelo ao passar o mouse, além da cor do clube */
+.club-card{position:relative;}
+.club-card::after{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:linear-gradient(120deg, rgba(0,82,255,.35), transparent 30%, transparent 70%, rgba(255,209,0,.28));
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude; opacity:0; transition:opacity .25s ease;}
+.club-card:hover::after, .club-card:active::after{opacity:1;}
+
+/* botões e barras de destaque ganham o toque amarelo */
+.sim-btn, .quiz-next{background:linear-gradient(90deg,var(--blue),var(--cyan) 65%,var(--amber));color:#04101f;
+  box-shadow:0 6px 18px rgba(0,82,255,.35);position:relative;overflow:hidden;}
+.sim-btn::before, .quiz-next::before{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;
+  background:linear-gradient(115deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);
+  animation:shine 3.2s ease-in-out infinite;}
+@keyframes shine{0%{left:-60%;}45%,100%{left:130%;}}
+.predict-row button{background:linear-gradient(90deg,var(--green),#8CF2C9);box-shadow:0 4px 14px rgba(49,227,155,.3);}
+
+/* rótulos "amarelo saturado" para tudo que já era âmbar — reforço de brilho */
+.champion-badge, .latest-pill, .badge-chip.is-gold{box-shadow:0 0 10px rgba(255,209,0,.25);}
+.crest-node.is-champion .champion-tag{box-shadow:0 0 12px rgba(255,209,0,.8);}
+
+/* ícones trocados por imagem (sistema de troca emoji → imagem) */
+.icone-custom{width:1.1em;height:1.1em;object-fit:contain;display:inline-block;vertical-align:-0.18em;border-radius:3px;}
+
+/* =====================================================================
+   NOVA FUNCIONALIDADE 1 — BUSCA GLOBAL
+   ===================================================================== */
+.search-box{position:relative;display:flex;align-items:center;gap:10px;background:var(--panel);
+  border:1px solid var(--line);border-radius:16px;padding:13px 16px;box-shadow:0 0 0 1px rgba(255,209,0,.05) inset;}
+.search-box svg{flex-shrink:0;opacity:.7;}
+.search-box input{flex:1;min-width:0;background:none;border:none;color:var(--white);font-family:var(--font-body);
+  font-size:14.5px;outline:none;}
+.search-box input::placeholder{color:var(--grey-dim);}
+.search-clear{background:rgba(255,255,255,.06);border:none;color:var(--grey);width:24px;height:24px;border-radius:50%;
+  cursor:pointer;display:none;flex-shrink:0;font-size:13px;}
+.search-box.has-text .search-clear{display:block;}
+.search-results{margin-top:14px;display:flex;flex-direction:column;gap:8px;}
+.search-empty{color:var(--grey-dim);font-size:13px;padding:6px 2px;}
+.search-hit{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);
+  border-radius:12px;padding:10px 14px;cursor:pointer;transition:border-color .15s ease;}
+.search-hit:hover{border-color:rgba(30,155,255,.4);}
+.search-hit .sh-ic{width:32px;height:32px;border-radius:9px;background:var(--panel-2);display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;font-size:15px;overflow:hidden;}
+.search-hit .sh-ic img{width:100%;height:100%;object-fit:contain;padding:4px;}
+.search-hit .sh-body{min-width:0;flex:1;}
+.search-hit .sh-body b{display:block;font-family:var(--font-head);font-size:14px;line-height:1.2;}
+.search-hit .sh-body span{font-size:11.5px;color:var(--grey-dim);}
+.search-hit .sh-tag{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--cyan);
+  background:rgba(30,155,255,.1);border:1px solid rgba(30,155,255,.3);padding:3px 8px;border-radius:20px;flex-shrink:0;}
+
+/* =====================================================================
+   NOVA FUNCIONALIDADE 2 — CARTEIRINHA DO TORCEDOR
+   ===================================================================== */
+.card-picker{display:flex;gap:8px;margin-bottom:16px;}
+.card-picker select{flex:1;background:var(--void);border:1px solid var(--line);color:var(--white);
+  padding:10px 8px;border-radius:10px;font-family:var(--font-body);font-size:13px;}
+.fancard-stage{display:flex;justify-content:center;padding:6px;background:radial-gradient(ellipse at 50% 0%,rgba(0,82,255,.18),transparent 70%);
+  border-radius:var(--radius-m);}
+.fancard-stage canvas{max-width:100%;height:auto;border-radius:18px;box-shadow:0 14px 40px rgba(0,0,0,.55), 0 0 0 1px rgba(255,209,0,.12);}
+.fancard-actions{display:flex;gap:10px;margin-top:16px;}
+.fancard-actions button{flex:1;font-family:var(--font-head);font-size:13.5px;padding:12px;border-radius:12px;
+  border:1px solid var(--line);cursor:pointer;}
+.fancard-actions .btn-primary{background:linear-gradient(90deg,var(--amber),var(--amber-deep));border:none;color:#1a1206;
+  box-shadow:0 6px 16px rgba(255,209,0,.3);}
+.fancard-actions .btn-ghost{background:var(--panel);color:var(--white);}
+
+/* =====================================================================
+   NOVA FUNCIONALIDADE 3 — TROFÉUS DO TORCEDOR (CONQUISTAS)
+   ===================================================================== */
+.ach-progress{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.ach-ring{width:52px;height:52px;border-radius:50%;flex-shrink:0;
+  background:conic-gradient(var(--amber) calc(var(--pct,0)*1%), rgba(255,255,255,.08) 0);
+  display:flex;align-items:center;justify-content:center;position:relative;}
+.ach-ring::before{content:'';position:absolute;inset:5px;border-radius:50%;background:var(--void);}
+.ach-ring span{position:relative;font-family:var(--font-head);font-size:12px;color:var(--amber);}
+.ach-progress-text b{display:block;font-family:var(--font-head);font-size:15px;}
+.ach-progress-text span{font-size:11.5px;color:var(--grey-dim);}
+.ach-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.ach-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 12px;text-align:center;
+  opacity:.45;filter:grayscale(1);transition:opacity .3s ease,filter .3s ease,transform .2s ease,border-color .3s ease;}
+.ach-card.unlocked{opacity:1;filter:none;border-color:rgba(255,209,0,.4);box-shadow:0 0 14px rgba(255,209,0,.12);}
+.ach-card:active{transform:scale(.96);}
+.ach-card .ach-ic{font-size:26px;margin-bottom:6px;}
+.ach-card b{display:block;font-family:var(--font-head);font-size:12.5px;line-height:1.2;margin-bottom:3px;}
+.ach-card span{font-size:10px;color:var(--grey-dim);line-height:1.3;display:block;}
+
+/* toast de conquista desbloqueada */
+.ach-toast{position:fixed;left:50%;bottom:calc(90px + var(--safe-b));transform:translateX(-50%) translateY(20px);
+  max-width:calc(var(--appw) - 32px);width:calc(100% - 32px);z-index:950;display:flex;align-items:center;gap:12px;
+  background:linear-gradient(120deg,var(--panel-2),var(--panel));border:1px solid rgba(255,209,0,.45);
+  border-radius:16px;padding:12px 16px;box-shadow:0 14px 34px rgba(0,0,0,.5), 0 0 20px rgba(255,209,0,.2);
+  opacity:0;pointer-events:none;transition:opacity .3s ease,transform .3s ease;}
+.ach-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.ach-toast .ach-toast-ic{font-size:26px;flex-shrink:0;}
+.ach-toast b{display:block;font-family:var(--font-head);font-size:13.5px;color:var(--amber);}
+.ach-toast span{font-size:11.5px;color:var(--grey);}
+</style>
+</head>
+<body>
+
+<div class="desk-fill"></div>
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<div class="app">
+
+<!-- ============ TOPO ============ -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-logo"><img id="logoImg" src="" alt="Logo da liga" onerror="this.style.display='none'"></div>
+    <div class="topbar-text">
+      <b>LIGA ZÉ PREFEITURA</b>
+      <span>COPA LIGA eFOOTBALL</span>
+    </div>
+    <div class="fav-pill" id="favPill" style="display:none"></div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="inicio">
+  <div class="hero-dots"></div>
+  <div class="hero-eyebrow">COPA LIGA eFOOTBALL</div>
+  <h1>LIGA ZÉ<br>PREFEITURA</h1>
+  <p class="hero-sub">O arquivo oficial da competição</p>
+  <p class="hero-tag" id="heroTag">A história continua, torneio após torneio.</p>
+
+  <div class="crest-ring" id="crestRing">
+    <svg class="lines" viewBox="0 0 300 300" preserveAspectRatio="none">
+      <line x1="150" y1="150" x2="150" y2="30" stroke="url(#lg)" stroke-width="1.5"/>
+      <line x1="150" y1="150" x2="270" y2="150" stroke="url(#lg)" stroke-width="1.5"/>
+      <line x1="150" y1="150" x2="150" y2="270" stroke="url(#lg)" stroke-width="1.5"/>
+      <line x1="150" y1="150" x2="30" y2="150" stroke="url(#lg)" stroke-width="1.5"/>
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#1E9BFF" stop-opacity=".55"/>
+        <stop offset="1" stop-color="#1E9BFF" stop-opacity="0"/>
+      </linearGradient></defs>
+    </svg>
+    <div class="crest-center">⚽</div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat"><b data-count="6">0</b><span>Torneios</span></div>
+    <div class="hero-stat"><b data-count="4">0</b><span>Clubes</span></div>
+    <div class="hero-stat"><b data-count="1">0</b><span>Taça</span></div>
+  </div>
+
+  <div class="countdown" id="countdownBox" style="display:none">
+    <div class="countdown-label">⏱ Contagem para o próximo torneio</div>
+    <div class="countdown-grid" id="countdownGrid"></div>
+  </div>
+
+  <div class="scroll-cue">ROLE PARA EXPLORAR<div class="stick"></div></div>
+</section>
+
+<!-- ============ BUSCA GLOBAL (nova funcionalidade 1) ============ -->
+<section id="busca">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">ENCONTRE RÁPIDO</div>
+      <h2>Busca da Liga</h2>
+      <p>Procure por clubes, campeões, notícias ou torneios em um só lugar.</p>
+    </div>
+    <div class="search-box reveal" id="searchBox">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#93A3CC" stroke-width="2"/><line x1="16.2" y1="16.2" x2="21" y2="21" stroke="#93A3CC" stroke-width="2" stroke-linecap="round"/></svg>
+      <input type="text" id="searchInput" placeholder="Buscar clube, campeão, torneio, notícia...">
+      <button class="search-clear" id="searchClear" aria-label="Limpar busca">×</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</section>
+
+<!-- ============ RESUMO ============ -->
+<section id="destaques">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">RESUMO DA LIGA</div>
+      <h2>Onde a competição está agora</h2>
+      <p>Atualizado automaticamente sempre que um torneio é cadastrado no código.</p>
+    </div>
+    <div class="stat-grid reveal" id="highlightGrid"></div>
+  </div>
+</section>
+
+<!-- ============ CLUBES ============ -->
+<section id="clubes" class="section-alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">OS DISPUTANTES</div>
+      <h2>Clubes da Liga</h2>
+      <p>Toque em um card para ver a trajetória completa. Toque na estrela para marcar seu clube do coração.</p>
+    </div>
+    <div class="club-grid reveal" id="clubGrid"></div>
+  </div>
+</section>
+
+<!-- ============ TÍTULOS ============ -->
+<section id="titulos">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">QUADRO DE CAMPEÕES</div>
+      <h2>Campeões e vices</h2>
+      <p>O registro oficial de cada torneio da Copa Liga eFootball.</p>
+    </div>
+    <div class="champ-list reveal" id="champList"></div>
+  </div>
+</section>
+
+<!-- ============ TORNEIOS / CHAVE ============ -->
+<section id="torneios" class="section-alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">EDIÇÕES</div>
+      <h2>Chave de cada torneio</h2>
+      <p>Selecione uma edição para ver como o torneio se desenrolou até o campeão.</p>
+    </div>
+    <div class="tournament-select reveal" id="tSelect"></div>
+    <div class="bracket reveal" id="bracketView"></div>
+    <div class="result-feed reveal" id="resultFeed"></div>
+    <div class="predict-card reveal" id="predictCard" style="display:none"></div>
+  </div>
+</section>
+
+<!-- ============ SIMULADOR ============ -->
+<section id="simulador" class="section-alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">SÓ DE BRINCADEIRA</div>
+      <h2>Simulador de confronto</h2>
+      <p>Escolha dois clubes e veja um placar aleatório. Não conta pro histórico oficial — é só diversão.</p>
+    </div>
+    <div class="sim-card reveal">
+      <p class="hint">Times com mais títulos têm uma leve vantagem na simulação.</p>
+      <div class="sim-picker">
+        <select id="simA"></select>
+        <span class="hth-vs">×</span>
+        <select id="simB"></select>
+      </div>
+      <button class="sim-btn" id="simRun">Simular partida ⚽</button>
+      <div class="sim-result" id="simResult"></div>
+      <div class="sim-verdict" id="simVerdict"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RANKING ============ -->
+<section id="ranking">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">CLASSIFICAÇÃO GERAL</div>
+      <h2>Ranking da Liga</h2>
+      <p>Ordenado por títulos, depois vices, finais disputadas e participações.</p>
+    </div>
+    <div class="rank-list reveal" id="rankList"></div>
+  </div>
+</section>
+
+<!-- ============ ESTATÍSTICAS ============ -->
+<section id="estatisticas" class="section-alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">NÚMEROS DA LIGA</div>
+      <h2>Estatísticas</h2>
+      <p>O histórico completo da competição, em números.</p>
+    </div>
+    <div class="stat-grid reveal" id="statGrid2"></div>
+    <div class="chart-grid reveal">
+      <div class="chart-card"><h4>Títulos por clube</h4><canvas id="chartTitulos" height="200"></canvas></div>
+      <div class="chart-card"><h4>Vice-campeonatos por clube</h4><canvas id="chartVices" height="200"></canvas></div>
+      <div class="chart-card"><h4>Participações por clube</h4><canvas id="chartPart" height="200"></canvas></div>
+      <div class="chart-card"><h4>Posição por torneio (1º = campeão)</h4><canvas id="chartEvol" height="200"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONFRONTO DIRETO ============ -->
+<section id="confronto">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">HISTÓRICO DE FINAIS</div>
+      <h2>Confronto direto</h2>
+      <p>Escolha dois clubes para comparar o retrospecto entre eles.</p>
+    </div>
+    <div class="rivalry-callout reveal" id="rivalryCallout"></div>
+    <div class="hth-picker reveal">
+      <select id="hthA"></select>
+      <span class="hth-vs">×</span>
+      <select id="hthB"></select>
+    </div>
+    <div class="hth-result reveal" id="hthResult"></div>
+    <div class="compare-panel reveal" id="comparePanel"></div>
+    <div class="rivalry-list reveal" id="rivalryList"></div>
+  </div>
+</section>
+
+<!-- ============ HISTÓRIA ============ -->
+<section id="historia" class="section-alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">A CAMINHADA</div>
+      <h2>História da Liga</h2>
+      <p>Como quatro amigos transformaram partidas no eFootball em uma competição com identidade própria.</p>
+    </div>
+    <div class="history-copy reveal">
+      <article><h3>O início</h3><p>A Liga Zé Prefeitura nasceu da vontade de dar um formato sério a partidas de eFootball entre amigos — com clubes fixos, edições numeradas e um lugar para guardar a memória de cada disputa.</p></article>
+      <article><h3>Primeiras edições</h3><p>Os primeiros torneios estabeleceram o formato: quatro clubes, semifinais e uma grande final. Kyoto Sanga foi o primeiro campeão da Liga, no Torneio 1.</p></article>
+      <article><h3>Rivalidades</h3><p id="rivalryText">Os confrontos diretos entre os quatro clubes vão, torneio após torneio, desenhando os duelos mais marcantes da Liga.</p></article>
+      <article><h3>Era atual</h3><p>Com seis torneios já disputados, a Copa Liga eFootball segue em expansão, com novas edições sempre a caminho.</p></article>
+    </div>
+    <div class="timeline reveal" id="timeline"></div>
+  </div>
+</section>
+
+<!-- ============ NOTÍCIAS ============ -->
+<section id="noticias">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">REDAÇÃO DA LIGA</div>
+      <h2>Notícias</h2>
+      <p>Os momentos que marcaram a Copa Liga eFootball.</p>
+    </div>
+    <div class="news-filter reveal" id="newsFilter"></div>
+    <div class="news-grid reveal" id="newsGrid"></div>
+  </div>
+</section>
+
+<!-- ============ GALERIA ============ -->
+<section id="galeria" class="section-alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">ESCUDOS</div>
+      <h2>Galeria</h2>
+      <p>Os símbolos dos clubes da Liga.</p>
+    </div>
+    <div class="gallery-grid reveal" id="galleryGrid"></div>
+  </div>
+</section>
+
+<!-- ============ QUIZ ============ -->
+<section id="quiz">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">TESTE SEU CONHECIMENTO</div>
+      <h2>Quiz da Liga</h2>
+      <p>Perguntas geradas a partir do histórico real dos torneios.</p>
+    </div>
+    <div class="quiz-card reveal" id="quizCard"></div>
+  </div>
+</section>
+
+<!-- ============ GUIA DE EDIÇÃO ============ -->
+<section id="guia">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">PARA QUEM CUIDA DO SITE</div>
+      <h2>Guia rápido de edição</h2>
+      <p>Tudo isso também está comentado dentro do código, bem no topo do bloco &lt;script&gt;. Veja também o arquivo GUIA-DE-EDICAO.md que acompanha este site.</p>
+    </div>
+    <div id="guiaList"></div>
+  </div>
+</section>
+
+<footer>
+  <p><strong>Liga Zé Prefeitura</strong> — Copa Liga eFootball · Arquivo histórico não-oficial de uma competição entre amigos.</p>
+  <a class="foot-guide-link" href="#guia">Como editar este site ↑</a>
+</footer>
+
+</div><!-- /.app -->
+
+<!-- ============ BARRA INFERIOR (navegação) ============ -->
+<nav class="tabbar" id="tabbar">
+  <button class="tab-btn" data-target="#inicio"><span class="ic">🏠</span><span>Início</span></button>
+  <button class="tab-btn" data-target="#clubes"><span class="ic">🛡️</span><span>Clubes</span></button>
+  <button class="tab-btn" data-target="#torneios"><span class="ic">🏆</span><span>Torneios</span></button>
+  <button class="tab-btn" data-target="#estatisticas"><span class="ic">📊</span><span>Stats</span></button>
+  <button class="tab-btn" id="tabMore"><span class="ic">☰</span><span>Mais</span></button>
+</nav>
+
+<!-- ============ FOLHA: DETALHE DO CLUBE ============ -->
+<div class="overlay" id="overlay">
+  <div class="sheet" id="clubDetail"></div>
+</div>
+
+<!-- ============ FOLHA: MENU "MAIS" ============ -->
+<div class="overlay" id="overlayMore">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <button class="sheet-close" id="closeMore">×</button>
+    <a class="more-link" href="#titulos" data-close-more><span class="ic">🥇</span>Títulos</a>
+    <a class="more-link" href="#ranking" data-close-more><span class="ic">📋</span>Ranking</a>
+    <a class="more-link" href="#confronto" data-close-more><span class="ic">⚔️</span>Confronto direto</a>
+    <a class="more-link" href="#simulador" data-close-more><span class="ic">🎮</span>Simulador</a>
+    <a class="more-link" href="#historia" data-close-more><span class="ic">📜</span>História</a>
+    <a class="more-link" href="#noticias" data-close-more><span class="ic">📰</span>Notícias</a>
+    <a class="more-link" href="#galeria" data-close-more><span class="ic">🖼️</span>Galeria</a>
+    <a class="more-link" href="#quiz" data-close-more><span class="ic">🧠</span>Quiz da Liga</a>
+    <a class="more-link" href="#guia" data-close-more><span class="ic">🛠️</span>Guia de edição</a>
+  </div>
+</div>
+
+<button class="fab-top" id="fabTop" aria-label="Voltar ao topo">↑</button>
+<div class="confetti-layer" id="confettiLayer"></div>
+
+<script>
+/* =====================================================================================================
+   ██████████████████████████████████████████████████████████████████████████████████████████████████
+   GUIA DE EDIÇÃO — LEIA ISTO ANTES DE MEXER EM QUALQUER COISA
+   ██████████████████████████████████████████████████████████████████████████████████████████████████
+
+   Este site inteiro é UM ÚNICO ARQUIVO (index.html). Tudo que você vê na tela é gerado a partir
+   das listas de dados logo abaixo. Você NÃO precisa saber programar para atualizar o site —
+   só precisa editar essas listas com cuidado, respeitando vírgulas e aspas.
+
+   Dica de segurança: antes de editar, faça uma cópia do arquivo (ex: index-backup.html).
+   Se alguma coisa der errado, você pode voltar para a cópia.
+
+   Onde editar cada coisa:
+   1) CONFIG            → logo do campeonato, nome, data do próximo torneio
+   2) clubes             → os 4 (ou mais) clubes da liga
+   3) torneios           → cada edição, com campeão, vice, chave e placares
+   4) noticias           → os cards da seção "Notícias"
+   5) guiaFAQ            → este próprio guia dentro do site (seção "Guia rápido de edição")
+
+   Depois da seção 5 começa o código que DESENHA o site (renderiza) — normalmente você não
+   precisa mexer ali, ele lê as listas acima e monta tudo sozinho.
+   ===================================================================================================== */
+
+/* -------------------------------------------------------------------------------------------------
+   1) CONFIG — ajustes gerais do site
+   -------------------------------------------------------------------------------------------------
+   logoUrl:
+     Coloque aqui o link direto da imagem do logo do campeonato (a imagem em si, não a página).
+     Como pegar esse link do Imgur:
+       a) Abra a imagem do logo no site imgur.com (não o álbum, a foto aberta sozinha).
+       b) Clique com o botão direito em cima da imagem → "Copiar endereço da imagem".
+       c) O link deve terminar em .png, .jpg ou .webp e começar com https://i.imgur.com/...
+       d) Cole esse link entre as aspas abaixo.
+     Se deixar em branco (""), o site usa a bolinha ⚽ no lugar do logo — nada quebra.
+
+   proximaData:
+     Data e hora prevista do PRÓXIMO torneio, no formato "AAAA-MM-DDTHH:MM:00".
+     Exemplo: 20 de novembro de 2026 às 20h → "2026-11-20T20:00:00"
+     Deixe como null (sem aspas) para esconder o contador regressivo.
+------------------------------------------------------------------------------------------------- */
+const CONFIG = {
+  logoUrl: "", // 👉 cole aqui o link direto (i.imgur.com/....png) do logo do campeonato
+  proximaData: null // 👉 exemplo: "2026-11-20T20:00:00"
+};
+
+/* -------------------------------------------------------------------------------------------------
+   2) CLUBES — os clubes fixos da liga
+   -------------------------------------------------------------------------------------------------
+   Cada clube é um bloco { ... }. Para ADICIONAR um 5º clube, copie um bloco inteiro (do { até o },
+   incluindo a vírgula depois do }), cole antes do "];" final e mude os valores.
+
+   Campos:
+     id        → um "apelido" curto sem espaços nem acentos, em minúsculas. É usado internamente
+                 para ligar o clube aos torneios (campo "campeao"/"vice"). NUNCA repita um id.
+     nome      → nome que aparece na tela.
+     dono      → nome de quem joga com esse clube.
+     escudo    → link direto da imagem do escudo (mesmo processo do logo, acima).
+     cor       → cor de destaque do clube em hexadecimal (ex: "#EF0107"). Aparece como uma linha
+                 colorida no topo do card do clube e na galeria.
+------------------------------------------------------------------------------------------------- */
+const clubes = [
+  { id:"arsenal",   nome:"Arsenal",           dono:"João",    escudo:"https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg", cor:"#EF0107",
+    descricao:"Um dos clubes fundadores da Liga Zé Prefeitura." },
+  { id:"bayer",     nome:"Bayer Leverkusen",  dono:"Marcos",  escudo:"https://upload.wikimedia.org/wikipedia/en/5/59/Bayer_04_Leverkusen_logo.svg", cor:"#E32219",
+    descricao:"Maior campeão e um dos clubes fundadores da Liga Zé Prefeitura." },
+  { id:"flamengo",  nome:"Flamengo",          dono:"Luis",    escudo:"https://upload.wikimedia.org/wikipedia/commons/9/93/Flamengo-RJ_%28BRA%29.png", cor:"#C6102F",
+    descricao:"Um dos clubes fundadores da Liga Zé Prefeitura." },
+  { id:"kyoto",     nome:"Kyoto Sanga",       dono:"Nicolas", escudo:"https://thumb.wikimedia.org/wikipedia/en/thumb/a/a2/Kyoto_Sanga_FC_logo.svg/250px-Kyoto_Sanga_FC_logo.svg.png?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail", cor:"#7B2CBF",
+    descricao:"Primeiro campeão e um dos clubes fundadores da Liga Zé Prefeitura." }
+];
+
+/* -------------------------------------------------------------------------------------------------
+   3) TORNEIOS — cada edição da Copa Liga eFootball
+   -------------------------------------------------------------------------------------------------
+   numero    → número da edição (1, 2, 3...).
+   nome      → nome mostrado ("Torneio 6").
+   campeao / vice → o "id" do clube (o mesmo id que você definiu lá em cima). Use null se ainda
+                    não foi decidido (o site mostra "A definir" automaticamente).
+   chave.semifinais → dois confrontos, cada um é [id_time_A, id_time_B]. Use null quando um dos
+                      lados ainda não é conhecido.
+   chave.semifinaisPlacar → o placar de cada semifinal, no mesmo formato [golsA, golsB].
+                            Use null se o jogo ainda não aconteceu (não mostra placar).
+   chave.final       → [id_time_A, id_time_B] da grande final.
+   chave.finalPlacar → [golsA, golsB] da final. Use null se ainda não jogou.
+
+   PARA ADICIONAR UM NOVO TORNEIO (ex: Torneio 7):
+     Copie o bloco inteiro do Torneio 6 (o último da lista), cole depois dele (não esqueça a
+     vírgula antes do novo bloco), aumente o "numero" e o "nome", e vá preenchendo os resultados
+     conforme as partidas forem acontecendo. Pode deixar tudo com null no começo e ir editando
+     aos poucos — o site sempre mostra "A definir" para o que ainda não foi preenchido.
+------------------------------------------------------------------------------------------------- */
+const torneios = [
+  { numero:1, nome:"Torneio 1", campeao:"kyoto", vice:"arsenal",
+    chave:{ semifinais:[["kyoto","flamengo"],["bayer","arsenal"]], semifinaisPlacar:[[3,0],[1,0]],
+             final:["kyoto","arsenal"], finalPlacar:[1,0] } },
+  { numero:2, nome:"Torneio 2", campeao:"bayer", vice:"kyoto",
+    chave:{ semifinais:[["arsenal","bayer"],["flamengo","kyoto"]], semifinaisPlacar:[[1,2],[1,3]],
+             final:["kyoto","bayer"], finalPlacar:[1,1] } },
+  { numero:3, nome:"Torneio 3", campeao:"bayer", vice:"flamengo",
+    chave:{ semifinais:[["kyoto","bayer"],["flamengo","arsenal"]], semifinaisPlacar:[[1,2],[1,0]],
+             final:["bayer","flamengo"], finalPlacar:[2,1] } },
+  { numero:4, nome:"Torneio 4", campeao:"flamengo", vice:"arsenal",
+    chave:{ semifinais:[["kyoto","flamengo"],["bayer","arsenal"]], semifinaisPlacar:[[0,2],[1,2]],
+             final:["flamengo","arsenal"], finalPlacar:[1,0] } },
+  { numero:5, nome:"Torneio 5", campeao:"arsenal", vice:"kyoto",
+    chave:{ semifinais:[["arsenal","bayer"],["flamengo","kyoto"]], semifinaisPlacar:[[2,1],[1,1]],
+             final:["kyoto","arsenal"], finalPlacar:[0,3] } },
+  { numero:6, nome:"Torneio 6", campeao:null, vice:null,
+    chave:{ semifinais:[[null,null],[null,null]], semifinaisPlacar:[null,null],
+             final:[null,null], finalPlacar:null } }
+];
+
+/* -------------------------------------------------------------------------------------------------
+   4) NOTÍCIAS — os cards da seção "Notícias"
+   -------------------------------------------------------------------------------------------------
+   Para adicionar uma notícia nova, copie um bloco inteiro { ... }, cole no topo da lista (as mais
+   novas ficam no início) e edite os campos:
+     titulo, descricao → o texto do card.
+     data              → um texto livre ("Torneio 6", "12/11", "Hoje"...).
+     categoria         → aparece como etiqueta colorida E vira um filtro clicável automaticamente.
+     icone             → um emoji que representa a notícia (🔥 📰 🗂️ ⚽ 🏆 etc.).
+------------------------------------------------------------------------------------------------- */
+const noticias = [
+  { titulo:"Copa Liga eFootball chega à sua sexta edição", data:"Torneio 6", categoria:"Liga", icone:"📰",
+    descricao:"Com cinco torneios já no histórico, a competição entre os clubes segue firme rumo à sua próxima grande final." },
+  { titulo:"Quatro clubes, uma só rivalidade", data:"Histórico", categoria:"Bastidores", icone:"🔥",
+    descricao:"Arsenal, Bayer Leverkusen, Flamengo e Kyoto Sanga seguem como os disputantes fixos da Liga Zé Prefeitura." },
+  { titulo:"Aguardando os resultados oficiais", data:"Atualização", categoria:"Arquivo", icone:"🗂️",
+    descricao:"Os campeões e vices de cada torneio são publicados aqui assim que cadastrados no sistema." }
+];
+
+/* -------------------------------------------------------------------------------------------------
+   5) GUIA (perguntas e respostas mostradas na seção "Guia rápido de edição" do próprio site)
+   -------------------------------------------------------------------------------------------------
+   Pode editar, adicionar ou remover perguntas livremente — é só uma lista de texto.
+------------------------------------------------------------------------------------------------- */
+const guiaFAQ = [
+  { p:"Como troco o logo do campeonato?", r:"Edite <code>CONFIG.logoUrl</code> lá no topo do script e cole o link direto da imagem (terminando em .png/.jpg/.webp). Deixe em branco pra usar a bolinha ⚽ padrão." },
+  { p:"Como atualizo o resultado de um torneio?", r:"Vá até a lista <code>torneios</code>, encontre o torneio pelo número e preencha <code>campeao</code>, <code>vice</code> e os placares (<code>finalPlacar</code>, <code>semifinaisPlacar</code>) com o id do clube e o placar, ex: <code>[3,1]</code>." },
+  { p:"Como adiciono um novo torneio?", r:"Copie o último bloco de <code>torneios</code>, cole logo depois dele (com vírgula antes), aumente o número e vá preenchendo os resultados aos poucos." },
+  { p:"Como adiciono um 5º clube?", r:"Copie um bloco inteiro da lista <code>clubes</code>, cole antes do colchete final <code>]</code>, e troque id, nome, dono, escudo e cor. Depois é só usar esse mesmo id nos torneios." },
+  { p:"Como marco a contagem regressiva do próximo torneio?", r:"Preencha <code>CONFIG.proximaData</code> com a data e hora no formato <code>\"AAAA-MM-DDTHH:MM:00\"</code>. Para esconder o contador, deixe como <code>null</code>." },
+  { p:"Como adiciono uma notícia?", r:"Copie um bloco da lista <code>noticias</code> e cole no topo (as mais recentes ficam primeiro). A categoria vira um filtro automaticamente." },
+  { p:"Posso favoritar um clube?", r:"Sim — toque na estrela ⭐ no card do clube. A escolha fica salva no seu navegador (não é enviada pra ninguém) e aparece destacada no topo do site." },
+  { p:"Onde publico o site depois de editar?", r:"Você pode subir este arquivo index.html em qualquer serviço gratuito de hospedagem de site estático, como GitHub Pages, Netlify ou Vercel — é só arrastar o arquivo." },
+  { p:"O que são as 'conquistas' nos cards dos clubes?", r:"São etiquetas (tricampeão, maior campeão, sequência de títulos, etc.) calculadas automaticamente a partir da lista <code>torneios</code>. Você não precisa preencher nada — elas aparecem sozinhas conforme os resultados forem cadastrados." },
+  { p:"Como funciona o 'Seu palpite' na seção de Torneios?", r:"Assim que existir um torneio com <code>campeao: null</code>, o site mostra um seletor para o visitante escolher quem acha que vai vencer. A escolha fica salva só no navegador de quem votou (não é enviada pra ninguém) e, quando você preencher o campeão nesse torneio, o site mostra se a pessoa acertou ou não." },
+  { p:"O simulador de confronto e o quiz também usam a lista de clubes/torneios?", r:"Sim — os dois são gerados automaticamente a partir de <code>clubes</code> e <code>torneios</code>. Adicionar um torneio novo com campeão já cria uma pergunta nova no quiz sozinho." }
+];
+
+/* =====================================================================================================
+   A PARTIR DAQUI: CÓDIGO DE RENDERIZAÇÃO — normalmente você não precisa editar nada daqui pra baixo.
+   ===================================================================================================== */
+
+const FAV_KEY = "ligaZP_favorito";
+const porId = id => clubes.find(c => c.id === id);
+const escudoOf = id => { const c = porId(id); return c ? c.escudo : ""; };
+const nomeOf = id => { const c = porId(id); return c ? c.nome : "A definir"; };
+const corOf = id => { const c = porId(id); return c ? c.cor : "#1C2846"; };
+
+if (CONFIG.logoUrl) document.getElementById('logoImg').src = CONFIG.logoUrl;
+
+function getFavorito(){ try { return localStorage.getItem(FAV_KEY); } catch(e){ return null; } }
+function setFavorito(id){ try { localStorage.setItem(FAV_KEY, id); } catch(e){} renderAll(); }
+
+function calcularEstatisticas(){
+  const stats = {};
+  clubes.forEach(c => stats[c.id] = { titulos:0, vices:0, finais:0, participacoes:0, linhaDoTempo:[] });
+  torneios.forEach(t => {
+    clubes.forEach(c => stats[c.id].participacoes++);
+    if (t.campeao) stats[t.campeao].titulos++;
+    if (t.vice) stats[t.vice].vices++;
+    if (t.campeao) stats[t.campeao].finais++;
+    if (t.vice) stats[t.vice].finais++;
+    clubes.forEach(c => {
+      let resultado = "Semifinalista";
+      if (t.campeao === c.id) resultado = "Campeão";
+      else if (t.vice === c.id) resultado = "Vice-campeão";
+      else if (!t.campeao && !t.vice) resultado = "A definir";
+      stats[c.id].linhaDoTempo.push({ torneio: t.nome, resultado });
+    });
+  });
+  return stats;
+}
+const stats = calcularEstatisticas();
+
+function ranking(){
+  return [...clubes].sort((a,b)=>{
+    const sa = stats[a.id], sb = stats[b.id];
+    return (sb.titulos - sa.titulos) || (sb.vices - sa.vices) || (sb.finais - sa.finais) || (sb.participacoes - sa.participacoes);
+  });
+}
+function maiorCampeao(){ return ranking()[0]; }
+function ultimoTorneioComCampeao(){ return [...torneios].reverse().find(t => t.campeao) || null; }
+function ultimoCampeao(){ const t = ultimoTorneioComCampeao(); return t ? porId(t.campeao) : null; }
+function campeoesDiferentes(){ return new Set(torneios.filter(t=>t.campeao).map(t=>t.campeao)).size; }
+function calcularMaiorSequencia(){
+  const decididos = torneios.filter(t=>t.campeao);
+  let atualId=null, atualCount=0, melhorId=null, melhorCount=0;
+  decididos.forEach(t=>{
+    if(t.campeao===atualId){ atualCount++; } else { atualId=t.campeao; atualCount=1; }
+    if(atualCount>melhorCount){ melhorCount=atualCount; melhorId=atualId; }
+  });
+  return melhorId ? { clube: porId(melhorId), count: melhorCount } : null;
+}
+function calcularRivalidades(){
+  const mapa = {};
+  torneios.forEach(t=>{
+    if(!t.campeao || !t.vice) return;
+    const par = [t.campeao, t.vice].sort();
+    const key = par.join('-');
+    if(!mapa[key]) mapa[key] = { a: par[0], b: par[1], total:0, titulosA:0, titulosB:0 };
+    mapa[key].total++;
+    if(t.campeao === mapa[key].a) mapa[key].titulosA++; else mapa[key].titulosB++;
+  });
+  return Object.values(mapa).sort((x,y)=>y.total-x.total);
+}
+
+const campeaoAtualId = ultimoCampeao() ? ultimoCampeao().id : null;
+
+/* ---------- conquistas (badges) de cada clube, calculadas a partir dos dados ---------- */
+function calcularConquistas(id){
+  const s = stats[id];
+  const badges = [];
+  if(s.titulos >= 3) badges.push({icon:'👑', label:'Tricampeão ou mais', gold:true});
+  else if(s.titulos === 2) badges.push({icon:'🏆', label:'Bicampeão', gold:true});
+  else if(s.titulos === 1) badges.push({icon:'🏆', label:'Campeão da Liga', gold:true});
+  const seq = calcularMaiorSequencia();
+  if(seq && seq.clube.id === id && seq.count >= 2) badges.push({icon:'🔥', label:`${seq.count} títulos seguidos`, gold:true});
+  if(maiorCampeao().id === id) badges.push({icon:'⭐', label:'Maior campeão da Liga', gold:true});
+  if(s.finais > 0 && s.titulos === s.finais) badges.push({icon:'💯', label:'100% de aproveitamento em finais'});
+  if(s.vices >= 2 && s.titulos === 0) badges.push({icon:'🥈', label:'Sempre por perto, nunca lá'});
+  const primeiroTorneio = torneios[0];
+  if(primeiroTorneio && primeiroTorneio.campeao === id) badges.push({icon:'🥇', label:'Primeiro campeão da história'});
+  if(s.finais === 0) badges.push({icon:'🌱', label:'Ainda em busca da 1ª final'});
+  return badges;
+}
+function badgesHTML(id){
+  const badges = calcularConquistas(id);
+  if(badges.length===0) return '';
+  return `<div class="badge-row">${badges.map(b=>`<span class="badge-chip${b.gold?' is-gold':''}">${b.icon} ${b.label}</span>`).join('')}</div>`;
+}
+
+/* ---------- anel de escudos no hero ---------- */
+function renderCrestRing(){
+  const ring = document.getElementById('crestRing');
+  ring.querySelectorAll('.crest-node').forEach(n=>n.remove());
+  const favId = getFavorito();
+  const positions = [ {top:'11%', left:'50%'}, {top:'50%', left:'89%'}, {top:'89%', left:'50%'}, {top:'50%', left:'11%'} ];
+  clubes.slice(0,4).forEach((c,i)=>{
+    const node = document.createElement('div');
+    node.className='crest-node' + (c.id===campeaoAtualId ? ' is-champion' : '') + (c.id===favId ? ' is-favorito' : '');
+    node.style.top = positions[i].top; node.style.left = positions[i].left;
+    node.innerHTML = `<div class="disc"><img src="${c.escudo}" alt="${c.nome}" onerror="this.style.opacity=0"></div><div class="lbl">${c.nome.toUpperCase()}</div>${c.id===campeaoAtualId ? '<div class="champion-tag">🏆</div>' : ''}`;
+    node.addEventListener('click', ()=>{ if(c.id===campeaoAtualId) fireConfetti(18); openClub(c.id); });
+    ring.appendChild(node);
+  });
+}
+
+/* ---------- pílula de favorito no topo ---------- */
+function renderFavPill(){
+  const pill = document.getElementById('favPill');
+  const favId = getFavorito();
+  if(!favId){ pill.style.display='none'; return; }
+  const c = porId(favId);
+  if(!c){ pill.style.display='none'; return; }
+  pill.style.display='flex';
+  pill.innerHTML = `<img src="${c.escudo}" onerror="this.style.display='none'">⭐ ${c.nome}`;
+}
+
+/* ---------- contagem regressiva ---------- */
+let countdownTimer = null;
+function renderCountdown(){
+  const box = document.getElementById('countdownBox');
+  if(!CONFIG.proximaData){ box.style.display='none'; return; }
+  const alvo = new Date(CONFIG.proximaData).getTime();
+  if(isNaN(alvo)){ box.style.display='none'; return; }
+  box.style.display='block';
+  function tick(){
+    const diff = alvo - Date.now();
+    const grid = document.getElementById('countdownGrid');
+    if(diff <= 0){ grid.innerHTML = `<div class="countdown-cell"><b>🏆</b><span>Em andamento</span></div>`; clearInterval(countdownTimer); return; }
+    const d = Math.floor(diff/86400000), h = Math.floor(diff/3600000)%24, m = Math.floor(diff/60000)%60, s = Math.floor(diff/1000)%60;
+    grid.innerHTML = `
+      <div class="countdown-cell"><b>${d}</b><span>dias</span></div>
+      <div class="countdown-cell"><b>${String(h).padStart(2,'0')}</b><span>h</span></div>
+      <div class="countdown-cell"><b>${String(m).padStart(2,'0')}</b><span>min</span></div>
+      <div class="countdown-cell"><b>${String(s).padStart(2,'0')}</b><span>s</span></div>`;
+  }
+  tick();
+  clearInterval(countdownTimer);
+  countdownTimer = setInterval(tick, 1000);
+}
+
+/* ---------- resumo / destaques ---------- */
+function renderHighlights(){
+  const uc = ultimoCampeao(), mc = maiorCampeao(), seq = calcularMaiorSequencia();
+  const grid = document.getElementById('highlightGrid');
+  grid.innerHTML = `
+    <div class="stat-box"><b>${uc ? uc.nome : 'A definir'}</b><span>Último campeão</span></div>
+    <div class="stat-box"><b>${mc.nome}</b><span>Maior campeão (${stats[mc.id].titulos} títulos)</span></div>
+    <div class="stat-box"><b>${campeoesDiferentes()}</b><span>Campeões diferentes</span></div>
+    <div class="stat-box"><b>${torneios.length}</b><span>Torneios disputados</span></div>
+    ${seq ? `<div class="stat-box" style="grid-column:span 2"><b>${seq.clube.nome}</b><span>Maior sequência (${seq.count} títulos seguidos)</span></div>` : ''}
+  `;
+}
+
+/* ---------- clubes ---------- */
+function renderClubGrid(){
+  const grid = document.getElementById('clubGrid');
+  grid.innerHTML = '';
+  const favId = getFavorito();
+  const rankedIds = ranking().map(c=>c.id);
+  clubes.forEach(c=>{
+    const s = stats[c.id];
+    const pos = rankedIds.indexOf(c.id)+1;
+    const card = document.createElement('div');
+    card.className='club-card' + (c.id===campeaoAtualId ? ' is-champion' : '');
+    card.style.setProperty('--card-cor', c.cor || '#1E3B72');
+    card.innerHTML = `
+      ${c.id===campeaoAtualId ? '<div class="champion-badge">CAMPEÃO ATUAL</div>' : ''}
+      <div class="club-top">
+        <div class="club-crest"><div class="club-rankbadge">${pos}</div><img src="${c.escudo}" alt="${c.nome}" onerror="this.style.opacity=0"></div>
+        <div class="club-info"><h3>${c.nome}</h3><div class="club-owner">Dono: ${c.dono}</div></div>
+        <button class="star-btn ${c.id===favId?'active':''}" data-fav="${c.id}" aria-label="Favoritar ${c.nome}">${c.id===favId?'★':'☆'}</button>
+      </div>
+      <div class="club-metrics">
+        <div><b>${s.titulos}</b><span>Títulos</span></div>
+        <div><b>${s.vices}</b><span>Vices</span></div>
+        <div><b>${s.participacoes}</b><span>Jogos</span></div>
+      </div>
+      ${badgesHTML(c.id)}`;
+    card.querySelector('.club-top').addEventListener('click', (e)=>{ if(e.target.closest('.star-btn')) return; openClub(c.id); });
+    card.querySelector('.star-btn').addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const cur = getFavorito();
+      setFavorito(cur === c.id ? null : c.id);
+      if(navigator.vibrate) navigator.vibrate(12);
+    });
+    grid.appendChild(card);
+  });
+}
+
+function openClub(id){
+  const c = porId(id), s = stats[id];
+  const detail = document.getElementById('clubDetail');
+  detail.innerHTML = `
+    <div class="sheet-handle"></div>
+    <button class="sheet-close" id="closeClub">×</button>
+    <div class="club-detail-head">
+      <div class="club-crest" style="width:70px;height:70px;border-radius:16px;background:var(--void);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;padding:8px;"><img src="${c.escudo}" alt="${c.nome}" onerror="this.style.opacity=0"></div>
+      <div><h2>${c.nome}</h2><div class="club-owner">Dono: ${c.dono}</div></div>
+      <button class="share-btn" id="shareClub" aria-label="Compartilhar">↗</button>
+    </div>
+    <p style="color:var(--grey);font-size:13px;margin-bottom:20px">${c.descricao||''}</p>
+    <div class="club-detail-stats">
+      <div class="mini-stat"><b>${s.titulos}</b><span>Títulos</span></div>
+      <div class="mini-stat"><b>${s.vices}</b><span>Vices</span></div>
+      <div class="mini-stat"><b>${s.finais}</b><span>Finais</span></div>
+      <div class="mini-stat"><b>${s.participacoes}</b><span>Jogos</span></div>
+    </div>
+    ${badgesHTML(id)}
+    <ul class="club-timeline" style="margin-top:20px">
+      ${s.linhaDoTempo.map(x=>`<li class="${x.resultado==='Campeão' ? 'is-title' : ''}"><b>${x.torneio}</b><span>${x.resultado}</span></li>`).join('')}
+    </ul>
+  `;
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('closeClub').addEventListener('click', closeClub);
+  document.getElementById('shareClub').addEventListener('click', ()=>{
+    const texto = `${c.nome} na Liga Zé Prefeitura: ${s.titulos} título(s), ${s.vices} vice(s) em ${s.participacoes} torneio(s)!`;
+    if(navigator.share){ navigator.share({ title: c.nome, text: texto }).catch(()=>{}); }
+    else { navigator.clipboard && navigator.clipboard.writeText(texto); alert('Texto copiado: ' + texto); }
+  });
+}
+function closeClub(){ document.getElementById('overlay').classList.remove('open'); }
+document.getElementById('overlay').addEventListener('click', e=>{ if(e.target.id==='overlay') closeClub(); });
+
+/* ---------- quadro de campeões ---------- */
+function renderChampList(){
+  const list = document.getElementById('champList');
+  list.innerHTML = '';
+  const last = torneios[torneios.length-1];
+  torneios.forEach(t=>{
+    const row = document.createElement('div');
+    row.className = 'champ-row' + (t===last ? ' is-latest' : '');
+    row.innerHTML = `
+      <div class="champ-num">${String(t.numero).padStart(2,'0')}</div>
+      <div class="champ-main">
+        <div class="champ-title">${t.nome}${t===last ? '<span class="latest-pill">MAIS RECENTE</span>' : ''}</div>
+        <div class="champ-teams">
+          <span class="tag-cup">${t.campeao ? `<img class="champ-crest-mini" src="${escudoOf(t.campeao)}" onerror="this.style.display='none'">🏆 ${nomeOf(t.campeao)}` : '🏆 A definir'}</span>
+          <span class="tag-vice">${t.vice ? `<img class="champ-crest-mini" src="${escudoOf(t.vice)}" onerror="this.style.display='none'">🥈 ${nomeOf(t.vice)}` : '🥈 A definir'}</span>
+        </div>
+      </div>`;
+    list.appendChild(row);
+  });
+}
+
+/* ---------- chave dos torneios ---------- */
+function renderTournaments(){
+  const sel = document.getElementById('tSelect');
+  sel.innerHTML = '';
+  torneios.forEach((t,i)=>{
+    const btn = document.createElement('button');
+    btn.className = 't-btn' + (i===torneios.length-1 ? ' active':'');
+    btn.textContent = t.nome;
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.t-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      renderBracket(t);
+      if(navigator.vibrate) navigator.vibrate(8);
+    });
+    sel.appendChild(btn);
+  });
+  renderBracket(torneios[torneios.length-1]);
+}
+function slotHTML(id, isWinner, score){
+  if(!id) return `<div class="b-slot"><span class="tbd">A definir</span></div>`;
+  const scoreHTML = (score!==undefined && score!==null) ? `<span class="score">${score}</span>` : '';
+  return `<div class="b-slot ${isWinner?'winner':''}"><img src="${escudoOf(id)}" onerror="this.style.display='none'"><b>${nomeOf(id)}</b>${scoreHTML}</div>`;
+}
+function renderBracket(t){
+  const el = document.getElementById('bracketView');
+  const [sf1, sf2] = t.chave.semifinais;
+  const [finA, finB] = t.chave.final;
+  const psf = t.chave.semifinaisPlacar || [null,null];
+  const pf = t.chave.finalPlacar || [null,null];
+  el.innerHTML = `
+    <div>
+      <div class="col-label">Semifinal 1</div>
+      <div class="b-match">${slotHTML(sf1[0], finA===sf1[0]||finB===sf1[0], psf[0]?psf[0][0]:null)}${slotHTML(sf1[1], finA===sf1[1]||finB===sf1[1], psf[0]?psf[0][1]:null)}</div>
+      <div class="col-label">Semifinal 2</div>
+      <div class="b-match">${slotHTML(sf2[0], finA===sf2[0]||finB===sf2[0], psf[1]?psf[1][0]:null)}${slotHTML(sf2[1], finA===sf2[1]||finB===sf2[1], psf[1]?psf[1][1]:null)}</div>
+      <div class="col-label">Final</div>
+      <div class="b-match">${slotHTML(finA, t.campeao===finA, pf?pf[0]:null)}${slotHTML(finB, t.campeao===finB, pf?pf[1]:null)}</div>
+    </div>
+    <div class="trophy-slot">
+      <div class="cup">🏆</div>
+      <b>${t.campeao ? nomeOf(t.campeao) : 'A definir'}</b>
+      <span style="font-size:11px;color:var(--grey-dim)">CAMPEÃO — ${t.nome}</span>
+    </div>
+  `;
+}
+
+/* ---------- feed de últimos resultados (finais) ---------- */
+function renderResultFeed(){
+  const feed = document.getElementById('resultFeed');
+  const decididos = [...torneios].filter(t=>t.campeao && t.chave.finalPlacar).reverse().slice(0,5);
+  if(decididos.length===0){ feed.innerHTML=''; return; }
+  feed.innerHTML = `<div class="col-label" style="margin-bottom:2px">Últimas finais</div>` + decididos.map(t=>{
+    const [a,b] = t.chave.final, [pa,pb] = t.chave.finalPlacar;
+    return `<div class="result-row"><span style="color:var(--grey-dim);font-family:var(--font-head);width:26px">${t.nome.replace('Torneio ','T')}</span>
+      <img src="${escudoOf(a)}" onerror="this.style.display='none'"><b>${nomeOf(a)}</b>
+      <span class="rf-score">${pa} — ${pb}</span>
+      <b>${nomeOf(b)}</b><img src="${escudoOf(b)}" onerror="this.style.display='none'"></div>`;
+  }).join('');
+}
+
+/* ---------- ranking ---------- */
+function renderRanking(){
+  const list = document.getElementById('rankList');
+  list.innerHTML = '';
+  ranking().forEach((c,i)=>{
+    const s = stats[c.id];
+    const row = document.createElement('div');
+    row.className = 'rank-row';
+    row.innerHTML = `
+      <div class="rank-pos">${i+1}</div>
+      <div class="rank-club"><img src="${c.escudo}" onerror="this.style.display='none'">${c.nome}</div>
+      <div class="rank-stats">
+        <div><b>${s.titulos}</b><span>Tít</span></div>
+        <div><b>${s.vices}</b><span>Vic</span></div>
+        <div><b>${s.finais}</b><span>Fin</span></div>
+      </div>`;
+    row.addEventListener('click', ()=>openClub(c.id));
+    list.appendChild(row);
+  });
+}
+
+/* ---------- estatísticas + gráficos ---------- */
+function renderStatGrid2(){
+  const totalTitulos = torneios.filter(t=>t.campeao).length;
+  document.getElementById('statGrid2').innerHTML = `
+    <div class="stat-box"><b>${torneios.length}</b><span>Edições realizadas</span></div>
+    <div class="stat-box"><b>${totalTitulos}</b><span>Títulos distribuídos</span></div>
+    <div class="stat-box"><b>${clubes.length}</b><span>Clubes na Liga</span></div>
+    <div class="stat-box"><b>${campeoesDiferentes()}</b><span>Campeões diferentes</span></div>`;
+}
+function drawBarChart(canvas, labels, values, colorMain){
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.clientWidth || 300, cssH = 200;
+  canvas.width = cssW*dpr; canvas.height = cssH*dpr; ctx.scale(dpr,dpr); ctx.clearRect(0,0,cssW,cssH);
+  const max = Math.max(1, ...values);
+  const padL = 8, padB = 24, padT = 14, gap = 14;
+  const chartW = cssW - padL*2, chartH = cssH - padB - padT;
+  const barW = (chartW - gap*(values.length-1)) / values.length;
+  values.forEach((v,i)=>{
+    const h = (v/max) * chartH;
+    const x = padL + i*(barW+gap);
+    const y = padT + (chartH - h);
+    const grad = ctx.createLinearGradient(0,y,0,y+h);
+    grad.addColorStop(0, colorMain); grad.addColorStop(1, 'rgba(30,155,255,.15)');
+    ctx.fillStyle = grad; ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(x,y,barW,h,[6,6,0,0]) : ctx.rect(x,y,barW,h);
+    ctx.fill();
+    ctx.fillStyle = '#F5F8FF'; ctx.font='700 12px Rajdhani, sans-serif'; ctx.textAlign='center';
+    ctx.fillText(v, x+barW/2, y-6 < padT ? padT+12 : y-6);
+    ctx.fillStyle = '#93A3CC'; ctx.font='600 9.5px Manrope, sans-serif';
+    ctx.fillText(labels[i], x+barW/2, cssH-8);
+  });
+}
+function drawLineChart(canvas, labels, series){
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.clientWidth || 300, cssH = 200;
+  canvas.width = cssW*dpr; canvas.height = cssH*dpr; ctx.scale(dpr,dpr); ctx.clearRect(0,0,cssW,cssH);
+  const padL=22,padR=8,padT=14,padB=24;
+  const chartW = cssW-padL-padR, chartH = cssH-padT-padB;
+  const maxY = 3, minY = 1;
+  const stepX = chartW/(labels.length-1 || 1);
+  ctx.strokeStyle='rgba(255,255,255,.06)';
+  for(let r=1;r<=3;r++){ const y = padT + ((r-minY)/(maxY-minY))*chartH; ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(cssW-padR,y); ctx.stroke(); }
+  ctx.fillStyle='#5B6584'; ctx.font='9px Manrope, sans-serif'; ctx.textAlign='right';
+  ['1º','2º','Semi'].forEach((lbl,i)=>{ const y = padT + (i/(maxY-minY))*chartH; ctx.fillText(lbl, padL-4, y+3); });
+  series.forEach(s=>{
+    ctx.beginPath();
+    s.values.forEach((v,i)=>{ const x = padL + i*stepX; const y = padT + ((v-minY)/(maxY-minY))*chartH; if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); });
+    ctx.strokeStyle = s.color; ctx.lineWidth=2; ctx.stroke();
+    s.values.forEach((v,i)=>{ const x = padL + i*stepX; const y = padT + ((v-minY)/(maxY-minY))*chartH; ctx.beginPath(); ctx.arc(x,y,3,0,7); ctx.fillStyle=s.color; ctx.fill(); });
+  });
+  ctx.fillStyle='#93A3CC'; ctx.font='9px Manrope, sans-serif'; ctx.textAlign='center';
+  labels.forEach((lbl,i)=>{ const x = padL + i*stepX; ctx.fillText(lbl.replace('Torneio ','T'), x, cssH-6); });
+}
+function renderCharts(){
+  const labels = clubes.map(c=>c.nome.split(' ')[0]);
+  drawBarChart(document.getElementById('chartTitulos'), labels, clubes.map(c=>stats[c.id].titulos), '#1E9BFF');
+  drawBarChart(document.getElementById('chartVices'), labels, clubes.map(c=>stats[c.id].vices), '#0052FF');
+  drawBarChart(document.getElementById('chartPart'), labels, clubes.map(c=>stats[c.id].participacoes), '#93A3CC');
+  const evolColors = clubes.map(c=>c.cor);
+  const series = clubes.map((c,i)=>({ name:c.nome, color:evolColors[i%evolColors.length], values: torneios.map(t => t.campeao===c.id?1 : t.vice===c.id?2 : 3) }));
+  drawLineChart(document.getElementById('chartEvol'), torneios.map(t=>t.nome), series);
+}
+
+/* ---------- confronto direto + comparação ---------- */
+function renderRivalries(){
+  const rivs = calcularRivalidades();
+  const callout = document.getElementById('rivalryCallout');
+  const list = document.getElementById('rivalryList');
+  const historyText = document.getElementById('rivalryText');
+  if(rivs.length===0){
+    callout.innerHTML = `<span class="icon">🤝</span><div><b>Nenhuma rivalidade registrada ainda</b><span>As finais aparecerão aqui assim que forem cadastradas.</span></div>`;
+    list.innerHTML=''; return;
+  }
+  const top = rivs[0];
+  callout.innerHTML = `<span class="icon">🔥</span><div><b>Maior rivalidade: ${nomeOf(top.a)} × ${nomeOf(top.b)}</b><span>${top.total} final${top.total>1?'is':''} — ${nomeOf(top.a)} ${top.titulosA} × ${top.titulosB} ${nomeOf(top.b)}</span></div>`;
+  list.innerHTML = `<h4>Todas as finais registradas</h4>` + rivs.map(r=>`<div class="rivalry-row"><b>${nomeOf(r.a)} × ${nomeOf(r.b)}</b><span class="count">${r.total} final${r.total>1?'is':''} · ${r.titulosA}-${r.titulosB}</span></div>`).join('');
+  if(historyText) historyText.textContent = `Os confrontos diretos entre os clubes já desenharam ${rivs.length} rivalidade${rivs.length>1?'s':''} em finais. A mais intensa até aqui é ${nomeOf(top.a)} × ${nomeOf(top.b)}, com ${top.total} decisão${top.total>1?'ões':''} de título entre eles.`;
+}
+function setupHTH(){
+  const a = document.getElementById('hthA'), b = document.getElementById('hthB');
+  a.innerHTML=''; b.innerHTML='';
+  clubes.forEach(c=>{ a.innerHTML += `<option value="${c.id}">${c.nome}</option>`; b.innerHTML += `<option value="${c.id}">${c.nome}</option>`; });
+  b.selectedIndex = 1;
+  function update(){
+    const idA = a.value, idB = b.value;
+    const res = document.getElementById('hthResult');
+    const cmp = document.getElementById('comparePanel');
+    if(idA===idB){ res.innerHTML = `<p style="color:var(--grey-dim);font-size:13px">Escolha dois clubes diferentes.</p>`; cmp.innerHTML=''; return; }
+    const finais = torneios.filter(t => (t.campeao===idA && t.vice===idB) || (t.campeao===idB && t.vice===idA));
+    if(finais.length===0){
+      res.innerHTML = `<p style="color:var(--grey-dim);font-size:13px">Nenhum confronto direto em final registrado ainda entre ${nomeOf(idA)} e ${nomeOf(idB)}.</p>`;
+    } else {
+      const titA = finais.filter(t=>t.campeao===idA).length;
+      const titB = finais.filter(t=>t.campeao===idB).length;
+      res.innerHTML = `<div class="side"><b>${titA}</b><span>Títulos — ${nomeOf(idA)}</span></div><div class="side"><b>${finais.length}</b><span>Finais</span></div><div class="side"><b>${titB}</b><span>Títulos — ${nomeOf(idB)}</span></div>`;
+    }
+    const sA = stats[idA], sB = stats[idB];
+    const metrics = [ ['Títulos', sA.titulos, sB.titulos], ['Vices', sA.vices, sB.vices], ['Finais', sA.finais, sB.finais], ['Participações', sA.participacoes, sB.participacoes] ];
+    cmp.innerHTML = `<h4>${nomeOf(idA)} vs ${nomeOf(idB)}</h4>` + metrics.map(([label,va,vb])=>{
+      const max = Math.max(va,vb,1);
+      return `<div class="compare-row"><span class="compare-metric-name">${label}</span>
+        <div class="compare-labels"><span>${va}</span><span>${vb}</span></div>
+        <div class="compare-track"><div class="fillA" style="width:${(va/max)*50}%"></div><div class="fillB" style="width:${(vb/max)*50}%;margin-left:auto"></div></div></div>`;
+    }).join('');
+  }
+  a.addEventListener('change', update); b.addEventListener('change', update);
+  update();
+}
+
+/* ---------- história ---------- */
+function renderTimeline(){
+  const tl = document.getElementById('timeline'); tl.innerHTML='';
+  torneios.forEach(t=>{
+    const item = document.createElement('div');
+    item.className='tl-item' + (t.campeao ? ' is-title' : '');
+    const desc = t.campeao ? `Campeão: ${nomeOf(t.campeao)} · Vice: ${nomeOf(t.vice)}` : 'Resultados a definir';
+    item.innerHTML = `<h4>${t.nome}</h4><p>${desc}</p>`;
+    tl.appendChild(item);
+  });
+}
+
+/* ---------- notícias com filtro ---------- */
+let filtroAtual = 'Todas';
+function renderNewsFilter(){
+  const cats = ['Todas', ...new Set(noticias.map(n=>n.categoria))];
+  const el = document.getElementById('newsFilter'); el.innerHTML='';
+  cats.forEach(cat=>{
+    const btn = document.createElement('button');
+    btn.textContent = cat; btn.className = cat===filtroAtual ? 'active' : '';
+    btn.addEventListener('click', ()=>{ filtroAtual = cat; renderNewsFilter(); renderNews(); });
+    el.appendChild(btn);
+  });
+}
+function renderNews(){
+  const grid = document.getElementById('newsGrid'); grid.innerHTML='';
+  const lista = filtroAtual==='Todas' ? noticias : noticias.filter(n=>n.categoria===filtroAtual);
+  lista.forEach(n=>{
+    const card = document.createElement('div'); card.className='news-card';
+    card.innerHTML = `<div class="news-thumb">${n.icone}</div><div class="news-body"><div class="news-cat">${n.categoria}</div><h3>${n.titulo}</h3><p>${n.descricao}</p><span class="news-date">${n.data}</span></div>`;
+    grid.appendChild(card);
+  });
+}
+
+/* ---------- galeria ---------- */
+function renderGallery(){
+  const grid = document.getElementById('galleryGrid'); grid.innerHTML='';
+  clubes.forEach(c=>{
+    const item = document.createElement('div'); item.className='gallery-item';
+    item.style.setProperty('--card-cor', c.cor || '#1E3B72');
+    item.innerHTML = `<img src="${c.escudo}" alt="${c.nome}" onerror="this.style.opacity=0"><span class="gallery-tag">${c.nome}</span>`;
+    grid.appendChild(item);
+  });
+}
+
+/* ---------- guia (perguntas e respostas) ---------- */
+function renderGuia(){
+  const el = document.getElementById('guiaList'); el.innerHTML='';
+  guiaFAQ.forEach(item=>{
+    const box = document.createElement('div'); box.className='guia-item';
+    box.innerHTML = `<button class="guia-q">${item.p}<span class="plus">+</span></button><div class="guia-a"><div class="guia-a-inner">${item.r}</div></div>`;
+    box.querySelector('.guia-q').addEventListener('click', ()=> box.classList.toggle('open'));
+    el.appendChild(box);
+  });
+}
+
+/* ---------- tag hero ---------- */
+function renderHeroTag(){
+  const el = document.getElementById('heroTag');
+  const t = ultimoTorneioComCampeao();
+  const pendente = torneios[torneios.length-1];
+  if(!t) return;
+  let texto = `${nomeOf(t.campeao)} é o atual detentor da taça, conquistada no ${t.nome}.`;
+  if(!pendente.campeao && pendente !== t) texto += ` O ${pendente.nome} ainda aguarda seu campeão.`;
+  el.textContent = texto;
+}
+
+/* ---------- confete (efeito de celebração) ---------- */
+function fireConfetti(count){
+  const layer = document.getElementById('confettiLayer');
+  const emojis = ['🎉','🏆','⭐','🔵','🟡'];
+  for(let i=0;i<(count||24);i++){
+    const piece = document.createElement('span');
+    piece.className = 'confetti-piece';
+    piece.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    piece.style.left = Math.random()*100 + '%';
+    piece.style.fontSize = (12 + Math.random()*14) + 'px';
+    const dur = 1.8 + Math.random()*1.4;
+    piece.style.animationDuration = dur + 's';
+    piece.style.animationDelay = (Math.random()*.4) + 's';
+    layer.appendChild(piece);
+    setTimeout(()=>piece.remove(), (dur+0.5)*1000);
+  }
+}
+
+/* ---------- palpite: torcedor escolhe quem acha que vai ser campeão do próximo torneio ---------- */
+const PREDICT_KEY = "ligaZP_palpite_";
+function torneioPendente(){ return torneios.find(t => !t.campeao) || null; }
+function renderPredictCard(){
+  const box = document.getElementById('predictCard');
+  const pendente = torneioPendente();
+  if(!pendente){ box.style.display='none'; return; }
+  box.style.display='block';
+  const key = PREDICT_KEY + pendente.numero;
+  let palpite = null;
+  try { palpite = localStorage.getItem(key); } catch(e){}
+  if(!palpite){
+    box.innerHTML = `
+      <h4>🔮 Qual o seu palpite pro ${pendente.nome}?</h4>
+      <p>Escolha quem você acha que vai levantar a taça. Só você vê essa escolha.</p>
+      <div class="predict-row">
+        <select id="predictSelect">${clubes.map(c=>`<option value="${c.id}">${c.nome}</option>`).join('')}</select>
+        <button id="predictSave">Salvar</button>
+      </div>`;
+    document.getElementById('predictSave').addEventListener('click', ()=>{
+      const id = document.getElementById('predictSelect').value;
+      try { localStorage.setItem(key, id); } catch(e){}
+      if(navigator.vibrate) navigator.vibrate(10);
+      renderPredictCard();
+    });
+  } else {
+    if(pendente.campeao){
+      const acertou = pendente.campeao === palpite;
+      box.innerHTML = `
+        <h4>🔮 Seu palpite pro ${pendente.nome}</h4>
+        <span class="predict-chip">${nomeOf(palpite)}</span>
+        <div class="predict-result ${acertou?'hit':'miss'}">${acertou ? '✅ Você acertou o campeão!' : `❌ Não dessa vez — o campeão foi ${nomeOf(pendente.campeao)}.`}</div>`;
+    } else {
+      box.innerHTML = `
+        <h4>🔮 Seu palpite pro ${pendente.nome}</h4>
+        <span class="predict-chip">🏆 ${nomeOf(palpite)}</span>
+        <div class="predict-result" style="color:var(--grey)">Palpite guardado. O resultado aparece aqui assim que o torneio for decidido.</div>`;
+    }
+  }
+}
+
+/* ---------- simulador de confronto amigável ---------- */
+function setupSimulador(){
+  const a = document.getElementById('simA'), b = document.getElementById('simB');
+  a.innerHTML=''; b.innerHTML='';
+  clubes.forEach(c=>{ a.innerHTML += `<option value="${c.id}">${c.nome}</option>`; b.innerHTML += `<option value="${c.id}">${c.nome}</option>`; });
+  b.selectedIndex = 1;
+  document.getElementById('simRun').addEventListener('click', ()=>{
+    const idA = a.value, idB = b.value;
+    const result = document.getElementById('simResult'), verdict = document.getElementById('simVerdict');
+    if(idA===idB){ verdict.textContent='Escolha dois clubes diferentes.'; result.innerHTML=''; return; }
+    const pesoA = 1 + stats[idA].titulos*0.4, pesoB = 1 + stats[idB].titulos*0.4;
+    const golsA = Math.min(6, Math.round(Math.random()*3*pesoA));
+    const golsB = Math.min(6, Math.round(Math.random()*3*pesoB));
+    result.innerHTML = `
+      <div class="sim-side"><img src="${escudoOf(idA)}" onerror="this.style.display='none'"><b>${nomeOf(idA)}</b></div>
+      <div class="sim-score" id="simScoreEl">${golsA} — ${golsB}</div>
+      <div class="sim-side"><img src="${escudoOf(idB)}" onerror="this.style.display='none'"><b>${nomeOf(idB)}</b></div>`;
+    requestAnimationFrame(()=> document.getElementById('simScoreEl').classList.add('show'));
+    if(golsA===golsB) verdict.textContent = 'Empate! No eFootball ia pros pênaltis 🥅';
+    else verdict.textContent = `${golsA>golsB ? nomeOf(idA) : nomeOf(idB)} levaria essa simulação.`;
+    if(navigator.vibrate) navigator.vibrate(golsA===golsB ? 8 : [8,30,8]);
+  });
+}
+
+/* ---------- quiz da liga (perguntas geradas a partir dos dados) ---------- */
+function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function buildQuizQuestions(){
+  const perguntas = [];
+  torneios.filter(t=>t.campeao).forEach(t=>{
+    perguntas.push({ pergunta:`Quem foi o campeão do ${t.nome}?`, opcoes: shuffle(clubes.map(c=>c.nome)), correta: nomeOf(t.campeao) });
+  });
+  perguntas.push({ pergunta:'Qual clube é o maior campeão da Liga?', opcoes: shuffle(clubes.map(c=>c.nome)), correta: maiorCampeao().nome });
+  const rivs = calcularRivalidades();
+  if(rivs.length){
+    const top = rivs[0];
+    const outros = clubes.filter(c=>c.id!==top.a && c.id!==top.b).map(c=>c.nome);
+    perguntas.push({ pergunta:`Qual clube mais vezes enfrentou o ${nomeOf(top.a)} numa final?`, opcoes: shuffle([nomeOf(top.b), ...outros]), correta: nomeOf(top.b) });
+  }
+  const totalOpcoes = shuffle([String(torneios.length), String(torneios.length+1), String(Math.max(1,torneios.length-1)), String(torneios.length+2)]);
+  perguntas.push({ pergunta:'Quantos torneios a Copa Liga eFootball já teve (incluindo os ainda não decididos)?', opcoes: totalOpcoes, correta: String(torneios.length) });
+  return shuffle(perguntas).slice(0,6);
+}
+let quizState = null;
+function setupQuiz(){
+  quizState = { perguntas: buildQuizQuestions(), atual:0, acertos:0 };
+  renderQuizQuestion();
+}
+function renderQuizQuestion(){
+  const card = document.getElementById('quizCard');
+  if(quizState.atual >= quizState.perguntas.length){
+    const nota = quizState.acertos;
+    const total = quizState.perguntas.length;
+    const perfeito = nota === total;
+    card.innerHTML = `
+      <div class="quiz-done">
+        <div class="cup">${perfeito ? '🏆' : nota >= total/2 ? '🥈' : '📘'}</div>
+        <h3>${nota} de ${total} acertos</h3>
+        <p>${perfeito ? 'Você conhece a Liga de cor e salteado!' : nota >= total/2 ? 'Boa! Você manja da história da Liga.' : 'Dá uma revisada na seção de Títulos e tenta de novo!'}</p>
+        <button class="quiz-next" id="quizRestart">Jogar novamente</button>
+      </div>`;
+    document.getElementById('quizRestart').addEventListener('click', setupQuiz);
+    if(perfeito) fireConfetti(30);
+    return;
+  }
+  const q = quizState.perguntas[quizState.atual];
+  card.innerHTML = `
+    <div class="quiz-top">
+      <span class="quiz-progress-label">Pergunta ${quizState.atual+1} de ${quizState.perguntas.length}</span>
+      <span class="quiz-score-label">${quizState.acertos} ✓</span>
+    </div>
+    <div class="quiz-bar"><div class="quiz-bar-fill" style="width:${(quizState.atual/quizState.perguntas.length)*100}%"></div></div>
+    <div class="quiz-question">${q.pergunta}</div>
+    <div class="quiz-options" id="quizOptions">
+      ${q.opcoes.map(op=>`<button class="quiz-option" data-op="${op}">${op}</button>`).join('')}
+    </div>`;
+  document.querySelectorAll('#quizOptions .quiz-option').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const escolha = btn.dataset.op;
+      document.querySelectorAll('#quizOptions .quiz-option').forEach(b=>{
+        b.disabled = true;
+        if(b.dataset.op === q.correta) b.classList.add('correct');
+        else if(b===btn) b.classList.add('wrong');
+      });
+      if(escolha === q.correta) quizState.acertos++;
+      if(navigator.vibrate) navigator.vibrate(escolha===q.correta ? 12 : [8,20,8]);
+      const nextBtn = document.createElement('button');
+      nextBtn.className='quiz-next'; nextBtn.textContent = (quizState.atual === quizState.perguntas.length-1) ? 'Ver resultado' : 'Próxima pergunta';
+      nextBtn.addEventListener('click', ()=>{ quizState.atual++; renderQuizQuestion(); });
+      document.getElementById('quizCard').appendChild(nextBtn);
+    });
+  });
+}
+
+function renderAll(){
+  renderCrestRing(); renderFavPill(); renderHighlights(); renderClubGrid(); renderChampList();
+  renderResultFeed(); renderRanking(); renderStatGrid2(); renderRivalries(); renderTimeline();
+  renderGallery(); renderHeroTag(); renderPredictCard();
+}
+
+/* =====================================================================================================
+   INICIALIZAÇÃO GERAL
+   ===================================================================================================== */
+renderAll();
+renderCountdown();
+renderTournaments();
+renderCharts();
+setupHTH();
+renderNewsFilter();
+renderNews();
+renderGuia();
+setupSimulador();
+setupQuiz();
+window.addEventListener('resize', ()=>{ clearTimeout(window._rt); window._rt=setTimeout(renderCharts,200); });
+
+/* barra inferior + folha "mais" */
+const overlayMore = document.getElementById('overlayMore');
+document.getElementById('tabMore').addEventListener('click', ()=> overlayMore.classList.add('open'));
+document.getElementById('closeMore').addEventListener('click', ()=> overlayMore.classList.remove('open'));
+overlayMore.addEventListener('click', e=>{ if(e.target.id==='overlayMore') overlayMore.classList.remove('open'); });
+overlayMore.querySelectorAll('[data-close-more]').forEach(a=>a.addEventListener('click', ()=> overlayMore.classList.remove('open')));
+
+document.querySelectorAll('.tab-btn[data-target]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelector(btn.dataset.target).scrollIntoView({behavior:'smooth', block:'start'});
+    if(navigator.vibrate) navigator.vibrate(8);
+  });
+});
+const mainTargets = ['#inicio','#clubes','#torneios','#estatisticas'];
+const sectionsToWatch = document.querySelectorAll('section[id]');
+const tabIo = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      const id = '#'+en.target.id;
+      document.querySelectorAll('.tab-btn[data-target]').forEach(b=>{
+        b.classList.toggle('active', mainTargets.includes(id) && b.dataset.target===id);
+      });
+    }
+  });
+}, { rootMargin: '-40% 0px -50% 0px' });
+sectionsToWatch.forEach(s=>tabIo.observe(s));
+
+/* contador animado do hero */
+document.querySelectorAll('[data-count]').forEach(el=>{
+  const target = parseInt(el.dataset.count, 10);
+  let cur = 0; const step = Math.max(1, Math.round(target/30));
+  const t = setInterval(()=>{ cur += step; if(cur>=target){ cur=target; clearInterval(t); } el.textContent = cur; }, 40);
+});
+
+/* barra de progresso de leitura */
+const progress = document.getElementById('scrollProgress');
+const fabTop = document.getElementById('fabTop');
+window.addEventListener('scroll', ()=>{
+  const h = document.documentElement;
+  const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  progress.style.width = pct + '%';
+  fabTop.classList.toggle('show', h.scrollTop > 600);
+});
+fabTop.addEventListener('click', ()=>{ window.scrollTo({top:0, behavior:'smooth'}); });
+
+/* revelar seções ao rolar */
+const revealIO = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); revealIO.unobserve(en.target); } });
+},{ threshold:.12 });
+document.querySelectorAll('.reveal').forEach(el=>revealIO.observe(el));
+
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.body.classList.add('reduced-motion');
+  document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+}
+</script>
+</body>
+</html>
