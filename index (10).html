@@ -1,0 +1,3099 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#040919">
+<meta name="description" content="Liga Zé Prefeitura — arquivo histórico não-oficial da Copa Liga eFootball entre amigos: clubes, campeões, chaves de cada torneio, estatísticas, simulador de confronto e quiz.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Liga Zé Prefeitura — Copa Liga eFootball">
+<meta property="og:description" content="O arquivo histórico da Copa Liga eFootball: clubes, campeões, chaves, estatísticas, simulador e quiz.">
+<title>Liga Zé Prefeitura — Copa Liga eFootball</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8F%86%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* =====================================================================
+   FONTE + CORES — para trocar a cor geral do site, mexa só aqui.
+   ===================================================================== */
+:root{
+  --void:#040919;
+  --deep:#071029;
+  --panel:#0B1836;
+  --panel-2:#0F2040;
+  --line:#1E3B72;
+  --blue-deep:#062B8F;
+  --blue:#0052FF;
+  --cyan:#1E9BFF;
+  --white:#F5F8FF;
+  --grey:#93A3CC;
+  --grey-dim:#7080AC;
+  --amber:#FFD100;
+  --amber-deep:#F2A900;
+  --danger:#FF4D6D;
+  --green:#31E39B;
+  --radius-s:8px;
+  --radius-m:16px;
+  --radius-l:24px;
+  --font-head:'Rajdhani',sans-serif;
+  --font-body:'Manrope',sans-serif;
+  --appw:480px;
+  --safe-b:env(safe-area-inset-bottom, 0px);
+  --safe-t:env(safe-area-inset-top, 0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--void);
+  color:var(--white);
+  font-family:var(--font-body);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+  min-height:100svh;
+}
+img{max-width:100%;display:block;}
+a{color:inherit;text-decoration:none;}
+h1,h2,h3,h4{font-family:var(--font-head);font-weight:700;letter-spacing:.01em;}
+button{font-family:inherit;}
+.reduced-motion *{animation-duration:.001ms !important;transition-duration:.001ms !important;}
+::selection{background:var(--blue);color:#fff;}
+a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--cyan);outline-offset:2px;border-radius:4px;}
+
+/* =====================================================================
+   ESQUELETO "SÓ MOBILE" — o conteúdo fica sempre dentro de uma faixa
+   estreita (como uma tela de celular), mesmo se alguém abrir num PC.
+   ===================================================================== */
+.app{max-width:var(--appw);margin:0 auto;position:relative;background:var(--void);min-height:100svh;
+  box-shadow:0 0 60px rgba(0,0,0,.6);overflow-x:hidden;}
+.wrap{padding:0 18px;}
+.desk-fill{position:fixed;inset:0;z-index:-1;background:
+  radial-gradient(ellipse 700px 500px at 50% -10%,rgba(0,82,255,.10),transparent 60%),#030A18;}
+
+/* barra de progresso de leitura */
+.scroll-progress{position:fixed;top:0;left:50%;transform:translateX(-50%);height:2px;width:0%;
+  max-width:var(--appw);z-index:600;background:linear-gradient(90deg,var(--blue),var(--cyan));
+  box-shadow:0 0 8px rgba(30,155,255,.7);transition:width .1s linear;}
+
+/* =====================================================================
+   TOPO (logo do campeonato + nome)
+   ===================================================================== */
+header.topbar{
+  position:sticky;top:0;z-index:400;padding-top:calc(var(--safe-t) + 12px);
+  background:rgba(5,7,13,.82);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.topbar-inner{display:flex;align-items:center;gap:12px;padding:0 18px 12px;}
+.topbar-logo{width:38px;height:38px;border-radius:11px;background:var(--panel);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;overflow:hidden;flex-shrink:0;box-shadow:0 0 14px rgba(30,155,255,.25);}
+.topbar-logo img{width:100%;height:100%;object-fit:contain;padding:4px;}
+.topbar-text{flex:1;min-width:0;}
+.topbar-text b{display:block;font-family:var(--font-head);font-size:15.5px;letter-spacing:.02em;line-height:1.1;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.topbar-text span{font-size:10.5px;color:var(--cyan);letter-spacing:.14em;}
+.fav-pill{display:flex;align-items:center;gap:6px;background:var(--panel);border:1px solid var(--line);
+  border-radius:20px;padding:6px 12px 6px 8px;font-size:12px;color:var(--grey);flex-shrink:0;}
+.fav-pill img{width:18px;height:18px;object-fit:contain;}
+
+/* =====================================================================
+   HERO
+   ===================================================================== */
+.hero{position:relative;padding:36px 18px 30px;text-align:center;overflow:hidden;
+  background:radial-gradient(ellipse 500px 320px at 50% 0%,rgba(0,82,255,.30),transparent 65%);}
+.hero::before{content:'';position:absolute;top:-30%;left:50%;width:900px;height:600px;transform:translateX(-50%);
+  background:repeating-conic-gradient(from 0deg at 50% 0%,rgba(30,155,255,.05) 0deg 2deg,transparent 2deg 14deg);
+  opacity:.5;pointer-events:none;}
+.hero-eyebrow{display:inline-block;font-family:var(--font-head);font-size:11.5px;letter-spacing:.24em;color:var(--cyan);
+  padding:5px 14px;border:1px solid rgba(30,155,255,.35);border-radius:20px;margin-bottom:20px;position:relative;z-index:2;}
+.hero h1{font-size:clamp(38px,11vw,54px);line-height:.96;position:relative;z-index:2;
+  background:linear-gradient(180deg,#fff 30%,#B9CBFF 100%);-webkit-background-clip:text;background-clip:text;color:transparent;}
+.hero-sub{font-family:var(--font-head);font-size:15px;color:var(--grey);margin-top:10px;letter-spacing:.05em;position:relative;z-index:2;}
+.hero-tag{margin-top:10px;color:var(--grey-dim);font-size:13.5px;position:relative;z-index:2;padding:0 8px;}
+
+.crest-ring{position:relative;width:min(300px,78vw);height:min(300px,78vw);margin:34px auto 22px;z-index:2;}
+.crest-ring svg.lines{position:absolute;inset:0;width:100%;height:100%;}
+.crest-node{position:absolute;width:66px;height:66px;transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;cursor:pointer;}
+.crest-node .disc{width:100%;height:100%;border-radius:50%;background:var(--panel);border:2px solid var(--line);
+  display:flex;align-items:center;justify-content:center;transition:box-shadow .3s ease,transform .2s ease,border-color .3s ease;overflow:hidden;position:relative;}
+.crest-node img{width:60%;height:60%;object-fit:contain;}
+.crest-node:active .disc{transform:scale(.94);}
+.crest-node.is-champion .disc{border-color:var(--amber);box-shadow:0 0 20px rgba(255,209,0,.55);animation:championPulse 2.6s ease-in-out infinite;}
+.crest-node.is-favorito .disc{border-color:var(--cyan);}
+.crest-node .lbl{position:absolute;bottom:-20px;left:50%;transform:translateX(-50%);font-family:var(--font-head);
+  font-size:9.5px;letter-spacing:.06em;color:var(--grey);white-space:nowrap;}
+.crest-node.is-champion .lbl{color:var(--amber);}
+@keyframes championPulse{0%,100%{box-shadow:0 0 16px rgba(255,209,0,.4);}50%{box-shadow:0 0 26px rgba(255,209,0,.75);}}
+.crest-node .champion-tag{position:absolute;top:-8px;right:-4px;background:var(--amber);color:#1a1206;font-size:11px;
+  width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 8px rgba(255,209,0,.7);}
+.crest-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:56px;height:56px;border-radius:50%;
+  background:radial-gradient(circle,var(--blue) 0%,var(--blue-deep) 70%);display:flex;align-items:center;justify-content:center;
+  font-size:24px;box-shadow:0 0 34px rgba(0,82,255,.6);}
+
+.hero-stats{display:flex;gap:8px;justify-content:center;position:relative;z-index:2;}
+.hero-stat{flex:1;max-width:110px;background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:14px;padding:12px 4px;}
+.hero-stat b{display:block;font-family:var(--font-head);font-size:26px;color:var(--white);}
+.hero-stat span{font-size:9.5px;letter-spacing:.08em;color:var(--grey-dim);text-transform:uppercase;}
+
+/* contador regressivo pro próximo torneio */
+.countdown{position:relative;z-index:2;margin-top:22px;background:linear-gradient(135deg,rgba(0,82,255,.15),rgba(30,155,255,.05));
+  border:1px solid rgba(30,155,255,.3);border-radius:var(--radius-m);padding:16px;}
+.countdown-label{font-size:11px;letter-spacing:.12em;color:var(--cyan);text-transform:uppercase;margin-bottom:10px;}
+.countdown-grid{display:flex;justify-content:center;gap:10px;}
+.countdown-cell{background:var(--void);border:1px solid var(--line);border-radius:10px;padding:8px 4px;min-width:52px;}
+.countdown-cell b{display:block;font-family:var(--font-head);font-size:22px;}
+.countdown-cell span{font-size:9px;color:var(--grey-dim);text-transform:uppercase;}
+
+.scroll-cue{margin:22px auto 0;color:var(--grey-dim);font-size:10.5px;letter-spacing:.14em;position:relative;z-index:2;text-align:center;}
+.scroll-cue .stick{width:1px;height:22px;background:linear-gradient(var(--cyan),transparent);margin:6px auto 0;}
+
+/* =====================================================================
+   SEÇÕES GENÉRICAS
+   ===================================================================== */
+section{padding:50px 0;position:relative;}
+.section-head{margin-bottom:26px;}
+.section-kicker{font-family:var(--font-head);font-size:11.5px;letter-spacing:.18em;color:var(--cyan);margin-bottom:8px;}
+.section-head h2{font-size:24px;color:var(--white);}
+.section-head p{color:var(--grey);margin-top:8px;font-size:13.5px;}
+.section-alt{background:linear-gradient(180deg,transparent,rgba(14,21,38,.55) 10%,rgba(14,21,38,.55) 90%,transparent);}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease;}
+.reveal.in{opacity:1;transform:none;}
+
+/* =====================================================================
+   CLUBES
+   ===================================================================== */
+.club-grid{display:flex;flex-direction:column;gap:14px;}
+.club-card{background:linear-gradient(160deg,var(--panel),var(--panel-2));border:1px solid var(--line);
+  border-radius:var(--radius-m);padding:18px;position:relative;overflow:hidden;
+  border-top:3px solid var(--card-cor,var(--line));transition:transform .15s ease;}
+.club-card:active{transform:scale(.98);}
+.club-card.is-champion{border-color:rgba(255,209,0,.5);}
+.club-top{display:flex;gap:14px;align-items:center;}
+.club-crest{width:58px;height:58px;border-radius:14px;background:var(--void);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;padding:8px;flex-shrink:0;position:relative;}
+.club-crest img{width:100%;height:100%;object-fit:contain;}
+.club-rankbadge{position:absolute;top:-8px;left:-8px;width:24px;height:24px;border-radius:50%;background:var(--void);
+  border:2px solid var(--cyan);font-family:var(--font-head);font-size:12px;display:flex;align-items:center;justify-content:center;color:var(--cyan);}
+.club-info{flex:1;min-width:0;}
+.club-info h3{font-size:19px;line-height:1.1;}
+.club-owner{font-size:12px;color:var(--grey-dim);margin-top:2px;}
+.star-btn{background:none;border:none;color:var(--grey-dim);font-size:20px;cursor:pointer;padding:4px;line-height:1;flex-shrink:0;}
+.star-btn.active{color:var(--amber);}
+.club-metrics{display:flex;gap:10px;margin-top:14px;}
+.club-metrics div{flex:1;text-align:center;background:rgba(255,255,255,.03);border-radius:10px;padding:8px 2px;}
+.club-metrics b{display:block;font-family:var(--font-head);font-size:18px;}
+.club-metrics span{font-size:9px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.04em;}
+.champion-badge{position:absolute;top:12px;right:12px;background:rgba(255,209,0,.15);color:var(--amber);
+  font-size:10px;padding:4px 9px;border-radius:14px;letter-spacing:.04em;}
+
+/* =====================================================================
+   FOLHA INFERIOR (bottom sheet) — usada pro detalhe do clube e pro menu "Mais"
+   ===================================================================== */
+.overlay{position:fixed;inset:0;z-index:800;background:rgba(3,4,8,.72);backdrop-filter:blur(4px);
+  display:none;align-items:flex-end;justify-content:center;}
+.overlay.open{display:flex;}
+.sheet{width:100%;max-width:var(--appw);max-height:88svh;overflow-y:auto;background:linear-gradient(180deg,var(--panel),var(--deep));
+  border:1px solid var(--line);border-bottom:none;border-radius:22px 22px 0 0;padding:10px 22px calc(30px + var(--safe-b));
+  position:relative;transform:translateY(16px);opacity:0;transition:transform .25s ease,opacity .25s ease;}
+.overlay.open .sheet{transform:translateY(0);opacity:1;}
+.sheet-handle{width:38px;height:4px;border-radius:3px;background:var(--line);margin:8px auto 16px;}
+.sheet-close{position:absolute;top:14px;right:16px;background:rgba(255,255,255,.06);border:none;color:var(--white);
+  width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;}
+.club-detail-head{display:flex;align-items:center;gap:16px;margin-bottom:22px;}
+.club-detail-head .club-crest{width:78px;height:78px;}
+.club-detail-head h2{font-size:25px;}
+.share-btn{margin-left:auto;background:var(--panel-2);border:1px solid var(--line);color:var(--cyan);
+  width:38px;height:38px;border-radius:50%;font-size:15px;cursor:pointer;flex-shrink:0;}
+.club-detail-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px;}
+.mini-stat{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;padding:10px 2px;text-align:center;}
+.mini-stat b{display:block;font-family:var(--font-head);font-size:19px;}
+.mini-stat span{font-size:9px;color:var(--grey-dim);text-transform:uppercase;}
+.club-timeline{list-style:none;border-left:2px solid var(--line);padding-left:18px;}
+.club-timeline li{position:relative;padding-bottom:16px;font-size:14px;}
+.club-timeline li::before{content:'';position:absolute;left:-24px;top:4px;width:9px;height:9px;border-radius:50%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+.club-timeline li.is-title::before{background:var(--amber);box-shadow:0 0 8px var(--amber);}
+.club-timeline b{display:block;font-family:var(--font-head);font-size:14px;color:var(--white);}
+.club-timeline span{color:var(--grey);font-size:12.5px;}
+.club-detail-subhead{font-family:var(--font-head);font-size:12px;letter-spacing:.08em;color:var(--grey-dim);
+  text-transform:uppercase;margin:22px 0 10px;}
+.match-list, .h2h-list{display:flex;flex-direction:column;gap:6px;}
+.match-row{display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,.03);
+  border:1px solid var(--line);border-left:3px solid var(--line);border-radius:10px;padding:9px 12px;font-size:12.5px;}
+.match-row.is-vitoria{border-left-color:var(--green);}
+.match-row.is-derrota{border-left-color:var(--danger);}
+.match-row .mr-score{font-family:var(--font-head);color:var(--white);font-size:14px;}
+.h2h-row{display:flex;align-items:center;justify-content:space-between;font-size:12.5px;color:var(--grey);
+  padding:8px 0;border-bottom:1px solid var(--line);}
+.h2h-row:last-child{border-bottom:none;}
+.tournament-meta{margin-bottom:16px;}
+.tournament-meta .tm-date{font-size:11.5px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
+.tm-participants{display:flex;gap:10px;flex-wrap:wrap;}
+.tm-participant{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.03);border:1px solid var(--line);
+  border-radius:20px;padding:5px 12px 5px 5px;font-size:11.5px;}
+.tm-participant img{width:20px;height:20px;object-fit:contain;}
+.tournament-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0 24px;}
+.rank-filter{display:flex;gap:8px;overflow-x:auto;margin-bottom:16px;padding-bottom:2px;}
+.rank-filter-btn{flex-shrink:0;padding:8px 14px;border-radius:20px;border:1px solid var(--line);
+  background:rgba(255,255,255,.03);color:var(--grey);font-size:12px;font-family:var(--font-head);letter-spacing:.02em;}
+.rank-filter-btn.active{background:var(--blue);border-color:var(--blue);color:#fff;}
+.record-grid{display:grid;grid-template-columns:1fr;gap:12px;}
+.record-card{display:flex;align-items:center;gap:14px;background:linear-gradient(160deg,var(--panel),var(--panel-2));
+  border:1px solid var(--line);border-radius:var(--radius-m);padding:16px;}
+.record-card .rc-icon{font-size:26px;flex-shrink:0;}
+.record-card .rc-label{font-size:10.5px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.05em;}
+.record-card .rc-value{font-family:var(--font-head);font-size:16px;color:var(--white);margin-top:2px;}
+.record-card .rc-detail{font-size:11.5px;color:var(--cyan);margin-top:2px;}
+.hth-matches{margin:16px 0;}
+.hth-matches .hm-subhead{font-family:var(--font-head);font-size:12px;letter-spacing:.06em;color:var(--grey-dim);
+  text-transform:uppercase;margin:14px 0 8px;}
+.hth-matches .hm-empty{font-size:13px;color:var(--grey-dim);}
+
+/* hall da fama */
+.hof-grid{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:26px;}
+.hof-block{margin-bottom:24px;}
+.hof-block h4{font-size:12px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px;}
+.hof-founders{display:flex;flex-wrap:wrap;gap:10px;}
+.hof-founder-chip{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);
+  border-radius:999px;padding:7px 14px 7px 7px;font-size:13px;color:var(--white);}
+.hof-founder-chip img{width:22px;height:22px;object-fit:contain;border-radius:50%;background:var(--void);}
+.hof-empty{font-size:13px;color:var(--grey-dim);}
+
+/* preview de notícias na home */
+.home-news-preview{margin-top:22px;}
+.home-news-preview h4{font-size:11px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;}
+.home-news-preview .news-grid{gap:10px;}
+.home-news-preview .news-body h3{font-size:13px;}
+.home-news-preview .news-body p{display:none;}
+
+/* menu "mais" */
+.more-link{display:flex;align-items:center;gap:14px;padding:15px 4px;border-bottom:1px solid var(--line);font-family:var(--font-head);font-size:16px;}
+.more-link .ic{font-size:19px;width:26px;text-align:center;}
+.more-link:last-child{border-bottom:none;}
+
+/* =====================================================================
+   TÍTULOS
+   ===================================================================== */
+.champ-list{display:flex;flex-direction:column;gap:10px;}
+.champ-row{display:flex;align-items:center;gap:14px;background:var(--panel);border:1px solid var(--line);
+  border-radius:var(--radius-m);padding:13px 16px;position:relative;}
+.champ-row.is-latest{border-color:rgba(255,209,0,.5);box-shadow:0 0 0 1px rgba(255,209,0,.15) inset;}
+.champ-num{font-family:var(--font-head);font-size:21px;color:var(--grey-dim);width:26px;flex-shrink:0;}
+.champ-row.is-latest .champ-num{color:var(--amber);}
+.champ-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:5px;}
+.champ-title{font-size:11px;color:var(--grey-dim);letter-spacing:.06em;text-transform:uppercase;display:flex;justify-content:space-between;}
+.champ-teams{display:flex;flex-direction:column;gap:3px;font-family:var(--font-head);font-size:14.5px;}
+.champ-teams .tag-cup{color:var(--amber);}
+.champ-teams .tag-vice{color:var(--grey);}
+.champ-crest-mini{width:18px;height:18px;border-radius:50%;object-fit:contain;background:var(--void);border:1px solid var(--line);vertical-align:-4px;margin-right:5px;padding:2px;}
+.latest-pill{font-size:9.5px;background:rgba(255,209,0,.15);color:var(--amber);padding:3px 9px;border-radius:20px;letter-spacing:.04em;white-space:nowrap;}
+
+/* =====================================================================
+   TORNEIOS / CHAVE
+   ===================================================================== */
+.tournament-select{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:22px;scrollbar-width:none;}
+.tournament-select::-webkit-scrollbar{display:none;}
+.t-btn{flex-shrink:0;font-family:var(--font-head);font-size:13.5px;color:var(--grey);background:var(--panel);
+  border:1px solid var(--line);padding:8px 16px;border-radius:20px;cursor:pointer;}
+.t-btn.active{color:var(--void);border-color:var(--cyan);background:var(--cyan);}
+.bracket{display:flex;flex-direction:column;gap:16px;scroll-snap-type:x mandatory;}
+.col-label{font-size:10.5px;letter-spacing:.12em;color:var(--grey-dim);text-transform:uppercase;margin-bottom:6px;}
+.b-match{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:6px;margin-bottom:14px;}
+.b-slot{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;}
+.b-slot.winner{background:rgba(30,155,255,.08);}
+.b-slot img{width:24px;height:24px;object-fit:contain;background:var(--void);border-radius:50%;border:1px solid var(--line);padding:2px;}
+.b-slot b{font-family:var(--font-head);font-size:14px;flex:1;}
+.b-slot.winner b{color:var(--cyan);}
+.b-slot .tbd{color:var(--grey-dim);font-style:normal;}
+.b-slot .score{font-family:var(--font-head);font-size:15px;color:var(--white);background:rgba(255,255,255,.05);
+  border-radius:6px;padding:1px 8px;min-width:24px;text-align:center;}
+.trophy-slot{display:flex;flex-direction:column;align-items:center;gap:8px;background:linear-gradient(160deg,rgba(255,209,0,.12),transparent);
+  border:1px solid rgba(255,209,0,.3);border-radius:14px;padding:18px 10px;}
+.trophy-slot .cup{font-size:38px;}
+.trophy-slot b{font-family:var(--font-head);font-size:17px;color:var(--amber);}
+.result-feed{display:flex;flex-direction:column;gap:8px;margin-top:24px;}
+.result-row{display:flex;align-items:center;gap:8px;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font-size:12.5px;}
+.result-row img{width:18px;height:18px;object-fit:contain;background:var(--void);border-radius:50%;border:1px solid var(--line);padding:2px;}
+.result-row b{font-family:var(--font-head);font-size:13.5px;}
+.result-row .rf-score{margin-left:auto;font-family:var(--font-head);color:var(--cyan);font-size:14px;}
+
+/* =====================================================================
+   RANKING (lista de cartões, sem tabela larga — melhor pro celular)
+   ===================================================================== */
+.rank-list{display:flex;flex-direction:column;gap:8px;}
+.rank-row{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);
+  border-radius:12px;padding:11px 14px;cursor:pointer;transition:border-color .15s,transform .1s;}
+.rank-row:active{transform:scale(.99);}
+.rank-row:first-child{border-color:rgba(255,209,0,.4);background:linear-gradient(135deg,rgba(255,209,0,.05),var(--panel));}
+.rank-pos{font-family:var(--font-head);font-size:18px;color:var(--grey-dim);width:20px;flex-shrink:0;}
+.rank-row:first-child .rank-pos{color:var(--amber);}
+.rank-club{display:flex;align-items:center;gap:9px;font-family:var(--font-head);font-size:14.5px;flex:1;min-width:0;}
+.rank-club img{width:26px;height:26px;object-fit:contain;background:var(--void);border-radius:50%;border:1px solid var(--line);padding:3px;flex-shrink:0;}
+.rank-stats{display:flex;gap:12px;flex-shrink:0;}
+.rank-stats div{text-align:center;min-width:26px;}
+.rank-stats b{display:block;font-family:var(--font-head);font-size:14px;}
+.rank-stats span{font-size:8px;color:var(--grey-dim);text-transform:uppercase;}
+
+/* =====================================================================
+   PAINEL INICIAL (campeão atual, fatos rápidos, acessos rápidos)
+   ===================================================================== */
+.champion-showcase{background:linear-gradient(160deg,var(--panel),var(--panel-2));border:1px solid rgba(255,209,0,.35);
+  border-radius:var(--radius-l);padding:22px 18px;text-align:center;margin-bottom:14px;position:relative;overflow:hidden;}
+.champion-showcase .cs-label{font-family:var(--font-head);font-size:11px;letter-spacing:.18em;color:var(--amber);margin-bottom:12px;}
+.champion-showcase .cs-crest{width:84px;height:84px;margin:0 auto 12px;border-radius:50%;background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,209,0,.3);display:flex;align-items:center;justify-content:center;padding:12px;}
+.champion-showcase .cs-crest img{width:100%;height:100%;object-fit:contain;}
+.champion-showcase h3{font-size:22px;color:var(--white);}
+.champion-showcase .cs-sub{font-size:11.5px;color:var(--grey);margin-top:4px;}
+.quick-facts{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+.home-links{display:flex;gap:10px;margin-bottom:30px;}
+.home-link-btn{flex:1;text-align:center;padding:13px 8px;border-radius:var(--radius-m);font-family:var(--font-head);
+  font-size:13px;letter-spacing:.02em;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--white);}
+.home-link-btn.is-primary{background:linear-gradient(90deg,var(--blue),var(--cyan));color:#04101f;border:none;}
+.last-result-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);padding:16px;
+  margin-bottom:14px;text-align:center;}
+.last-result-card .lr-label{font-size:10px;letter-spacing:.1em;color:var(--grey-dim);text-transform:uppercase;margin-bottom:10px;}
+.last-result-card .lr-teams{display:flex;align-items:center;justify-content:center;gap:14px;}
+.last-result-card .lr-team{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;}
+.last-result-card .lr-team img{width:36px;height:36px;object-fit:contain;}
+.last-result-card .lr-team span{font-size:11px;color:var(--grey);}
+.last-result-card .lr-score{font-family:var(--font-head);font-size:24px;color:var(--white);white-space:nowrap;}
+
+/* =====================================================================
+   ESTATÍSTICAS / GRÁFICOS
+   ===================================================================== */
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:30px;}
+.stat-box{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);padding:16px;text-align:center;}
+.stat-box b{display:block;font-family:var(--font-head);font-size:22px;background:linear-gradient(180deg,#fff,#9FC2FF);
+  -webkit-background-clip:text;background-clip:text;color:transparent;}
+.stat-box span{font-size:10px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.04em;}
+.chart-grid{display:flex;flex-direction:column;gap:16px;}
+.chart-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);padding:18px;}
+.chart-card h4{font-size:13.5px;color:var(--white);margin-bottom:14px;font-weight:700;}
+canvas{width:100%;}
+
+/* confronto direto */
+.rivalry-callout{background:linear-gradient(135deg,rgba(255,209,0,.12),rgba(30,155,255,.06));
+  border:1px solid rgba(255,209,0,.35);border-radius:var(--radius-m);padding:16px;margin-bottom:22px;display:flex;align-items:center;gap:12px;}
+.rivalry-callout .icon{font-size:24px;flex-shrink:0;}
+.rivalry-callout b{font-family:var(--font-head);font-size:15px;color:var(--white);display:block;}
+.rivalry-callout span{color:var(--grey);font-size:12px;}
+.hth-picker{display:flex;gap:10px;align-items:center;margin-bottom:20px;}
+.hth-picker select{flex:1;min-width:0;background:var(--panel);border:1px solid var(--line);color:var(--white);
+  padding:10px 8px;border-radius:10px;font-family:var(--font-body);font-size:13px;}
+.hth-vs{font-family:var(--font-head);color:var(--grey-dim);flex-shrink:0;}
+.hth-result{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);padding:20px;
+  display:flex;justify-content:space-around;text-align:center;margin-bottom:22px;}
+.hth-result .side b{display:block;font-family:var(--font-head);font-size:22px;}
+.hth-result .side span{font-size:10px;color:var(--grey-dim);text-transform:uppercase;}
+.compare-panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);padding:18px;margin-bottom:22px;}
+.compare-panel h4{font-size:11px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:16px;}
+.compare-row{margin-bottom:13px;}
+.compare-row .compare-labels{display:flex;justify-content:space-between;font-family:var(--font-head);font-size:12.5px;margin-bottom:5px;}
+.compare-row .compare-labels span:first-child{color:var(--cyan);}
+.compare-row .compare-labels span:last-child{color:#FF9AB4;}
+.compare-track{display:flex;height:7px;border-radius:4px;overflow:hidden;background:var(--void);border:1px solid var(--line);}
+.compare-track .fillA{background:linear-gradient(90deg,var(--blue),var(--cyan));}
+.compare-track .fillB{background:linear-gradient(90deg,#FF4D6D,#FF9AB4);}
+.compare-metric-name{font-size:9.5px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px;display:block;text-align:center;}
+.rivalry-list h4{font-size:11px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;}
+.rivalry-row{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;background:var(--panel);
+  border:1px solid var(--line);border-radius:10px;margin-bottom:7px;font-size:12.5px;}
+.rivalry-row b{font-family:var(--font-head);font-size:13.5px;}
+.rivalry-row .count{color:var(--cyan);font-family:var(--font-head);font-size:12.5px;white-space:nowrap;}
+
+/* =====================================================================
+   HISTÓRIA
+   ===================================================================== */
+.history-copy{display:flex;flex-direction:column;gap:20px;margin-bottom:36px;}
+.history-copy article h3{font-size:16.5px;margin-bottom:6px;color:var(--cyan);}
+.history-copy article p{color:var(--grey);font-size:13.5px;}
+.timeline{position:relative;padding-left:22px;}
+.timeline::before{content:'';position:absolute;left:5px;top:6px;bottom:6px;width:2px;background:linear-gradient(var(--cyan),var(--blue-deep));}
+.tl-item{position:relative;padding-bottom:26px;}
+.tl-item::before{content:'';position:absolute;left:-22px;top:2px;width:12px;height:12px;border-radius:50%;background:var(--void);border:2px solid var(--cyan);}
+.tl-item.is-title::before{border-color:var(--amber);background:var(--amber);}
+.tl-item h4{font-family:var(--font-head);font-size:15.5px;}
+.tl-item p{color:var(--grey);font-size:12.5px;margin-top:3px;}
+
+/* =====================================================================
+   NOTÍCIAS
+   ===================================================================== */
+.news-filter{display:flex;gap:8px;overflow-x:auto;margin-bottom:16px;scrollbar-width:none;}
+.news-filter::-webkit-scrollbar{display:none;}
+.news-filter button{flex-shrink:0;font-family:var(--font-head);font-size:12px;color:var(--grey);background:var(--panel);
+  border:1px solid var(--line);padding:6px 14px;border-radius:20px;cursor:pointer;}
+.news-filter button.active{color:var(--void);background:var(--cyan);border-color:var(--cyan);}
+.news-grid{display:flex;flex-direction:column;gap:14px;}
+.news-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);overflow:hidden;display:flex;cursor:pointer;}
+.news-thumb{width:78px;flex-shrink:0;background:linear-gradient(135deg,var(--blue-deep),var(--panel-2));
+  display:flex;align-items:center;justify-content:center;font-size:26px;}
+.news-thumb img{width:100%;height:100%;object-fit:cover;}
+.news-detail img{width:100%;border-radius:var(--radius-m);margin-bottom:14px;object-fit:cover;max-height:200px;}
+.news-detail .news-cat{margin-bottom:8px;}
+.news-detail h3{font-size:19px;margin-bottom:6px;}
+.news-detail .news-date{display:block;margin-bottom:14px;}
+.news-detail p{font-size:14px;color:var(--grey);line-height:1.6;}
+.news-body{padding:14px 16px;min-width:0;}
+.news-cat{font-size:10px;color:var(--cyan);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;}
+.news-body h3{font-size:14.5px;margin-bottom:5px;line-height:1.25;}
+.news-body p{font-size:12px;color:var(--grey);}
+.news-date{font-size:10.5px;color:var(--grey-dim);margin-top:8px;display:block;}
+
+/* =====================================================================
+   GALERIA
+   ===================================================================== */
+.gallery-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.gallery-item{aspect-ratio:1;border-radius:12px;border:1px solid var(--line);background:var(--panel);
+  display:flex;align-items:center;justify-content:center;padding:18px;position:relative;border-top:3px solid var(--card-cor,var(--line));}
+.gallery-item img{width:65%;height:65%;object-fit:contain;}
+.gallery-item .gallery-tag{position:absolute;bottom:8px;left:0;right:0;text-align:center;font-size:10px;color:var(--grey-dim);letter-spacing:.03em;text-transform:uppercase;}
+
+/* =====================================================================
+   GUIA DE EDIÇÃO (dentro do próprio site)
+   ===================================================================== */
+.guia-item{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden;}
+.guia-q{width:100%;text-align:left;background:none;border:none;color:var(--white);padding:14px 16px;font-family:var(--font-head);
+  font-size:14.5px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;gap:10px;}
+.guia-q .plus{color:var(--cyan);font-size:18px;flex-shrink:0;transition:transform .2s ease;}
+.guia-item.open .guia-q .plus{transform:rotate(45deg);}
+.guia-a{max-height:0;overflow:hidden;transition:max-height .25s ease;}
+.guia-item.open .guia-a{max-height:400px;}
+.guia-a-inner{padding:0 16px 16px;font-size:13px;color:var(--grey);}
+.guia-a-inner code{background:var(--void);border:1px solid var(--line);padding:1px 6px;border-radius:5px;font-size:12px;color:var(--cyan);}
+
+/* =====================================================================
+   RODAPÉ
+   ===================================================================== */
+footer{padding:40px 18px calc(100px + var(--safe-b));border-top:1px solid var(--line);color:var(--grey-dim);font-size:12px;text-align:center;}
+footer strong{color:var(--grey);}
+footer .foot-guide-link{display:inline-block;margin-top:10px;color:var(--cyan);font-size:12.5px;}
+
+/* =====================================================================
+   BARRA INFERIOR FIXA (navegação estilo app)
+   ===================================================================== */
+.tabbar{position:fixed;bottom:0;left:0;right:0;z-index:500;display:flex;max-width:var(--appw);margin:0 auto;
+  background:rgba(9,14,27,.92);backdrop-filter:blur(16px);border-top:1px solid var(--line);
+  padding:8px 4px calc(6px + var(--safe-b));}
+.tab-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;
+  color:var(--grey-dim);cursor:pointer;padding:6px 2px;border-radius:10px;}
+.tab-btn .ic{font-size:19px;line-height:1;}
+.tab-btn span{font-size:9.5px;font-family:var(--font-head);letter-spacing:.02em;}
+.tab-btn.active{color:var(--cyan);}
+
+/* =====================================================================
+   TOQUES FINAIS — textura do hero, hover em telas grandes, botão de topo
+   ===================================================================== */
+.hero{position:relative;}
+.hero-dots{position:absolute;inset:0;z-index:1;opacity:.55;pointer-events:none;
+  background-image:radial-gradient(rgba(30,155,255,.35) 1px, transparent 1px);
+  background-size:26px 26px;
+  -webkit-mask-image:radial-gradient(ellipse 380px 260px at 50% 10%, #000 0%, transparent 72%);
+  mask-image:radial-gradient(ellipse 380px 260px at 50% 10%, #000 0%, transparent 72%);}
+@media (hover:hover){
+  .club-card:hover{transform:translateY(-2px);border-color:rgba(30,155,255,.35);}
+  .rank-row:hover, .champ-row:hover, .news-card:hover, .gallery-item:hover{border-color:rgba(30,155,255,.3);}
+  .t-btn:hover{color:var(--white);}
+  .guia-q:hover{color:var(--cyan);}
+}
+
+.fab-top{position:fixed;right:calc(50% - var(--appw)/2 + 16px);bottom:calc(84px + var(--safe-b));z-index:490;
+  width:42px;height:42px;border-radius:50%;background:rgba(14,21,38,.9);border:1px solid var(--line);
+  color:var(--cyan);font-size:16px;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  backdrop-filter:blur(8px);opacity:0;pointer-events:none;transform:translateY(8px);
+  transition:opacity .25s ease,transform .25s ease;}
+.fab-top.show{opacity:1;pointer-events:auto;transform:none;}
+@media (max-width:480px){ .fab-top{right:16px;} }
+@media (max-width:600px){
+  /* evita o zoom automático do iOS ao focar campos com fonte menor que 16px */
+  .hth-picker select, .sim-picker select, .predict-row select, .search-box input{ font-size:16px; }
+}
+
+/* conquistas / badges */
+.badge-row{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}
+.badge-chip{display:inline-flex;align-items:center;gap:5px;font-size:10.5px;letter-spacing:.02em;
+  background:rgba(30,155,255,.08);border:1px solid rgba(30,155,255,.25);color:var(--cyan);
+  padding:4px 10px;border-radius:20px;white-space:nowrap;}
+.badge-chip.is-gold{background:rgba(255,209,0,.1);border-color:rgba(255,209,0,.35);color:var(--amber);}
+
+/* perfil eFootball — componentes visuais */
+.efb-id-row{display:flex;align-items:center;justify-content:space-between;
+  background:rgba(30,155,255,.07);border:1px solid rgba(30,155,255,.2);
+  border-radius:10px;padding:10px 14px;margin-bottom:14px;}
+.efb-id-label{font-size:9.5px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.08em;}
+.efb-id-val{font-family:var(--font-head);font-size:15px;color:var(--cyan);}
+.efb-forca-bar{background:linear-gradient(135deg,rgba(255,209,0,.08),rgba(0,82,255,.06));
+  border:1px solid rgba(255,209,0,.25);border-radius:14px;padding:14px 16px;margin-bottom:14px;}
+.efb-forca-label{font-size:9px;color:var(--amber);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px;}
+.efb-forca-val{font-family:var(--font-head);font-size:38px;color:var(--white);line-height:1;margin-bottom:10px;
+  background:linear-gradient(180deg,#fff,var(--amber));-webkit-background-clip:text;background-clip:text;color:transparent;}
+.efb-forca-track{height:6px;background:var(--void);border-radius:4px;overflow:hidden;border:1px solid var(--line);}
+.efb-forca-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--amber));border-radius:4px;
+  transition:width .6s cubic-bezier(.25,.46,.45,.94);}
+.efb-empty-forca{font-size:12px;color:var(--grey-dim);background:rgba(255,255,255,.02);
+  border:1px dashed var(--line);border-radius:10px;padding:10px 14px;margin-bottom:14px;text-align:center;}
+.efb-estilo{display:flex;align-items:center;justify-content:space-between;
+  padding:8px 14px;margin-bottom:14px;font-size:12.5px;}
+.efb-estilo span{color:var(--grey-dim);font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;}
+.efb-estilo b{color:var(--white);font-family:var(--font-head);}
+.efb-destaque-card{background:linear-gradient(135deg,rgba(255,209,0,.1),rgba(255,209,0,.03));
+  border:1px solid rgba(255,209,0,.35);border-radius:14px;padding:16px;margin-bottom:14px;
+  display:flex;align-items:center;gap:14px;box-shadow:0 0 20px rgba(255,209,0,.08);}
+.efb-destaque-label{font-size:9px;color:var(--amber);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;}
+.efb-destaque-body{flex:1;min-width:0;}
+.efb-destaque-nome{font-family:var(--font-head);font-size:17px;color:var(--white);line-height:1.1;}
+.efb-destaque-meta{font-size:10.5px;color:var(--grey-dim);margin-top:2px;text-transform:uppercase;letter-spacing:.05em;}
+.efb-destaque-forca{font-family:var(--font-head);font-size:30px;color:var(--amber);flex-shrink:0;
+  background:rgba(255,209,0,.1);border:1px solid rgba(255,209,0,.3);
+  border-radius:12px;padding:6px 12px;text-align:center;min-width:56px;
+  text-shadow:0 0 16px rgba(255,209,0,.5);}
+
+/* elenco e formação tática */
+.squad-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;}
+.squad-card{background:linear-gradient(135deg,var(--panel),var(--panel-2));border:1px solid var(--line);
+  border-radius:12px;padding:11px 13px;display:flex;gap:10px;align-items:center;
+  transition:border-color .15s;}
+.squad-card.is-star{border-color:rgba(255,209,0,.45);background:linear-gradient(135deg,rgba(255,209,0,.06),var(--panel-2));}
+.squad-num{font-family:var(--font-head);font-size:20px;color:var(--grey-dim);width:24px;
+  text-align:center;flex-shrink:0;line-height:1;}
+.squad-card.is-star .squad-num{color:rgba(255,209,0,.5);}
+.squad-info{flex:1;min-width:0;}
+.squad-info b{display:block;font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  font-family:var(--font-head);letter-spacing:.01em;}
+.squad-info span{font-size:9.5px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.04em;}
+.squad-rating{font-family:var(--font-head);font-size:17px;color:var(--cyan);flex-shrink:0;
+  background:rgba(30,155,255,.1);border:1px solid rgba(30,155,255,.25);border-radius:8px;
+  padding:3px 7px;min-width:36px;text-align:center;}
+.squad-rating.is-top{color:var(--amber);background:rgba(255,209,0,.1);border-color:rgba(255,209,0,.3);}
+
+/* formação tática */
+.formation-vis{margin:16px 0;border-radius:16px;padding:20px 12px 14px;text-align:center;
+  background:linear-gradient(180deg,rgba(49,227,155,.07) 0%,rgba(49,227,155,.02) 100%);
+  border:1px solid rgba(49,227,155,.2);position:relative;overflow:hidden;}
+.formation-vis::before{content:'';position:absolute;bottom:0;left:0;right:0;height:30%;
+  background:linear-gradient(0deg,rgba(49,227,155,.06),transparent);pointer-events:none;}
+.formation-vis .fv-label{font-family:var(--font-head);font-size:26px;color:var(--green);
+  letter-spacing:.1em;margin-bottom:16px;text-shadow:0 0 20px rgba(49,227,155,.4);}
+.fv-lines{display:flex;flex-direction:column;gap:12px;}
+.fv-line{display:flex;justify-content:center;gap:10px;}
+.fv-dot{width:32px;height:32px;border-radius:50%;
+  background:rgba(49,227,155,.12);border:1.5px solid rgba(49,227,155,.4);
+  display:flex;align-items:center;justify-content:center;
+  font-size:8.5px;color:var(--green);font-family:var(--font-head);letter-spacing:.02em;
+  box-shadow:0 0 8px rgba(49,227,155,.1);}
+.fv-dot.is-gk{background:rgba(255,209,0,.14);border-color:rgba(255,209,0,.45);
+  color:var(--amber);box-shadow:0 0 8px rgba(255,209,0,.2);}
+
+/* scout da liga */
+.scout-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px;}
+.scout-card{background:linear-gradient(145deg,var(--panel),var(--panel-2));border:1px solid var(--line);
+  border-radius:var(--radius-m);padding:15px;display:flex;flex-direction:column;gap:6px;
+  position:relative;overflow:hidden;}
+.scout-card::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--blue),transparent);}
+.sc-icon{font-size:24px;line-height:1;}
+.sc-label{font-size:9px;color:var(--grey-dim);text-transform:uppercase;letter-spacing:.08em;}
+.sc-value{font-family:var(--font-head);font-size:18px;color:var(--white);line-height:1.2;}
+.sc-sub{font-size:10.5px;color:var(--cyan);}
+
+/* raio-x e toggle ficha/raiox */
+.raiox-toggle-row{display:flex;gap:8px;margin-bottom:20px;
+  background:var(--void);border:1px solid var(--line);border-radius:22px;padding:4px;}
+.raiox-btn{flex:1;padding:9px 0;border-radius:18px;border:none;
+  background:transparent;color:var(--grey);font-size:12px;font-family:var(--font-head);
+  letter-spacing:.04em;cursor:pointer;transition:background .2s,color .2s;}
+.raiox-btn.active{background:linear-gradient(90deg,var(--blue),var(--cyan));color:#04101f;
+  box-shadow:0 2px 12px rgba(0,82,255,.4);}
+.raiox-block{border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-bottom:16px;}
+.raiox-row{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;
+  background:rgba(255,255,255,.02);border-bottom:1px solid rgba(255,255,255,.04);transition:background .1s;}
+.raiox-row:last-child{border-bottom:none;}
+.raiox-row:nth-child(odd){background:rgba(255,255,255,.015);}
+.raiox-row span{color:var(--grey-dim);font-size:12.5px;}
+.raiox-row b{color:var(--white);font-family:var(--font-head);font-size:14.5px;}
+
+/* palpite do próximo torneio */
+.predict-card{background:linear-gradient(135deg,rgba(49,227,155,.1),rgba(0,82,255,.05));
+  border:1px solid rgba(49,227,155,.3);border-radius:var(--radius-m);padding:16px;margin-top:22px;}
+.predict-card h4{font-size:13.5px;color:var(--white);margin-bottom:4px;}
+.predict-card p{font-size:12px;color:var(--grey);margin-bottom:12px;}
+.predict-row{display:flex;gap:8px;}
+.predict-row select{flex:1;background:var(--void);border:1px solid var(--line);color:var(--white);
+  padding:10px 8px;border-radius:10px;font-family:var(--font-body);font-size:13px;}
+.predict-row button{flex-shrink:0;background:var(--green);color:#05130c;border:none;font-family:var(--font-head);
+  font-size:13px;padding:0 16px;border-radius:10px;cursor:pointer;}
+.predict-chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--green);
+  background:rgba(49,227,155,.1);border:1px solid rgba(49,227,155,.3);padding:6px 12px;border-radius:20px;}
+.predict-result{font-size:12.5px;margin-top:2px;}
+.predict-result.hit{color:var(--green);}
+.predict-result.miss{color:var(--danger);}
+
+/* simulador de confronto */
+.sim-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);padding:18px;margin-top:22px;}
+.sim-card p.hint{font-size:11.5px;color:var(--grey-dim);margin-bottom:14px;}
+.sim-picker{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+.sim-picker select{flex:1;min-width:0;background:var(--void);border:1px solid var(--line);color:var(--white);
+  padding:10px 8px;border-radius:10px;font-family:var(--font-body);font-size:13px;}
+.sim-btn{display:block;width:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));color:#04101f;border:none;
+  font-family:var(--font-head);font-size:14.5px;letter-spacing:.03em;padding:13px;border-radius:12px;cursor:pointer;}
+.sim-result{display:flex;align-items:center;justify-content:center;gap:16px;margin-top:18px;min-height:64px;}
+.sim-side{flex:1;text-align:center;}
+.sim-side img{width:34px;height:34px;object-fit:contain;margin:0 auto 6px;background:var(--void);border-radius:50%;border:1px solid var(--line);padding:4px;}
+.sim-side b{display:block;font-family:var(--font-head);font-size:13px;}
+.sim-score{font-family:var(--font-head);font-size:30px;color:var(--white);flex-shrink:0;opacity:0;transform:scale(.7);
+  transition:opacity .3s ease,transform .3s ease;}
+.sim-score.show{opacity:1;transform:none;}
+.sim-verdict{text-align:center;font-size:12px;color:var(--grey-dim);margin-top:10px;}
+.sim-probability{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--grey-dim);margin-bottom:10px;}
+.sim-probability .sp-bar{flex:1;height:6px;border-radius:4px;background:var(--danger);overflow:hidden;}
+.sim-probability .sp-fill{height:100%;background:var(--cyan);}
+.sim-history{font-size:11.5px;color:var(--grey-dim);text-align:center;margin-bottom:14px;}
+
+/* força do time no simulador */
+.sim-force{display:flex;justify-content:space-between;font-size:11.5px;color:var(--grey-dim);margin-bottom:14px;}
+.sim-force .sf-side{display:flex;align-items:center;gap:5px;}
+.sim-force .sf-stars{color:var(--amber);letter-spacing:1px;}
+
+/* disputa de pênaltis (simulador) */
+.pen-shootout{margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);}
+.pen-shootout .pen-title{font-family:var(--font-head);font-size:11px;letter-spacing:.06em;color:var(--grey-dim);
+  text-transform:uppercase;margin-bottom:10px;text-align:center;}
+.pen-row{display:flex;justify-content:center;gap:5px;margin-bottom:6px;flex-wrap:wrap;}
+.pen-dot{width:16px;height:16px;border-radius:50%;font-size:10px;display:flex;align-items:center;justify-content:center;
+  background:var(--panel);border:1px solid var(--line);}
+.pen-dot.is-goal{background:var(--green);border-color:var(--green);color:#05130c;}
+.pen-dot.is-miss{background:var(--danger);border-color:var(--danger);color:#fff;}
+.pen-score{text-align:center;font-family:var(--font-head);font-size:13px;color:var(--white);margin-top:4px;}
+
+/* história automática do clube (perfil) */
+.club-history-auto{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);
+  padding:14px 16px;margin-bottom:18px;font-size:13px;color:var(--grey);line-height:1.55;}
+.club-history-auto b{color:var(--white);}
+.sim-btn.is-secondary{background:transparent;border:1px solid var(--line);color:var(--white);margin-top:16px;box-shadow:none;}
+.sim-btn.is-secondary::before{display:none;}
+.sim-bracket-result{margin-top:14px;font-size:12.5px;color:var(--grey);}
+.sim-bracket-result .sbr-row{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--line);}
+.sim-bracket-result .sbr-champ{text-align:center;margin-top:10px;font-family:var(--font-head);color:var(--amber);font-size:15px;}
+
+/* quiz da liga */
+.quiz-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius-m);padding:20px;}
+.quiz-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.quiz-progress-label{font-size:11px;color:var(--grey-dim);letter-spacing:.06em;text-transform:uppercase;}
+.quiz-score-label{font-family:var(--font-head);font-size:13px;color:var(--cyan);}
+.quiz-bar{height:4px;background:rgba(255,255,255,.06);border-radius:3px;overflow:hidden;margin-bottom:20px;}
+.quiz-bar-fill{height:100%;background:linear-gradient(90deg,var(--blue),var(--cyan));transition:width .3s ease;}
+.quiz-question{font-family:var(--font-head);font-size:17px;margin-bottom:16px;line-height:1.3;}
+.quiz-options{display:flex;flex-direction:column;gap:9px;}
+.quiz-option{text-align:left;background:var(--panel-2);border:1px solid var(--line);color:var(--white);
+  font-family:var(--font-body);font-size:13.5px;padding:12px 14px;border-radius:10px;cursor:pointer;}
+.quiz-option:disabled{cursor:default;}
+.quiz-option.correct{border-color:var(--green);background:rgba(49,227,155,.12);color:var(--green);}
+.quiz-option.wrong{border-color:var(--danger);background:rgba(255,77,109,.12);color:var(--danger);}
+.quiz-next{margin-top:16px;width:100%;background:var(--cyan);color:#04101f;border:none;font-family:var(--font-head);
+  font-size:13.5px;padding:12px;border-radius:10px;cursor:pointer;}
+.quiz-done{text-align:center;}
+.quiz-done .cup{font-size:40px;margin-bottom:10px;}
+.quiz-done h3{font-family:var(--font-head);font-size:22px;margin-bottom:6px;}
+.quiz-done p{color:var(--grey);font-size:13px;margin-bottom:18px;}
+
+/* confete */
+.confetti-layer{position:fixed;inset:0;z-index:900;pointer-events:none;overflow:hidden;}
+.confetti-piece{position:absolute;top:-20px;font-size:18px;animation:confettiFall linear forwards;}
+@keyframes confettiFall{to{transform:translateY(110vh) rotate(360deg);opacity:0;}}
+
+@media (min-width:481px){
+  body{background:#030A18;}
+}
+
+/* =====================================================================================================
+   ██████████████████████████████████████████████████████████████████████████████████████████████████
+   CAMADA VISUAL EXTRA — efeitos "estilo eFootball": azul saturado + amarelo saturado, brilhos, texturas.
+   Tudo aqui é aditivo (não mexe nas regras acima), então é seguro editar só o necessário.
+   ██████████████████████████████████████████████████████████████████████████████████████████████████
+   ===================================================================================================== */
+
+/* textura diagonal estilo "menu de jogo" atrás de tudo */
+body::before{content:'';position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+    repeating-linear-gradient(115deg, rgba(0,82,255,.05) 0px, rgba(0,82,255,.05) 2px, transparent 2px, transparent 46px),
+    radial-gradient(ellipse 900px 500px at 8% -10%, rgba(0,82,255,.22), transparent 55%),
+    radial-gradient(ellipse 700px 420px at 100% 8%, rgba(255,209,0,.10), transparent 60%);
+}
+.app{background:transparent;}
+
+/* barra de progresso com brilho duplo azul→amarelo */
+.scroll-progress{background:linear-gradient(90deg,var(--blue),var(--cyan) 55%,var(--amber));
+  box-shadow:0 0 10px rgba(30,155,255,.8), 0 0 16px rgba(255,209,0,.35);}
+
+/* topo com friso amarelo fino */
+header.topbar{border-bottom:1px solid rgba(255,209,0,.14);box-shadow:0 1px 0 rgba(0,82,255,.25);}
+.topbar-logo{box-shadow:0 0 16px rgba(30,155,255,.35), inset 0 0 0 1px rgba(255,209,0,.12);}
+
+/* hero: brilho amarelo somado ao azul existente + título com contorno sutil */
+.hero{background:
+  radial-gradient(ellipse 520px 330px at 50% 0%, rgba(0,82,255,.34), transparent 65%),
+  radial-gradient(ellipse 360px 220px at 90% 15%, rgba(255,209,0,.14), transparent 70%);}
+.hero-eyebrow{border-color:rgba(255,209,0,.4);color:var(--amber);background:rgba(255,209,0,.06);}
+.hero h1{background:linear-gradient(180deg,#fff 20%, var(--cyan) 78%, var(--amber) 130%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 4px 18px rgba(0,82,255,.45));}
+.crest-center{box-shadow:0 0 0 3px rgba(255,209,0,.35), 0 0 34px rgba(0,82,255,.65);}
+.hero-stat{border-color:rgba(255,209,0,.16);}
+.hero-stat b{background:linear-gradient(180deg,var(--white),var(--cyan));-webkit-background-clip:text;background-clip:text;color:transparent;}
+
+/* cards com friso superior em degradê azul→amarelo ao passar o mouse, além da cor do clube */
+.club-card{position:relative;}
+.club-card::after{content:'';position:absolute;inset:0;border-radius:inherit;padding:1px;pointer-events:none;
+  background:linear-gradient(120deg, rgba(0,82,255,.35), transparent 30%, transparent 70%, rgba(255,209,0,.28));
+  -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude; opacity:0; transition:opacity .25s ease;}
+.club-card:hover::after, .club-card:active::after{opacity:1;}
+
+/* botões e barras de destaque ganham o toque amarelo */
+.sim-btn, .quiz-next{background:linear-gradient(90deg,var(--blue),var(--cyan) 65%,var(--amber));color:#04101f;
+  box-shadow:0 6px 18px rgba(0,82,255,.35);position:relative;overflow:hidden;}
+.sim-btn::before, .quiz-next::before{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;
+  background:linear-gradient(115deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);
+  animation:shine 3.2s ease-in-out infinite;}
+@keyframes shine{0%{left:-60%;}45%,100%{left:130%;}}
+.predict-row button{background:linear-gradient(90deg,var(--green),#8CF2C9);box-shadow:0 4px 14px rgba(49,227,155,.3);}
+
+/* rótulos "amarelo saturado" para tudo que já era âmbar — reforço de brilho */
+.champion-badge, .latest-pill, .badge-chip.is-gold{box-shadow:0 0 10px rgba(255,209,0,.25);}
+.crest-node.is-champion .champion-tag{box-shadow:0 0 12px rgba(255,209,0,.8);}
+
+/* ícones trocados por imagem (sistema de troca emoji → imagem) */
+.icone-custom{width:1.1em;height:1.1em;object-fit:contain;display:inline-block;vertical-align:-0.18em;border-radius:3px;}
+
+/* =====================================================================
+   NOVA FUNCIONALIDADE 1 — BUSCA GLOBAL
+   ===================================================================== */
+.search-box{position:relative;display:flex;align-items:center;gap:10px;background:var(--panel);
+  border:1px solid var(--line);border-radius:16px;padding:13px 16px;box-shadow:0 0 0 1px rgba(255,209,0,.05) inset;}
+.search-box svg{flex-shrink:0;opacity:.7;}
+.search-box input{flex:1;min-width:0;background:none;border:none;color:var(--white);font-family:var(--font-body);
+  font-size:14.5px;outline:none;}
+.search-box input::placeholder{color:var(--grey-dim);}
+.search-clear{background:rgba(255,255,255,.06);border:none;color:var(--grey);width:24px;height:24px;border-radius:50%;
+  cursor:pointer;display:none;flex-shrink:0;font-size:13px;}
+.search-box.has-text .search-clear{display:block;}
+.search-results{margin-top:14px;display:flex;flex-direction:column;gap:8px;}
+.search-empty{color:var(--grey-dim);font-size:13px;padding:6px 2px;}
+.search-hit{display:flex;align-items:center;gap:12px;background:var(--panel);border:1px solid var(--line);
+  border-radius:12px;padding:10px 14px;cursor:pointer;transition:border-color .15s ease;}
+.search-hit:hover{border-color:rgba(30,155,255,.4);}
+.search-hit .sh-ic{width:32px;height:32px;border-radius:9px;background:var(--panel-2);display:flex;align-items:center;
+  justify-content:center;flex-shrink:0;font-size:15px;overflow:hidden;}
+.search-hit .sh-ic img{width:100%;height:100%;object-fit:contain;padding:4px;}
+.search-hit .sh-body{min-width:0;flex:1;}
+.search-hit .sh-body b{display:block;font-family:var(--font-head);font-size:14px;line-height:1.2;}
+.search-hit .sh-body span{font-size:11.5px;color:var(--grey-dim);}
+.search-hit .sh-tag{font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--cyan);
+  background:rgba(30,155,255,.1);border:1px solid rgba(30,155,255,.3);padding:3px 8px;border-radius:20px;flex-shrink:0;}
+
+/* =====================================================================
+   NOVA FUNCIONALIDADE 2 — CARTEIRINHA DO TORCEDOR
+   ===================================================================== */
+.card-picker{display:flex;gap:8px;margin-bottom:16px;}
+.card-picker select{flex:1;background:var(--void);border:1px solid var(--line);color:var(--white);
+  padding:10px 8px;border-radius:10px;font-family:var(--font-body);font-size:13px;}
+.fancard-stage{display:flex;justify-content:center;padding:6px;background:radial-gradient(ellipse at 50% 0%,rgba(0,82,255,.18),transparent 70%);
+  border-radius:var(--radius-m);}
+.fancard-stage canvas{max-width:100%;height:auto;border-radius:18px;box-shadow:0 14px 40px rgba(0,0,0,.55), 0 0 0 1px rgba(255,209,0,.12);}
+.fancard-actions{display:flex;gap:10px;margin-top:16px;}
+.fancard-actions button{flex:1;font-family:var(--font-head);font-size:13.5px;padding:12px;border-radius:12px;
+  border:1px solid var(--line);cursor:pointer;}
+.fancard-actions .btn-primary{background:linear-gradient(90deg,var(--amber),var(--amber-deep));border:none;color:#1a1206;
+  box-shadow:0 6px 16px rgba(255,209,0,.3);}
+.fancard-actions .btn-ghost{background:var(--panel);color:var(--white);}
+.card-picker input{flex:1;min-width:0;background:var(--void);border:1px solid var(--line);color:var(--white);
+  padding:10px 12px;border-radius:10px;font-family:var(--font-body);font-size:13px;}
+.card-picker input::placeholder{color:var(--grey-dim);}
+
+/* =====================================================================
+   NOVA FUNCIONALIDADE 3 — TROFÉUS DO TORCEDOR (CONQUISTAS)
+   ===================================================================== */
+.ach-progress{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+.ach-ring{width:52px;height:52px;border-radius:50%;flex-shrink:0;
+  background:conic-gradient(var(--amber) calc(var(--pct,0)*1%), rgba(255,255,255,.08) 0);
+  display:flex;align-items:center;justify-content:center;position:relative;}
+.ach-ring::before{content:'';position:absolute;inset:5px;border-radius:50%;background:var(--void);}
+.ach-ring span{position:relative;font-family:var(--font-head);font-size:12px;color:var(--amber);}
+.ach-progress-text b{display:block;font-family:var(--font-head);font-size:15px;}
+.ach-progress-text span{font-size:11.5px;color:var(--grey-dim);}
+.ach-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+.ach-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px 12px;text-align:center;
+  opacity:.45;filter:grayscale(1);transition:opacity .3s ease,filter .3s ease,transform .2s ease,border-color .3s ease;}
+.ach-card.unlocked{opacity:1;filter:none;border-color:rgba(255,209,0,.4);box-shadow:0 0 14px rgba(255,209,0,.12);}
+.ach-card:active{transform:scale(.96);}
+.ach-card .ach-ic{font-size:26px;margin-bottom:6px;}
+.ach-card b{display:block;font-family:var(--font-head);font-size:12.5px;line-height:1.2;margin-bottom:3px;}
+.ach-card span{font-size:10px;color:var(--grey-dim);line-height:1.3;display:block;}
+
+/* toast de conquista desbloqueada */
+.ach-toast{position:fixed;left:50%;bottom:calc(90px + var(--safe-b));transform:translateX(-50%) translateY(20px);
+  max-width:calc(var(--appw) - 32px);width:calc(100% - 32px);z-index:950;display:flex;align-items:center;gap:12px;
+  background:linear-gradient(120deg,var(--panel-2),var(--panel));border:1px solid rgba(255,209,0,.45);
+  border-radius:16px;padding:12px 16px;box-shadow:0 14px 34px rgba(0,0,0,.5), 0 0 20px rgba(255,209,0,.2);
+  opacity:0;pointer-events:none;transition:opacity .3s ease,transform .3s ease;}
+.ach-toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.ach-toast .ach-toast-ic{font-size:26px;flex-shrink:0;}
+.ach-toast b{display:block;font-family:var(--font-head);font-size:13.5px;color:var(--amber);}
+.ach-toast span{font-size:11.5px;color:var(--grey);}
+</style>
+</head>
+<body>
+
+<div class="desk-fill"></div>
+<div class="scroll-progress" id="scrollProgress"></div>
+
+<div class="app">
+
+<!-- ============ TOPO ============ -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="topbar-logo"><img id="logoImg" src="" alt="Logo da liga" onerror="this.style.display='none'"></div>
+    <div class="topbar-text">
+      <b>LIGA ZÉ PREFEITURA</b>
+      <span>COPA LIGA eFOOTBALL</span>
+    </div>
+    <div class="fav-pill" id="favPill" style="display:none"></div>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<main>
+<section class="hero" id="inicio">
+  <div class="hero-dots"></div>
+  <div class="hero-eyebrow">COPA LIGA eFOOTBALL</div>
+  <h1>LIGA ZÉ<br>PREFEITURA</h1>
+  <p class="hero-sub">O arquivo oficial da competição</p>
+  <p class="hero-tag" id="heroTag">A história continua, torneio após torneio.</p>
+
+  <div class="crest-ring" id="crestRing">
+    <svg class="lines" viewBox="0 0 300 300" preserveAspectRatio="none">
+      <line x1="150" y1="150" x2="150" y2="30" stroke="url(#lg)" stroke-width="1.5"/>
+      <line x1="150" y1="150" x2="270" y2="150" stroke="url(#lg)" stroke-width="1.5"/>
+      <line x1="150" y1="150" x2="150" y2="270" stroke="url(#lg)" stroke-width="1.5"/>
+      <line x1="150" y1="150" x2="30" y2="150" stroke="url(#lg)" stroke-width="1.5"/>
+      <defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0" stop-color="#1E9BFF" stop-opacity=".55"/>
+        <stop offset="1" stop-color="#1E9BFF" stop-opacity="0"/>
+      </linearGradient></defs>
+    </svg>
+    <div class="crest-center">⚽</div>
+  </div>
+
+  <div class="hero-stats">
+    <div class="hero-stat"><b id="heroStatTorneios" data-count="0">0</b><span>Torneios</span></div>
+    <div class="hero-stat"><b id="heroStatClubes" data-count="0">0</b><span>Clubes</span></div>
+    <div class="hero-stat"><b id="heroStatTitulos" data-count="0">0</b><span>Taças decididas</span></div>
+  </div>
+
+  <div class="countdown" id="countdownBox" style="display:none">
+    <div class="countdown-label">⏱ Contagem para o próximo torneio</div>
+    <div class="countdown-grid" id="countdownGrid"></div>
+  </div>
+
+  <div class="scroll-cue">ROLE PARA EXPLORAR<div class="stick"></div></div>
+</section>
+
+<!-- ============ PAINEL INICIAL (campeão atual, fatos rápidos) ============ -->
+<section id="painel">
+  <div class="wrap">
+    <div class="champion-showcase reveal" id="championShowcase"></div>
+    <div class="quick-facts reveal" id="quickFacts"></div>
+    <div class="last-result-card reveal" id="lastResultCard"></div>
+    <div class="home-news-preview reveal" id="homeNewsPreview"></div>
+    <div class="home-links reveal">
+      <a href="#clubes" class="home-link-btn">Ver clubes</a>
+      <a href="#torneios" class="home-link-btn is-primary">Ver torneios</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BUSCA GLOBAL (nova funcionalidade 1) ============ -->
+<section id="busca">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">ENCONTRE RÁPIDO</div>
+      <h2>Busca da Liga</h2>
+      <p>Procure por clubes, campeões, notícias ou torneios em um só lugar.</p>
+    </div>
+    <div class="search-box reveal" id="searchBox">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#93A3CC" stroke-width="2"/><line x1="16.2" y1="16.2" x2="21" y2="21" stroke="#93A3CC" stroke-width="2" stroke-linecap="round"/></svg>
+      <input type="text" id="searchInput" placeholder="Buscar clube, campeão, torneio, notícia...">
+      <button class="search-clear" id="searchClear" aria-label="Limpar busca">×</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</section>
+
+<!-- ============ RESUMO ============ -->
+<section id="destaques">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">RESUMO DA LIGA</div>
+      <h2>Onde a competição está agora</h2>
+      <p>Atualizado automaticamente sempre que um torneio é cadastrado no código.</p>
+    </div>
+    <div class="stat-grid reveal" id="highlightGrid"></div>
+  </div>
+</section>
+
+<!-- ============ CLUBES ============ -->
+<section id="clubes" class="section-alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">OS DISPUTANTES</div>
+      <h2>Clubes da Liga</h2>
+      <p>Toque em um card para ver a trajetória completa. Toque na estrela para marcar seu clube do coração.</p>
+    </div>
+    <div class="club-grid reveal" id="clubGrid"></div>
+  </div>
+</section>
+
+<!-- ============ TÍTULOS ============ -->
+<section id="titulos">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">QUADRO DE CAMPEÕES</div>
+      <h2>Campeões e vices</h2>
+      <p>O registro oficial de cada torneio da Copa Liga eFootball.</p>
+    </div>
+    <div class="champ-list reveal" id="champList"></div>
+  </div>
+</section>
+
+<!-- ============ TORNEIOS / CHAVE ============ -->
+<section id="torneios" class="section-alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">EDIÇÕES</div>
+      <h2>Chave de cada torneio</h2>
+      <p>Selecione uma edição para ver como o torneio se desenrolou até o campeão.</p>
+    </div>
+    <div class="tournament-select reveal" id="tSelect"></div>
+    <div class="tournament-meta reveal" id="tournamentMeta"></div>
+    <div class="bracket reveal" id="bracketView"></div>
+    <div class="tournament-stats reveal" id="tournamentStats"></div>
+    <div class="result-feed reveal" id="resultFeed"></div>
+    <div class="predict-card reveal" id="predictCard" style="display:none"></div>
+  </div>
+</section>
+
+<!-- ============ SIMULADOR ============ -->
+<section id="simulador" class="section-alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">SÓ DE BRINCADEIRA</div>
+      <h2>Simulador de confronto</h2>
+      <p>Escolha dois clubes e veja um placar aleatório. Não conta pro histórico oficial — é só diversão.</p>
+    </div>
+    <div class="sim-card reveal">
+      <p class="hint">A força de cada time considera títulos e aproveitamento. Em caso de empate, vai para os pênaltis.</p>
+      <div class="sim-picker">
+        <select id="simA"></select>
+        <span class="hth-vs">×</span>
+        <select id="simB"></select>
+      </div>
+      <div class="sim-probability" id="simProbability"></div>
+      <div class="sim-force" id="simForce"></div>
+      <div class="sim-history" id="simHistory"></div>
+      <button class="sim-btn" id="simRun">Simular partida ⚽</button>
+      <div class="sim-result" id="simResult"></div>
+      <div class="sim-verdict" id="simVerdict"></div>
+      <button class="sim-btn is-secondary" id="simBracketRun">Simular mata-mata com todos os clubes 🏆</button>
+      <div class="sim-bracket-result" id="simBracketResult"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RANKING ============ -->
+<section id="ranking">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">CLASSIFICAÇÃO GERAL</div>
+      <h2>Ranking da Liga</h2>
+      <p>Escolha o critério e veja a classificação da Liga sob diferentes ângulos.</p>
+    </div>
+    <div class="rank-filter reveal" id="rankFilter"></div>
+    <div class="rank-list reveal" id="rankList"></div>
+  </div>
+</section>
+
+<!-- ============ RANKING DE FORÇA eFOOTBALL ============ -->
+<section id="ranking-forca" class="section-alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">🎮 eFOOTBALL</div>
+      <h2>Ranking de Força eFootball</h2>
+      <p>Classificação pela força dos times cadastrada no eFootball — separada do ranking histórico da Liga.</p>
+    </div>
+    <div class="rank-list reveal" id="rankListForca"></div>
+  </div>
+</section>
+
+<!-- ============ ESTATÍSTICAS ============ -->
+<section id="estatisticas" class="section-alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">NÚMEROS DA LIGA</div>
+      <h2>Estatísticas</h2>
+      <p>O histórico completo da competição, em números.</p>
+    </div>
+    <div class="stat-grid reveal" id="statGrid2"></div>
+    <div class="chart-grid reveal">
+      <div class="chart-card"><h4>Títulos por clube</h4><canvas id="chartTitulos" height="200"></canvas></div>
+      <div class="chart-card"><h4>Vice-campeonatos por clube</h4><canvas id="chartVices" height="200"></canvas></div>
+      <div class="chart-card"><h4>Participações por clube</h4><canvas id="chartPart" height="200"></canvas></div>
+      <div class="chart-card"><h4>Posição por torneio (1º = campeão)</h4><canvas id="chartEvol" height="200"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SCOUT DA LIGA ============ -->
+<section id="scout">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">🔎 ANÁLISE TÉCNICA</div>
+      <h2>Scout da Liga</h2>
+      <p>Panorama técnico dos clubes no eFootball — dados inseridos manualmente.</p>
+    </div>
+    <div class="reveal" id="scoutGrid"></div>
+  </div>
+</section>
+
+<!-- ============ RECORDES ============ -->
+<section id="recordes">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">MARCAS DA LIGA</div>
+      <h2>Recordes</h2>
+      <p>Calculados automaticamente a partir do histórico de todos os torneios.</p>
+    </div>
+    <div class="record-grid reveal" id="recordGrid"></div>
+  </div>
+</section>
+
+<!-- ============ CONFRONTO DIRETO ============ -->
+<section id="confronto">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">HISTÓRICO DE FINAIS</div>
+      <h2>Confronto direto</h2>
+      <p>Escolha dois clubes para comparar o retrospecto entre eles.</p>
+    </div>
+    <div class="rivalry-callout reveal" id="rivalryCallout"></div>
+    <div class="hth-picker reveal">
+      <select id="hthA"></select>
+      <span class="hth-vs">×</span>
+      <select id="hthB"></select>
+    </div>
+    <div class="hth-result reveal" id="hthResult"></div>
+    <div class="hth-matches reveal" id="hthMatches"></div>
+    <div class="compare-panel reveal" id="comparePanel"></div>
+    <div class="rivalry-list reveal" id="rivalryList"></div>
+  </div>
+</section>
+
+<!-- ============ HISTÓRIA ============ -->
+<section id="historia" class="section-alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">A CAMINHADA</div>
+      <h2>História da Liga</h2>
+      <p>Como quatro amigos transformaram partidas no eFootball em uma competição com identidade própria.</p>
+    </div>
+    <div class="history-copy reveal">
+      <article><h3>O início</h3><p>A Liga Zé Prefeitura nasceu da vontade de dar um formato sério a partidas de eFootball entre amigos — com clubes fixos, edições numeradas e um lugar para guardar a memória de cada disputa.</p></article>
+      <article><h3>Primeiras edições</h3><p>Os primeiros torneios estabeleceram o formato: quatro clubes, semifinais e uma grande final. Kyoto Sanga foi o primeiro campeão da Liga, no Torneio 1.</p></article>
+      <article><h3>Rivalidades</h3><p id="rivalryText">Os confrontos diretos entre os quatro clubes vão, torneio após torneio, desenhando os duelos mais marcantes da Liga.</p></article>
+      <article><h3>Era atual</h3><p id="eraAtualText">A Copa Liga eFootball segue em expansão, com novas edições sempre a caminho.</p></article>
+    </div>
+    <div class="timeline reveal" id="timeline"></div>
+  </div>
+</section>
+
+<!-- ============ HALL DA FAMA ============ -->
+<section id="hallfama" class="section-alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">OS NOMES QUE FICAM</div>
+      <h2>Hall da Fama</h2>
+      <p>Os destaques e recordes históricos da Liga, calculados a partir de todos os torneios já disputados.</p>
+    </div>
+    <div class="hof-grid reveal" id="hofGrid"></div>
+    <div class="hof-block reveal">
+      <h4>Clubes fundadores</h4>
+      <div class="hof-founders" id="hofFounders"></div>
+    </div>
+    <div class="hof-block reveal">
+      <h4>Jogadores históricos</h4>
+      <div id="hofPlayers"></div>
+    </div>
+    <div class="hof-block reveal">
+      <h4>Momentos marcantes</h4>
+      <div id="hofMoments"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NOTÍCIAS ============ -->
+<section id="noticias">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">REDAÇÃO DA LIGA</div>
+      <h2>Notícias</h2>
+      <p>Os momentos que marcaram a Copa Liga eFootball.</p>
+    </div>
+    <div class="news-filter reveal" id="newsFilter"></div>
+    <div class="news-grid reveal" id="newsGrid"></div>
+  </div>
+</section>
+
+<!-- ============ GALERIA ============ -->
+<section id="galeria" class="section-alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">ESCUDOS</div>
+      <h2>Galeria</h2>
+      <p>Escudos, finais, troféus e momentos da Liga, organizados por categoria.</p>
+    </div>
+    <div class="news-filter reveal" id="galleryFilter"></div>
+    <div class="gallery-grid reveal" id="galleryGrid"></div>
+  </div>
+</section>
+
+<!-- ============ QUIZ ============ -->
+<section id="quiz">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">TESTE SEU CONHECIMENTO</div>
+      <h2>Quiz da Liga</h2>
+      <p>Perguntas geradas a partir do histórico real dos torneios.</p>
+    </div>
+    <div class="quiz-card reveal" id="quizCard"></div>
+  </div>
+</section>
+
+<!-- ============ CARTEIRINHA DO TORCEDOR ============ -->
+<section id="carteirinha" class="section-alt">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">SUA IDENTIDADE NA LIGA</div>
+      <h2>Carteirinha do Torcedor</h2>
+      <p>Escolha seu clube, coloque seu nome e gere sua carteirinha pra compartilhar.</p>
+    </div>
+    <div class="card-picker reveal">
+      <select id="fancardClub"></select>
+      <input type="text" id="fancardName" placeholder="Seu nome" maxlength="24">
+    </div>
+    <div class="fancard-stage reveal">
+      <canvas id="fancardCanvas" width="320" height="500"></canvas>
+    </div>
+    <div class="fancard-actions reveal">
+      <button class="btn-ghost" id="fancardShare">Compartilhar</button>
+      <button class="btn-primary" id="fancardDownload">Baixar imagem</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ GUIA DE EDIÇÃO ============ -->
+<section id="guia">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="section-kicker">PARA QUEM CUIDA DO SITE</div>
+      <h2>Guia rápido de edição</h2>
+      <p>Tudo isso também está comentado dentro do código, bem no topo do bloco &lt;script&gt;. Veja também o arquivo GUIA-DE-EDICAO.md que acompanha este site.</p>
+    </div>
+    <div id="guiaList"></div>
+  </div>
+</section>
+
+</main>
+<footer>
+  <p><strong>Liga Zé Prefeitura</strong> — Copa Liga eFootball · Arquivo histórico não-oficial de uma competição entre amigos.</p>
+  <a class="foot-guide-link" href="#guia">Como editar este site ↑</a>
+</footer>
+
+</div><!-- /.app -->
+
+<!-- ============ BARRA INFERIOR (navegação) ============ -->
+<nav class="tabbar" id="tabbar">
+  <button class="tab-btn" data-target="#inicio"><span class="ic">🏠</span><span>Início</span></button>
+  <button class="tab-btn" data-target="#clubes"><span class="ic">🛡️</span><span>Clubes</span></button>
+  <button class="tab-btn" data-target="#torneios"><span class="ic">🏆</span><span>Torneios</span></button>
+  <button class="tab-btn" data-target="#estatisticas"><span class="ic">📊</span><span>Stats</span></button>
+  <button class="tab-btn" id="tabMore"><span class="ic">☰</span><span>Mais</span></button>
+</nav>
+
+<!-- ============ FOLHA: DETALHE DO CLUBE ============ -->
+<div class="overlay" id="overlay">
+  <div class="sheet" id="clubDetail"></div>
+</div>
+
+<!-- ============ FOLHA: MENU "MAIS" ============ -->
+<div class="overlay" id="overlayMore">
+  <div class="sheet">
+    <div class="sheet-handle"></div>
+    <button class="sheet-close" id="closeMore">×</button>
+    <a class="more-link" href="#titulos" data-close-more><span class="ic">🥇</span>Títulos</a>
+    <a class="more-link" href="#ranking" data-close-more><span class="ic">📋</span>Ranking</a>
+    <a class="more-link" href="#recordes" data-close-more><span class="ic">🏅</span>Recordes</a>
+    <a class="more-link" href="#confronto" data-close-more><span class="ic">⚔️</span>Confronto direto</a>
+    <a class="more-link" href="#simulador" data-close-more><span class="ic">🎮</span>Simulador</a>
+    <a class="more-link" href="#historia" data-close-more><span class="ic">📜</span>História</a>
+    <a class="more-link" href="#hallfama" data-close-more><span class="ic">⭐</span>Hall da Fama</a>
+    <a class="more-link" href="#noticias" data-close-more><span class="ic">📰</span>Notícias</a>
+    <a class="more-link" href="#galeria" data-close-more><span class="ic">🖼️</span>Galeria</a>
+    <a class="more-link" href="#quiz" data-close-more><span class="ic">🧠</span>Quiz da Liga</a>
+    <a class="more-link" href="#carteirinha" data-close-more><span class="ic">🪪</span>Carteirinha do Torcedor</a>
+    <a class="more-link" href="#guia" data-close-more><span class="ic">🛠️</span>Guia de edição</a>
+  </div>
+</div>
+
+<button class="fab-top" id="fabTop" aria-label="Voltar ao topo">↑</button>
+<div class="confetti-layer" id="confettiLayer"></div>
+
+<script>
+/* =====================================================================================================
+   ██████████████████████████████████████████████████████████████████████████████████████████████████
+   GUIA DE EDIÇÃO — LEIA ISTO ANTES DE MEXER EM QUALQUER COISA
+   ██████████████████████████████████████████████████████████████████████████████████████████████████
+
+   Este site inteiro é UM ÚNICO ARQUIVO (index.html). Tudo que você vê na tela é gerado a partir
+   das listas de dados logo abaixo. Você NÃO precisa saber programar para atualizar o site —
+   só precisa editar essas listas com cuidado, respeitando vírgulas e aspas.
+
+   Dica de segurança: antes de editar, faça uma cópia do arquivo (ex: index-backup.html).
+   Se alguma coisa der errado, você pode voltar para a cópia.
+
+   Onde editar cada coisa:
+   1) CONFIG            → logo do campeonato, nome, data do próximo torneio
+   2) clubes             → os 4 (ou mais) clubes da liga
+   3) torneios           → cada edição, com campeão, vice, chave e placares
+   4) noticias           → os cards da seção "Notícias"
+   5) guiaFAQ            → este próprio guia dentro do site (seção "Guia rápido de edição")
+
+   Depois da seção 5 começa o código que DESENHA o site (renderiza) — normalmente você não
+   precisa mexer ali, ele lê as listas acima e monta tudo sozinho.
+   ===================================================================================================== */
+
+/* -------------------------------------------------------------------------------------------------
+   1) CONFIG — ajustes gerais do site
+   -------------------------------------------------------------------------------------------------
+   logoUrl:
+     Coloque aqui o link direto da imagem do logo do campeonato (a imagem em si, não a página).
+     Como pegar esse link do Imgur:
+       a) Abra a imagem do logo no site imgur.com (não o álbum, a foto aberta sozinha).
+       b) Clique com o botão direito em cima da imagem → "Copiar endereço da imagem".
+       c) O link deve terminar em .png, .jpg ou .webp e começar com https://i.imgur.com/...
+       d) Cole esse link entre as aspas abaixo.
+     Se deixar em branco (""), o site usa a bolinha ⚽ no lugar do logo — nada quebra.
+
+   proximaData:
+     Data e hora prevista do PRÓXIMO torneio, no formato "AAAA-MM-DDTHH:MM:00".
+     Exemplo: 20 de novembro de 2026 às 20h → "2026-11-20T20:00:00"
+     Deixe como null (sem aspas) para esconder o contador regressivo.
+------------------------------------------------------------------------------------------------- */
+const CONFIG = {
+  logoUrl: "https://i.imgur.com/dtPmRrp.png", // 👉 cole aqui o link direto (i.imgur.com/....png) do logo do campeonato
+  proximaData: null // 👉 exemplo: "2026-11-20T20:00:00"
+};
+
+/* -------------------------------------------------------------------------------------------------
+   2) CLUBES — os clubes fixos da liga
+   -------------------------------------------------------------------------------------------------
+   Cada clube é um bloco { ... }. Para ADICIONAR um 5º clube, copie um bloco inteiro (do { até o },
+   incluindo a vírgula depois do }), cole antes do "];" final e mude os valores.
+
+   Campos:
+     id        → um "apelido" curto sem espaços nem acentos, em minúsculas. É usado internamente
+                 para ligar o clube aos torneios (campo "campeao"/"vice"). NUNCA repita um id.
+     nome      → nome que aparece na tela.
+     dono      → nome de quem joga com esse clube.
+     escudo    → link direto da imagem do escudo (mesmo processo do logo, acima).
+     cor       → cor de destaque do clube em hexadecimal (ex: "#EF0107"). Aparece como uma linha
+                 colorida no topo do card do clube e na galeria.
+------------------------------------------------------------------------------------------------- */
+const clubes = [
+  { id:"arsenal",   nome:"Arsenal",           dono:"João",    pais:"Inglaterra", escudo:"https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg", cor:"#EF0107",
+    descricao:"Um dos clubes fundadores da Liga Zé Prefeitura.",
+    efootballId:"", forca:0, formacao:"", tatica:"", tecnico:"", estiloJogo:"",
+    jogadorDestaque:{ nome:"", posicao:"", forca:0 }, elenco:[], historicoForca:[], obs:"" },
+  { id:"bayer",     nome:"Real Madrid",  dono:"Marcos",  pais:"Alemanha", escudo:"https://thumb.wikimedia.org/wikipedia/pt/thumb/9/98/Real_Madrid.png/250px-Real_Madrid.png?utm_source=pt.wikipedia.org&utm_campaign=index&utm_content=thumbnail", cor:"#E32219",
+    descricao:"Maior campeão e um dos clubes fundadores da Liga Zé Prefeitura.",
+    efootballId:"", forca:0, formacao:"", tatica:"", tecnico:"", estiloJogo:"",
+    jogadorDestaque:{ nome:"", posicao:"", forca:0 }, elenco:[], historicoForca:[], obs:"" },
+  { id:"flamengo",  nome:"Flamengo",          dono:"Luis",    pais:"Brasil", escudo:"https://upload.wikimedia.org/wikipedia/commons/9/93/Flamengo-RJ_%28BRA%29.png", cor:"#C6102F",
+    descricao:"Um dos clubes fundadores da Liga Zé Prefeitura.",
+    efootballId:"", forca:0, formacao:"", tatica:"", tecnico:"", estiloJogo:"",
+    jogadorDestaque:{ nome:"", posicao:"", forca:0 }, elenco:[], historicoForca:[], obs:"" },
+  { id:"kyoto",     nome:"Kyoto Sanga",       dono:"Nicolas", pais:"Japão", escudo:"https://thumb.wikimedia.org/wikipedia/en/thumb/a/a2/Kyoto_Sanga_FC_logo.svg/250px-Kyoto_Sanga_FC_logo.svg.png?utm_source=en.wikipedia.org&utm_campaign=parser&utm_content=thumbnail", cor:"#7B2CBF",
+    descricao:"Primeiro campeão e um dos clubes fundadores da Liga Zé Prefeitura.",
+    efootballId:"", forca:0, formacao:"", tatica:"", tecnico:"", estiloJogo:"",
+    jogadorDestaque:{ nome:"", posicao:"", forca:0 }, elenco:[], historicoForca:[], obs:"" }
+];
+/* Preencha os campos acima (efootballId, forca, formacao, tatica, tecnico, estiloJogo,
+   jogadorDestaque, elenco, historicoForca, obs) manualmente quando tiver os dados reais.
+   Campos vazios/zerados aparecem como "Não informado" no site — nada é inventado. */
+
+/* -------------------------------------------------------------------------------------------------
+   3) TORNEIOS — cada edição da Copa Liga eFootball
+   -------------------------------------------------------------------------------------------------
+   data      → data/período da edição, no formato "AAAA-MM-DD" (ex: "2026-03-15"). Deixe null
+               enquanto não for cadastrada — o site mostra "Data a definir" automaticamente.
+   numero    → número da edição (1, 2, 3...).
+   nome      → nome mostrado ("Torneio 6").
+   campeao / vice → o "id" do clube (o mesmo id que você definiu lá em cima). Use null se ainda
+                    não foi decidido (o site mostra "A definir" automaticamente).
+   chave.semifinais → dois confrontos, cada um é [id_time_A, id_time_B]. Use null quando um dos
+                      lados ainda não é conhecido.
+   chave.semifinaisPlacar → o placar de cada semifinal, no mesmo formato [golsA, golsB].
+                            Use null se o jogo ainda não aconteceu (não mostra placar).
+   chave.final       → [id_time_A, id_time_B] da grande final.
+   chave.finalPlacar → [golsA, golsB] da final. Use null se ainda não jogou.
+
+   PARA ADICIONAR UM NOVO TORNEIO (ex: Torneio 7):
+     Copie o bloco inteiro do Torneio 6 (o último da lista), cole depois dele (não esqueça a
+     vírgula antes do novo bloco), aumente o "numero" e o "nome", e vá preenchendo os resultados
+     conforme as partidas forem acontecendo. Pode deixar tudo com null no começo e ir editando
+     aos poucos — o site sempre mostra "A definir" para o que ainda não foi preenchido.
+------------------------------------------------------------------------------------------------- */
+const torneios = [
+  { numero:1, nome:"Torneio 1", data:null, campeao:"kyoto", vice:"arsenal",
+    chave:{ semifinais:[["kyoto","flamengo"],["bayer","arsenal"]], semifinaisPlacar:[[3,0],[1,0]],
+             final:["kyoto","arsenal"], finalPlacar:[1,0] } },
+  { numero:2, nome:"Torneio 2", data:null, campeao:"bayer", vice:"kyoto",
+    chave:{ semifinais:[["arsenal","bayer"],["flamengo","kyoto"]], semifinaisPlacar:[[1,2],[1,3]],
+             final:["kyoto","bayer"], finalPlacar:[1,1] } },
+  { numero:3, nome:"Torneio 3", data:null, campeao:"bayer", vice:"flamengo",
+    chave:{ semifinais:[["kyoto","bayer"],["flamengo","arsenal"]], semifinaisPlacar:[[1,2],[1,0]],
+             final:["bayer","flamengo"], finalPlacar:[2,1] } },
+  { numero:4, nome:"Torneio 4", data:null, campeao:"flamengo", vice:"arsenal",
+    chave:{ semifinais:[["kyoto","flamengo"],["bayer","arsenal"]], semifinaisPlacar:[[0,2],[1,2]],
+             final:["flamengo","arsenal"], finalPlacar:[1,0] } },
+  { numero:5, nome:"Torneio 5", data:null, campeao:"arsenal", vice:"kyoto",
+    chave:{ semifinais:[["arsenal","bayer"],["flamengo","kyoto"]], semifinaisPlacar:[[2,1],[1,1]],
+             final:["kyoto","arsenal"], finalPlacar:[0,3] } },
+  { numero:6, nome:"Torneio 6", data:null, campeao:"bayer", vice:"kyoto",
+    chave:{ semifinais:[["bayer","arsenal"],["kyoto","flamengo"]], semifinaisPlacar:[[3,0],[null,null]],
+             final:["bayer","kyoto"], finalPlacar:[3,0] } },
+  { numero:7, nome:"Torneio 7", data:null, campeao:"arsenal", vice:"kyoto",
+    chave:{ semifinais:[["kyoto","bayer"],["flamengo","arsenal"]], semifinaisPlacar:[[5,0],[0,1]],
+             final:["kyoto","arsenal"], finalPlacar:[1,2] } }
+];
+
+/* -------------------------------------------------------------------------------------------------
+   4) NOTÍCIAS — os cards da seção "Notícias"
+   -------------------------------------------------------------------------------------------------
+   Para adicionar uma notícia nova, copie um bloco inteiro { ... }, cole no topo da lista (as mais
+   novas ficam no início) e edite os campos:
+     titulo, descricao → o texto do card.
+     data              → um texto livre ("Torneio 6", "12/11", "Hoje"...).
+     categoria         → aparece como etiqueta colorida E vira um filtro clicável automaticamente.
+     icone             → um emoji que representa a notícia (🔥 📰 🗂️ ⚽ 🏆 etc.).
+------------------------------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------------------------------
+   HALL DA FAMA — jogadores históricos e momentos marcantes cadastrados manualmente
+   -------------------------------------------------------------------------------------------------
+   Os destaques automáticos (primeiro campeão, maior campeão, recordes) já são calculados sozinhos.
+   Estas duas listas abaixo são para o que NÃO pode ser calculado a partir dos placares — cadastre
+   quando quiser começar a preencher.
+
+   jogadoresHistoricos → { nome, clubeId (id do clube, o mesmo usado em "clubes"), destaque (texto curto) }
+   momentosMarcantes   → { titulo, data (texto livre), descricao }
+------------------------------------------------------------------------------------------------- */
+const jogadoresHistoricos = [
+  // Exemplo: { nome:"Nome do jogador", clubeId:"kyoto", destaque:"Artilheiro do Torneio 3" },
+];
+const momentosMarcantes = [
+  // Exemplo: { titulo:"A virada do Torneio 4", data:"Torneio 4", descricao:"Descrição do momento." },
+];
+
+const noticias = [
+  { titulo:"Copa Liga eFootball chega à sua sexta edição", data:"Torneio 6", categoria:"Liga", icone:"📰",
+    descricao:"Com cinco torneios já no histórico, a competição entre os clubes segue firme rumo à sua próxima grande final." },
+  { titulo:"Quatro clubes, uma só rivalidade", data:"Histórico", categoria:"Bastidores", icone:"🔥",
+    descricao:"Arsenal, Real Madrid, Flamengo e Kyoto Sanga seguem como os disputantes fixos da Liga Zé Prefeitura." },
+  { titulo:"Aguardando os resultados oficiais", data:"Atualização", categoria:"Arquivo", icone:"🗂️",
+    descricao:"Os campeões e vices de cada torneio são publicados aqui assim que cadastrados no sistema." }
+];
+
+/* -------------------------------------------------------------------------------------------------
+   5) GUIA (perguntas e respostas mostradas na seção "Guia rápido de edição" do próprio site)
+   -------------------------------------------------------------------------------------------------
+   Pode editar, adicionar ou remover perguntas livremente — é só uma lista de texto.
+------------------------------------------------------------------------------------------------- */
+const guiaFAQ = [
+  { p:"Como troco o logo do campeonato?", r:"Edite <code>CONFIG.logoUrl</code> lá no topo do script e cole o link direto da imagem (terminando em .png/.jpg/.webp). Deixe em branco pra usar a bolinha ⚽ padrão." },
+  { p:"Como atualizo o resultado de um torneio?", r:"Vá até a lista <code>torneios</code>, encontre o torneio pelo número e preencha <code>campeao</code>, <code>vice</code> e os placares (<code>finalPlacar</code>, <code>semifinaisPlacar</code>) com o id do clube e o placar, ex: <code>[3,1]</code>." },
+  { p:"Como adiciono um novo torneio?", r:"Copie o último bloco de <code>torneios</code>, cole logo depois dele (com vírgula antes), aumente o número e vá preenchendo os resultados aos poucos." },
+  { p:"Como adiciono um 5º clube?", r:"Copie um bloco inteiro da lista <code>clubes</code>, cole antes do colchete final <code>]</code>, e troque id, nome, dono, escudo e cor. Depois é só usar esse mesmo id nos torneios." },
+  { p:"Como marco a contagem regressiva do próximo torneio?", r:"Preencha <code>CONFIG.proximaData</code> com a data e hora no formato <code>\"AAAA-MM-DDTHH:MM:00\"</code>. Para esconder o contador, deixe como <code>null</code>." },
+  { p:"Como adiciono uma notícia?", r:"Copie um bloco da lista <code>noticias</code> e cole no topo (as mais recentes ficam primeiro). A categoria vira um filtro automaticamente." },
+  { p:"Posso favoritar um clube?", r:"Sim — toque na estrela ⭐ no card do clube. A escolha fica salva no seu navegador (não é enviada pra ninguém) e aparece destacada no topo do site." },
+  { p:"Onde publico o site depois de editar?", r:"Você pode subir este arquivo index.html em qualquer serviço gratuito de hospedagem de site estático, como GitHub Pages, Netlify ou Vercel — é só arrastar o arquivo." },
+  { p:"O que são as 'conquistas' nos cards dos clubes?", r:"São etiquetas (tricampeão, maior campeão, sequência de títulos, etc.) calculadas automaticamente a partir da lista <code>torneios</code>. Você não precisa preencher nada — elas aparecem sozinhas conforme os resultados forem cadastrados." },
+  { p:"Como funciona o 'Seu palpite' na seção de Torneios?", r:"Assim que existir um torneio com <code>campeao: null</code>, o site mostra um seletor para o visitante escolher quem acha que vai vencer. A escolha fica salva só no navegador de quem votou (não é enviada pra ninguém) e, quando você preencher o campeão nesse torneio, o site mostra se a pessoa acertou ou não." },
+  { p:"O simulador de confronto e o quiz também usam a lista de clubes/torneios?", r:"Sim — os dois são gerados automaticamente a partir de <code>clubes</code> e <code>torneios</code>. Adicionar um torneio novo com campeão já cria uma pergunta nova no quiz sozinho." }
+];
+
+/* =====================================================================================================
+   A PARTIR DAQUI: CÓDIGO DE RENDERIZAÇÃO — normalmente você não precisa editar nada daqui pra baixo.
+   ===================================================================================================== */
+
+const FAV_KEY = "ligaZP_favorito";
+const porId = id => clubes.find(c => c.id === id);
+/* ---------- helpers do perfil eFootball ---------- */
+const ni = v => (v===undefined || v===null || v==='' || v===0) ? 'Não informado' : v;
+function temDestaque(c){ return c.jogadorDestaque && c.jogadorDestaque.nome; }
+function efootballProfileHTML(c){
+  return `
+    <div class="club-detail-subhead">🎮 Perfil eFootball</div>
+    <div class="efb-id-row">
+      <span class="efb-id-label">ID eFootball</span>
+      <span class="efb-id-val">${c.efootballId||'Não informado'}</span>
+    </div>
+    ${c.forca>0 ? `<div class="efb-forca-bar">
+      <div class="efb-forca-label">FORÇA DO TIME</div>
+      <div class="efb-forca-val">${c.forca}</div>
+      <div class="efb-forca-track"><div class="efb-forca-fill" style="width:${Math.min(100,c.forca)}%"></div></div>
+    </div>` : `<div class="efb-empty-forca">Força não informada</div>`}
+    <div class="club-detail-stats" style="grid-template-columns:repeat(3,1fr)">
+      <div class="mini-stat"><b>${ni(c.formacao)}</b><span>Formação</span></div>
+      <div class="mini-stat"><b>${ni(c.tatica)}</b><span>Tática</span></div>
+      <div class="mini-stat"><b>${ni(c.tecnico)}</b><span>Técnico</span></div>
+    </div>
+    ${c.estiloJogo?`<div class="efb-estilo"><span>Estilo</span><b>${c.estiloJogo}</b></div>`:''}
+    ${temDestaque(c) ? `
+    <div class="efb-destaque-card">
+      <div class="efb-destaque-label">⚡ JOGADOR DESTAQUE</div>
+      <div class="efb-destaque-body">
+        <div class="efb-destaque-nome">${c.jogadorDestaque.nome}</div>
+        <div class="efb-destaque-meta">${c.jogadorDestaque.posicao||'—'}</div>
+      </div>
+      ${c.jogadorDestaque.forca?`<div class="efb-destaque-forca">${c.jogadorDestaque.forca}</div>`:''}
+    </div>` : ''}
+    ${c.obs ? `<p style="color:var(--grey);font-size:12.5px;margin:12px 0 4px;padding:10px 12px;background:rgba(255,255,255,.03);border-left:2px solid var(--cyan);border-radius:0 8px 8px 0">💬 ${c.obs}</p>` : ''}
+  `;
+}
+const escudoOf = id => { const c = porId(id); return c ? c.escudo : ""; };
+const nomeOf = id => { const c = porId(id); return c ? c.nome : "A definir"; };
+const corOf = id => { const c = porId(id); return c ? c.cor : "#1C2846"; };
+
+if (CONFIG.logoUrl) document.getElementById('logoImg').src = CONFIG.logoUrl;
+
+function getFavorito(){ try { return localStorage.getItem(FAV_KEY); } catch(e){ return null; } }
+function setFavorito(id){ try { localStorage.setItem(FAV_KEY, id); } catch(e){} renderAll(); }
+
+/* -------------------------------------------------------------------------------------------------
+   PARTIDAS — NÃO é uma lista para editar. É gerada automaticamente a partir de "torneios": toda
+   semifinal e final com placar preenchido vira uma partida aqui. É a partir desta lista que o site
+   calcula vitórias, derrotas, empates e gols de cada clube (fonte única, sem números manuais).
+------------------------------------------------------------------------------------------------- */
+function gerarPartidas(){
+  const partidas = [];
+  torneios.forEach(t => {
+    const fases = [
+      { fase:"Semifinal 1", confronto: t.chave.semifinais[0], placar: t.chave.semifinaisPlacar[0] },
+      { fase:"Semifinal 2", confronto: t.chave.semifinais[1], placar: t.chave.semifinaisPlacar[1] },
+      { fase:"Final",       confronto: t.chave.final,          placar: t.chave.finalPlacar }
+    ];
+    fases.forEach(f => {
+      if(!f.confronto || !f.placar) return;
+      const [mandante, visitante] = f.confronto;
+      const [golsMandante, golsVisitante] = f.placar;
+      if(!mandante || !visitante || golsMandante==null || golsVisitante==null) return;
+      partidas.push({
+        torneioNumero: t.numero, torneioNome: t.nome, fase: f.fase, data: t.data,
+        mandante, visitante, golsMandante, golsVisitante,
+        resultado: golsMandante === golsVisitante ? "empate" : (golsMandante > golsVisitante ? "mandante" : "visitante")
+      });
+    });
+  });
+  return partidas;
+}
+const partidas = gerarPartidas();
+
+function calcularEstatisticas(){
+  const stats = {};
+  clubes.forEach(c => stats[c.id] = {
+    titulos:0, vices:0, finais:0, participacoes:0, linhaDoTempo:[],
+    jogos:0, vitorias:0, empates:0, derrotas:0, golsPro:0, golsContra:0, saldoGols:0, aproveitamento:0
+  });
+  torneios.forEach(t => {
+    clubes.forEach(c => stats[c.id].participacoes++);
+    if (t.campeao) stats[t.campeao].titulos++;
+    if (t.vice) stats[t.vice].vices++;
+    if (t.campeao) stats[t.campeao].finais++;
+    if (t.vice) stats[t.vice].finais++;
+    clubes.forEach(c => {
+      let resultado = "Semifinalista";
+      if (t.campeao === c.id) resultado = "Campeão";
+      else if (t.vice === c.id) resultado = "Vice-campeão";
+      else if (!t.campeao && !t.vice) resultado = "A definir";
+      stats[c.id].linhaDoTempo.push({ torneio: t.nome, resultado });
+    });
+  });
+  partidas.forEach(p => {
+    [
+      { id:p.mandante, golsPro:p.golsMandante, golsContra:p.golsVisitante, venceu:p.resultado==="mandante" },
+      { id:p.visitante, golsPro:p.golsVisitante, golsContra:p.golsMandante, venceu:p.resultado==="visitante" }
+    ].forEach(lado => {
+      const s = stats[lado.id];
+      if(!s) return;
+      s.jogos++; s.golsPro += lado.golsPro; s.golsContra += lado.golsContra;
+      if(p.resultado === "empate") s.empates++;
+      else if(lado.venceu) s.vitorias++;
+      else s.derrotas++;
+    });
+  });
+  clubes.forEach(c => {
+    const s = stats[c.id];
+    s.saldoGols = s.golsPro - s.golsContra;
+    s.aproveitamento = s.jogos ? Math.round((s.vitorias / s.jogos) * 1000) / 10 : 0;
+  });
+  return stats;
+}
+const stats = calcularEstatisticas();
+
+function ranking(){
+  return [...clubes].sort((a,b)=>{
+    const sa = stats[a.id], sb = stats[b.id];
+    return (sb.titulos - sa.titulos) || (sb.vices - sa.vices) || (sb.finais - sa.finais) || (sb.participacoes - sa.participacoes);
+  });
+}
+function maiorCampeao(){ return ranking()[0]; }
+function ultimoTorneioComCampeao(){ return [...torneios].reverse().find(t => t.campeao) || null; }
+function ultimoCampeao(){ const t = ultimoTorneioComCampeao(); return t ? porId(t.campeao) : null; }
+function campeoesDiferentes(){ return new Set(torneios.filter(t=>t.campeao).map(t=>t.campeao)).size; }
+function calcularMaiorSequencia(){
+  const decididos = torneios.filter(t=>t.campeao);
+  let atualId=null, atualCount=0, melhorId=null, melhorCount=0;
+  decididos.forEach(t=>{
+    if(t.campeao===atualId){ atualCount++; } else { atualId=t.campeao; atualCount=1; }
+    if(atualCount>melhorCount){ melhorCount=atualCount; melhorId=atualId; }
+  });
+  return melhorId ? { clube: porId(melhorId), count: melhorCount } : null;
+}
+/* participantes de um torneio, descobertos a partir da própria chave (não precisa cadastrar à parte) */
+function participantesDe(t){
+  const ids = new Set();
+  t.chave.semifinais.forEach(par => par && par.forEach(id => id && ids.add(id)));
+  if (t.chave.final) t.chave.final.forEach(id => id && ids.add(id));
+  return [...ids].map(porId).filter(Boolean);
+}
+function calcularRivalidades(){
+  const mapa = {};
+  torneios.forEach(t=>{
+    if(!t.campeao || !t.vice) return;
+    const par = [t.campeao, t.vice].sort();
+    const key = par.join('-');
+    if(!mapa[key]) mapa[key] = { a: par[0], b: par[1], total:0, titulosA:0, titulosB:0 };
+    mapa[key].total++;
+    if(t.campeao === mapa[key].a) mapa[key].titulosA++; else mapa[key].titulosB++;
+  });
+  return Object.values(mapa).sort((x,y)=>y.total-x.total);
+}
+
+const campeaoAtualId = ultimoCampeao() ? ultimoCampeao().id : null;
+
+/* ---------- conquistas (badges) de cada clube, calculadas a partir dos dados ---------- */
+function calcularConquistas(id){
+  const s = stats[id];
+  const badges = [];
+  if(s.titulos >= 3) badges.push({icon:'👑', label:'Tricampeão ou mais', gold:true});
+  else if(s.titulos === 2) badges.push({icon:'🏆', label:'Bicampeão', gold:true});
+  else if(s.titulos === 1) badges.push({icon:'🏆', label:'Campeão da Liga', gold:true});
+  const seq = calcularMaiorSequencia();
+  if(seq && seq.clube.id === id && seq.count >= 2) badges.push({icon:'🔥', label:`${seq.count} títulos seguidos`, gold:true});
+  if(maiorCampeao().id === id) badges.push({icon:'⭐', label:'Maior campeão da Liga', gold:true});
+  if(s.finais > 0 && s.titulos === s.finais) badges.push({icon:'💯', label:'100% de aproveitamento em finais'});
+  if(s.vices >= 2 && s.titulos === 0) badges.push({icon:'🥈', label:'Sempre por perto, nunca lá'});
+  const primeiroTorneio = torneios[0];
+  if(primeiroTorneio && primeiroTorneio.campeao === id) badges.push({icon:'🥇', label:'Primeiro campeão da história'});
+  if(s.finais === 0) badges.push({icon:'🌱', label:'Ainda em busca da 1ª final'});
+  return badges;
+}
+function badgesHTML(id){
+  const badges = calcularConquistas(id);
+  if(badges.length===0) return '';
+  return `<div class="badge-row">${badges.map(b=>`<span class="badge-chip${b.gold?' is-gold':''}">${b.icon} ${b.label}</span>`).join('')}</div>`;
+}
+
+/* ---------- anel de escudos no hero ---------- */
+function renderCrestRing(){
+  const ring = document.getElementById('crestRing');
+  ring.querySelectorAll('.crest-node').forEach(n=>n.remove());
+  const favId = getFavorito();
+  const positions = [ {top:'11%', left:'50%'}, {top:'50%', left:'89%'}, {top:'89%', left:'50%'}, {top:'50%', left:'11%'} ];
+  clubes.slice(0,4).forEach((c,i)=>{
+    const node = document.createElement('div');
+    node.className='crest-node' + (c.id===campeaoAtualId ? ' is-champion' : '') + (c.id===favId ? ' is-favorito' : '');
+    node.style.top = positions[i].top; node.style.left = positions[i].left;
+    node.innerHTML = `<div class="disc"><img src="${c.escudo}" alt="${c.nome}" onerror="this.style.opacity=0"></div><div class="lbl">${c.nome.toUpperCase()}</div>${c.id===campeaoAtualId ? '<div class="champion-tag">🏆</div>' : ''}`;
+    node.addEventListener('click', ()=>{ if(c.id===campeaoAtualId) fireConfetti(18); openClub(c.id); });
+    ring.appendChild(node);
+  });
+}
+
+/* ---------- pílula de favorito no topo ---------- */
+function renderFavPill(){
+  const pill = document.getElementById('favPill');
+  const favId = getFavorito();
+  if(!favId){ pill.style.display='none'; return; }
+  const c = porId(favId);
+  if(!c){ pill.style.display='none'; return; }
+  pill.style.display='flex';
+  pill.innerHTML = `<img src="${c.escudo}" alt="" onerror="this.style.display='none'">⭐ ${c.nome}`;
+}
+
+/* ---------- contagem regressiva ---------- */
+let countdownTimer = null;
+function renderCountdown(){
+  const box = document.getElementById('countdownBox');
+  if(!CONFIG.proximaData){ box.style.display='none'; return; }
+  const alvo = new Date(CONFIG.proximaData).getTime();
+  if(isNaN(alvo)){ box.style.display='none'; return; }
+  box.style.display='block';
+  function tick(){
+    const diff = alvo - Date.now();
+    const grid = document.getElementById('countdownGrid');
+    if(diff <= 0){ grid.innerHTML = `<div class="countdown-cell"><b>🏆</b><span>Em andamento</span></div>`; clearInterval(countdownTimer); return; }
+    const d = Math.floor(diff/86400000), h = Math.floor(diff/3600000)%24, m = Math.floor(diff/60000)%60, s = Math.floor(diff/1000)%60;
+    grid.innerHTML = `
+      <div class="countdown-cell"><b>${d}</b><span>dias</span></div>
+      <div class="countdown-cell"><b>${String(h).padStart(2,'0')}</b><span>h</span></div>
+      <div class="countdown-cell"><b>${String(m).padStart(2,'0')}</b><span>min</span></div>
+      <div class="countdown-cell"><b>${String(s).padStart(2,'0')}</b><span>s</span></div>`;
+  }
+  tick();
+  clearInterval(countdownTimer);
+  countdownTimer = setInterval(tick, 1000);
+}
+
+/* ---------- painel inicial: campeão atual ---------- */
+function renderChampionShowcase(){
+  const box = document.getElementById('championShowcase');
+  const c = ultimoCampeao();
+  const ultimo = ultimoTorneioComCampeao();
+  if(!c){
+    box.innerHTML = `<div class="cs-label">CAMPEÃO ATUAL</div><h3>A definir</h3><p class="cs-sub">Nenhum torneio finalizado ainda.</p>`;
+    return;
+  }
+  box.innerHTML = `
+    <div class="cs-label">CAMPEÃO ATUAL</div>
+    <div class="cs-crest"><img src="${c.escudo}" alt="${c.nome}" onerror="this.style.opacity=0"></div>
+    <h3>${c.nome.toUpperCase()}</h3>
+    <p class="cs-sub">Campeão do ${ultimo.nome}</p>`;
+}
+
+/* ---------- painel inicial: fatos rápidos ---------- */
+function renderQuickFacts(){
+  const grid = document.getElementById('quickFacts');
+  const ultimo = ultimoTorneioComCampeao();
+  const pendente = torneios.find(t => !t.campeao);
+  let proximo = 'A definir';
+  if(CONFIG.proximaData){
+    const d = new Date(CONFIG.proximaData);
+    if(!isNaN(d)) proximo = d.toLocaleDateString('pt-BR', { day:'2-digit', month:'short', year:'numeric' });
+  } else if(pendente){
+    proximo = pendente.nome;
+  }
+  grid.innerHTML = `
+    <div class="stat-box"><b>${ultimo ? ultimo.nome : '—'}</b><span>Última edição</span></div>
+    <div class="stat-box"><b>${proximo}</b><span>Próximo torneio</span></div>
+    <div class="stat-box"><b>${torneios.length}</b><span>Edições</span></div>
+    <div class="stat-box"><b>${clubes.length}</b><span>Clubes</span></div>`;
+}
+
+/* ---------- painel inicial: último resultado (final do último torneio decidido) ---------- */
+function renderLastResult(){
+  const card = document.getElementById('lastResultCard');
+  const ultimo = ultimoTorneioComCampeao();
+  if(!ultimo || !ultimo.chave.finalPlacar){ card.style.display='none'; return; }
+  card.style.display='block';
+  const [aId, bId] = ultimo.chave.final;
+  const [golsA, golsB] = ultimo.chave.finalPlacar;
+  card.innerHTML = `
+    <div class="lr-label">Último resultado — Final do ${ultimo.nome}</div>
+    <div class="lr-teams">
+      <div class="lr-team"><img src="${escudoOf(aId)}" alt="${nomeOf(aId)}" onerror="this.style.opacity=0"><span>${nomeOf(aId)}</span></div>
+      <div class="lr-score">${golsA} — ${golsB}</div>
+      <div class="lr-team"><img src="${escudoOf(bId)}" alt="${nomeOf(bId)}" onerror="this.style.opacity=0"><span>${nomeOf(bId)}</span></div>
+    </div>`;
+}
+
+/* ---------- números do topo (hero) — sempre calculados, nunca escritos à mão ---------- */
+function renderHeroStats(){
+  const valores = {
+    heroStatTorneios: torneios.length,
+    heroStatClubes: clubes.length,
+    heroStatTitulos: torneios.filter(t => t.campeao).length
+  };
+  Object.entries(valores).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) el.dataset.count = val;
+  });
+}
+
+/* ---------- resumo / destaques ---------- */
+function renderHighlights(){
+  const uc = ultimoCampeao(), mc = maiorCampeao(), seq = calcularMaiorSequencia();
+  const grid = document.getElementById('highlightGrid');
+  grid.innerHTML = `
+    <div class="stat-box"><b>${uc ? uc.nome : 'A definir'}</b><span>Último campeão</span></div>
+    <div class="stat-box"><b>${mc.nome}</b><span>Maior campeão (${stats[mc.id].titulos} títulos)</span></div>
+    <div class="stat-box"><b>${campeoesDiferentes()}</b><span>Campeões diferentes</span></div>
+    <div class="stat-box"><b>${torneios.length}</b><span>Torneios disputados</span></div>
+    ${seq ? `<div class="stat-box" style="grid-column:span 2"><b>${seq.clube.nome}</b><span>Maior sequência (${seq.count} títulos seguidos)</span></div>` : ''}
+  `;
+}
+
+/* ---------- clubes ---------- */
+function renderClubGrid(){
+  const grid = document.getElementById('clubGrid');
+  grid.innerHTML = '';
+  const favId = getFavorito();
+  const rankedIds = ranking().map(c=>c.id);
+  clubes.forEach(c=>{
+    const s = stats[c.id];
+    const pos = rankedIds.indexOf(c.id)+1;
+    const card = document.createElement('div');
+    card.className='club-card' + (c.id===campeaoAtualId ? ' is-champion' : '');
+    card.style.setProperty('--card-cor', c.cor || '#1E3B72');
+    card.innerHTML = `
+      ${c.id===campeaoAtualId ? '<div class="champion-badge">CAMPEÃO ATUAL</div>' : ''}
+      <div class="club-top">
+        <div class="club-crest"><div class="club-rankbadge">${pos}</div><img src="${c.escudo}" alt="${c.nome}" onerror="this.style.opacity=0"></div>
+        <div class="club-info"><h3>${c.nome}</h3><div class="club-owner">Dono: ${c.dono}</div></div>
+        <button class="star-btn ${c.id===favId?'active':''}" data-fav="${c.id}" aria-label="Favoritar ${c.nome}">${c.id===favId?'★':'☆'}</button>
+      </div>
+      ${c.forca ? `<div class="badge-row"><span class="badge-chip is-gold" style="font-size:12px;padding:5px 12px">⭐ FORÇA ${c.forca}</span>${temDestaque(c)?`<span class="badge-chip" style="font-size:11px">⚡ ${c.jogadorDestaque.nome}${c.jogadorDestaque.forca?' '+c.jogadorDestaque.forca:''}</span>`:''}</div>` : ''}
+      <div class="club-metrics">
+        <div><b>${s.titulos}</b><span>Títulos</span></div>
+        <div><b>${s.vices}</b><span>Vices</span></div>
+        <div><b>${s.aproveitamento}%</b><span>Aproveit.</span></div>
+      </div>
+      ${badgesHTML(c.id)}`;
+    card.querySelector('.club-top').addEventListener('click', (e)=>{ if(e.target.closest('.star-btn')) return; openClub(c.id); });
+    card.querySelector('.star-btn').addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const cur = getFavorito();
+      setFavorito(cur === c.id ? null : c.id);
+      if(navigator.vibrate) navigator.vibrate(12);
+    });
+    grid.appendChild(card);
+  });
+}
+
+/* ---------- helpers do perfil do clube (Fase 5) ---------- */
+function partidasDoClube(id){
+  return partidas.filter(p => p.mandante === id || p.visitante === id)
+    .sort((a,b) => b.torneioNumero - a.torneioNumero);
+}
+function resultadoDaPartida(p, id){
+  const casa = p.mandante === id;
+  const golsPro = casa ? p.golsMandante : p.golsVisitante;
+  const golsContra = casa ? p.golsVisitante : p.golsMandante;
+  const adversario = casa ? p.visitante : p.mandante;
+  let status = 'empate';
+  if (golsPro > golsContra) status = 'vitoria'; else if (golsPro < golsContra) status = 'derrota';
+  return { adversario, golsPro, golsContra, status };
+}
+function melhorCampanha(id){
+  const s = stats[id];
+  if (s.titulos > 0) return 'Campeão';
+  if (s.vices > 0) return 'Vice-campeão';
+  if (s.finais > 0) return 'Finalista';
+  if (s.jogos > 0) return 'Semifinalista';
+  return 'Sem participações registradas';
+}
+function confrontosDoClube(id){
+  const mapa = {};
+  partidasDoClube(id).forEach(p => {
+    const r = resultadoDaPartida(p, id);
+    if (!mapa[r.adversario]) mapa[r.adversario] = { v:0, e:0, d:0 };
+    if (r.status === 'vitoria') mapa[r.adversario].v++;
+    else if (r.status === 'empate') mapa[r.adversario].e++;
+    else mapa[r.adversario].d++;
+  });
+  return Object.entries(mapa).map(([id, r]) => ({ id, ...r }));
+}
+
+/* ---------- história automática do clube, gerada a partir dos dados (Fase extra) ---------- */
+function historiaDoClube(id){
+  const c = porId(id), s = stats[id];
+  if(!s.jogos) return `${c.nome} ainda não tem partidas registradas na Liga Zé Prefeitura.`;
+  const primeiraAparicao = torneios.find(t => partidasDoClube(id).some(p=>p.torneioNumero===t.numero));
+  const desde = primeiraAparicao ? primeiraAparicao.nome : 'sua entrada na Liga';
+  let texto = `${c.nome} está na Liga desde o ${desde}, com <b>${s.titulos} título${s.titulos===1?'':'s'}</b> e ${s.vices} vice-campeonato${s.vices===1?'':'s'} em ${s.participacoes} edição${s.participacoes===1?'':'ões'} disputada${s.participacoes===1?'':'s'}.`;
+  texto += ` No total, soma ${s.vitorias} vitória${s.vitorias===1?'':'s'}, ${s.empates} empate${s.empates===1?'':'s'} e ${s.derrotas} derrota${s.derrotas===1?'':'s'} em ${s.jogos} jogo${s.jogos===1?'':'s'}, um aproveitamento de <b>${s.aproveitamento}%</b>.`;
+  texto += ` Sua melhor campanha até aqui: <b>${melhorCampanha(id)}</b>.`;
+  return texto;
+}
+function openClub(id){
+  const c = porId(id), s = stats[id];
+  const detail = document.getElementById('clubDetail');
+  const ultimosJogos = partidasDoClube(id).slice(0, 5);
+  const confrontos = confrontosDoClube(id);
+  detail.innerHTML = `
+    <div class="sheet-handle"></div>
+    <button class="sheet-close" id="closeClub">×</button>
+    <div class="club-detail-head">
+      <div class="club-crest" style="width:70px;height:70px;border-radius:16px;background:var(--void);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;padding:8px;"><img src="${c.escudo}" alt="${c.nome}" onerror="this.style.opacity=0"></div>
+      <div><h2>${c.nome}</h2><div class="club-owner">Dono: ${c.dono}${c.pais ? ` · ${c.pais}` : ''}</div></div>
+      <button class="share-btn" id="shareClub" aria-label="Compartilhar">↗</button>
+    </div>
+    <p style="color:var(--grey);font-size:13px;margin-bottom:16px">${c.descricao||''}</p>
+    <div class="raiox-toggle-row">
+      <button class="raiox-btn" id="btnFicha" data-tab="ficha">📋 Ficha</button>
+      <button class="raiox-btn" id="btnRaiox" data-tab="raiox">📊 Raio-X</button>
+    </div>
+    <div id="tabFicha">
+    ${efootballProfileHTML(c)}
+    <div class="club-detail-subhead">História do clube</div>
+    <div class="club-history-auto">${historiaDoClube(id)}</div>
+    <div class="club-detail-stats">
+      <div class="mini-stat"><b>${s.titulos}</b><span>Títulos</span></div>
+      <div class="mini-stat"><b>${s.vices}</b><span>Vices</span></div>
+      <div class="mini-stat"><b>${s.finais}</b><span>Finais</span></div>
+      <div class="mini-stat"><b>${s.participacoes}</b><span>Edições</span></div>
+    </div>
+    <div class="club-detail-stats">
+      <div class="mini-stat"><b>${s.vitorias}</b><span>Vitórias</span></div>
+      <div class="mini-stat"><b>${s.empates}</b><span>Empates</span></div>
+      <div class="mini-stat"><b>${s.derrotas}</b><span>Derrotas</span></div>
+      <div class="mini-stat"><b>${s.aproveitamento}%</b><span>Aproveit.</span></div>
+    </div>
+    <div class="club-detail-stats" style="grid-template-columns:repeat(3,1fr)">
+      <div class="mini-stat"><b>${s.golsPro}</b><span>Gols pró</span></div>
+      <div class="mini-stat"><b>${s.golsContra}</b><span>Gols contra</span></div>
+      <div class="mini-stat"><b>${s.saldoGols>0?'+':''}${s.saldoGols}</b><span>Saldo</span></div>
+    </div>
+    ${badgesHTML(id)}
+    <div class="club-detail-subhead">Melhor campanha: ${melhorCampanha(id)}</div>
+    <ul class="club-timeline">
+      ${s.linhaDoTempo.map(x=>`<li class="${x.resultado==='Campeão' ? 'is-title' : ''}"><b>${x.torneio}</b><span>${x.resultado}</span></li>`).join('')}
+    </ul>
+    ${ultimosJogos.length ? `
+    <div class="club-detail-subhead">Últimos jogos</div>
+    <div class="match-list">
+      ${ultimosJogos.map(p=>{
+        const r = resultadoDaPartida(p, id);
+        return `<div class="match-row is-${r.status}">
+          <span>${p.torneioNome} · ${p.fase} vs ${nomeOf(r.adversario)}</span>
+          <span class="mr-score">${r.golsPro}-${r.golsContra}</span>
+        </div>`;
+      }).join('')}
+    </div>` : ''}
+    ${confrontos.length ? `
+    <div class="club-detail-subhead">Confrontos diretos</div>
+    <div class="h2h-list">
+      ${confrontos.map(h=>`<div class="h2h-row"><span>vs ${nomeOf(h.id)}</span><span>${h.v}V ${h.e}E ${h.d}D</span></div>`).join('')}
+    </div>` : ''}
+    ${c.formacao ? formacaoVisualHTML(c.formacao) : ''}
+    ${elencoHTML(c)}
+    </div>
+    <div id="tabRaiox" style="display:none">
+      <div class="raiox-block">
+        <div class="raiox-row"><span>🎮 ID eFootball</span><b>${ni(c.efootballId)}</b></div>
+        <div class="raiox-row"><span>⭐ Força</span><b>${c.forca||'—'}</b></div>
+        <div class="raiox-row"><span>🧩 Formação</span><b>${ni(c.formacao)}</b></div>
+        <div class="raiox-row"><span>⚡ Destaque</span><b>${temDestaque(c)?`${c.jogadorDestaque.nome} (${c.jogadorDestaque.forca||'—'})`:'—'}</b></div>
+        <div class="raiox-row"><span>🏆 Títulos</span><b>${s.titulos}</b></div>
+        <div class="raiox-row"><span>🥈 Vices</span><b>${s.vices}</b></div>
+        <div class="raiox-row"><span>🏅 Finais</span><b>${s.finais}</b></div>
+        <div class="raiox-row"><span>📅 Edições</span><b>${s.participacoes}</b></div>
+        <div class="raiox-row"><span>⚽ Gols pró</span><b>${s.golsPro}</b></div>
+        <div class="raiox-row"><span>🛡️ Gols contra</span><b>${s.golsContra}</b></div>
+        <div class="raiox-row"><span>📈 Aproveitamento</span><b>${s.aproveitamento}%</b></div>
+        <div class="raiox-row"><span>✅ Vitórias</span><b>${s.vitorias}</b></div>
+        <div class="raiox-row"><span>🤝 Empates</span><b>${s.empates}</b></div>
+        <div class="raiox-row"><span>❌ Derrotas</span><b>${s.derrotas}</b></div>
+        <div class="raiox-row"><span>🎯 Melhor campanha</span><b>${melhorCampanha(id)}</b></div>
+      </div>
+    </div>
+  `;
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('closeClub').addEventListener('click', closeClub);
+  // toggle Ficha / Raio-X
+  const tabFicha = document.getElementById('tabFicha');
+  const tabRaiox = document.getElementById('tabRaiox');
+  document.getElementById('btnFicha').addEventListener('click', ()=>{
+    tabFicha.style.display=''; tabRaiox.style.display='none';
+    document.getElementById('btnFicha').classList.add('active');
+    document.getElementById('btnRaiox').classList.remove('active');
+  });
+  document.getElementById('btnRaiox').addEventListener('click', ()=>{
+    tabFicha.style.display='none'; tabRaiox.style.display='';
+    document.getElementById('btnRaiox').classList.add('active');
+    document.getElementById('btnFicha').classList.remove('active');
+  });
+  document.getElementById('btnFicha').classList.add('active');
+  document.getElementById('shareClub').addEventListener('click', ()=>{
+    const texto = `${c.nome} na Liga Zé Prefeitura: ${s.titulos} título(s), ${s.vices} vice(s) em ${s.participacoes} torneio(s)!`;
+    if(navigator.share){ navigator.share({ title: c.nome, text: texto }).catch(()=>{}); }
+    else { navigator.clipboard && navigator.clipboard.writeText(texto); alert('Texto copiado: ' + texto); }
+  });
+}
+function closeClub(){ document.getElementById('overlay').classList.remove('open'); }
+document.getElementById('overlay').addEventListener('click', e=>{ if(e.target.id==='overlay') closeClub(); });
+
+/* ---------- quadro de campeões ---------- */
+function renderChampList(){
+  const list = document.getElementById('champList');
+  list.innerHTML = '';
+  const last = torneios[torneios.length-1];
+  torneios.forEach(t=>{
+    const row = document.createElement('div');
+    row.className = 'champ-row' + (t===last ? ' is-latest' : '');
+    row.innerHTML = `
+      <div class="champ-num">${String(t.numero).padStart(2,'0')}</div>
+      <div class="champ-main">
+        <div class="champ-title">${t.nome}${t===last ? '<span class="latest-pill">MAIS RECENTE</span>' : ''}</div>
+        <div class="champ-teams">
+          <span class="tag-cup">${t.campeao ? `<img class="champ-crest-mini" src="${escudoOf(t.campeao)}" alt="" onerror="this.style.display='none'">🏆 ${nomeOf(t.campeao)}` : '🏆 A definir'}</span>
+          <span class="tag-vice">${t.vice ? `<img class="champ-crest-mini" src="${escudoOf(t.vice)}" alt="" onerror="this.style.display='none'">🥈 ${nomeOf(t.vice)}` : '🥈 A definir'}</span>
+        </div>
+      </div>`;
+    list.appendChild(row);
+  });
+}
+
+/* ---------- chave dos torneios ---------- */
+/* ---------- helpers de cada edição (Fase 6) ---------- */
+function formatarData(dataStr){
+  if(!dataStr) return 'Data a definir';
+  const d = new Date(dataStr + 'T00:00:00');
+  if(isNaN(d)) return 'Data a definir';
+  return d.toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' });
+}
+function partidasDoTorneio(t){
+  return partidas.filter(p => p.torneioNumero === t.numero);
+}
+function statsDoTorneio(t){
+  const jogos = partidasDoTorneio(t);
+  if(!jogos.length) return null;
+  const totalGols = jogos.reduce((soma,p) => soma + p.golsMandante + p.golsVisitante, 0);
+  const media = Math.round((totalGols / jogos.length) * 10) / 10;
+  const maiorGoleada = jogos.reduce((max,p) => {
+    const dif = Math.abs(p.golsMandante - p.golsVisitante);
+    return (!max || dif > max.dif) ? { dif, partida:p } : max;
+  }, null);
+  return { jogosDisputados: jogos.length, totalGols, media, maiorGoleada };
+}
+function renderTournamentMeta(t){
+  const meta = document.getElementById('tournamentMeta');
+  const participantes = participantesDe(t);
+  meta.innerHTML = `
+    <div class="tm-date">📅 ${formatarData(t.data)}</div>
+    ${participantes.length ? `<div class="tm-participants">${participantes.map(c=>
+      `<div class="tm-participant"><img src="${c.escudo}" alt="" onerror="this.style.display='none'">${c.nome}</div>`).join('')}</div>` : ''}`;
+}
+function renderTournamentStats(t){
+  const box = document.getElementById('tournamentStats');
+  const s = statsDoTorneio(t);
+  if(!s){ box.innerHTML = ''; return; }
+  const goleada = s.maiorGoleada;
+  const goleadaTexto = goleada && goleada.dif > 0
+    ? `${nomeOf(goleada.partida.mandante)} ${goleada.partida.golsMandante}-${goleada.partida.golsVisitante} ${nomeOf(goleada.partida.visitante)}`
+    : '—';
+  box.innerHTML = `
+    <div class="stat-box"><b>${s.totalGols}</b><span>Gols na edição</span></div>
+    <div class="stat-box"><b>${s.media}</b><span>Gols por jogo</span></div>
+    <div class="stat-box" style="grid-column:span 1"><b style="font-size:14px">${goleadaTexto}</b><span>Maior goleada</span></div>`;
+}
+
+function renderTournaments(){
+  const sel = document.getElementById('tSelect');
+  sel.innerHTML = '';
+  torneios.forEach((t,i)=>{
+    const btn = document.createElement('button');
+    btn.className = 't-btn' + (i===torneios.length-1 ? ' active':'');
+    btn.textContent = t.nome;
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.t-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      renderBracket(t);
+      renderTournamentMeta(t);
+      renderTournamentStats(t);
+      if(navigator.vibrate) navigator.vibrate(8);
+    });
+    sel.appendChild(btn);
+  });
+  renderBracket(torneios[torneios.length-1]);
+  renderTournamentMeta(torneios[torneios.length-1]);
+  renderTournamentStats(torneios[torneios.length-1]);
+}
+function slotHTML(id, isWinner, score){
+  if(!id) return `<div class="b-slot"><span class="tbd">A definir</span></div>`;
+  const scoreHTML = (score!==undefined && score!==null) ? `<span class="score">${score}</span>` : '';
+  return `<div class="b-slot ${isWinner?'winner':''}"><img src="${escudoOf(id)}" alt="" onerror="this.style.display='none'"><b>${nomeOf(id)}</b>${scoreHTML}</div>`;
+}
+function renderBracket(t){
+  const el = document.getElementById('bracketView');
+  const [sf1, sf2] = t.chave.semifinais;
+  const [finA, finB] = t.chave.final;
+  const psf = t.chave.semifinaisPlacar || [null,null];
+  const pf = t.chave.finalPlacar || [null,null];
+  el.innerHTML = `
+    <div>
+      <div class="col-label">Semifinal 1</div>
+      <div class="b-match">${slotHTML(sf1[0], finA===sf1[0]||finB===sf1[0], psf[0]?psf[0][0]:null)}${slotHTML(sf1[1], finA===sf1[1]||finB===sf1[1], psf[0]?psf[0][1]:null)}</div>
+      <div class="col-label">Semifinal 2</div>
+      <div class="b-match">${slotHTML(sf2[0], finA===sf2[0]||finB===sf2[0], psf[1]?psf[1][0]:null)}${slotHTML(sf2[1], finA===sf2[1]||finB===sf2[1], psf[1]?psf[1][1]:null)}</div>
+      <div class="col-label">Final</div>
+      <div class="b-match">${slotHTML(finA, t.campeao===finA, pf?pf[0]:null)}${slotHTML(finB, t.campeao===finB, pf?pf[1]:null)}</div>
+    </div>
+    <div class="trophy-slot">
+      <div class="cup">🏆</div>
+      <b>${t.campeao ? nomeOf(t.campeao) : 'A definir'}</b>
+      <span style="font-size:11px;color:var(--grey-dim)">CAMPEÃO — ${t.nome}</span>
+    </div>
+  `;
+}
+
+/* ---------- feed de últimos resultados (finais) ---------- */
+function renderResultFeed(){
+  const feed = document.getElementById('resultFeed');
+  const decididos = [...torneios].filter(t=>t.campeao && t.chave.finalPlacar).reverse().slice(0,5);
+  if(decididos.length===0){ feed.innerHTML=''; return; }
+  feed.innerHTML = `<div class="col-label" style="margin-bottom:2px">Últimas finais</div>` + decididos.map(t=>{
+    const [a,b] = t.chave.final, [pa,pb] = t.chave.finalPlacar;
+    return `<div class="result-row"><span style="color:var(--grey-dim);font-family:var(--font-head);width:26px">${t.nome.replace('Torneio ','T')}</span>
+      <img src="${escudoOf(a)}" alt="" onerror="this.style.display='none'"><b>${nomeOf(a)}</b>
+      <span class="rf-score">${pa} — ${pb}</span>
+      <b>${nomeOf(b)}</b><img src="${escudoOf(b)}" alt="" onerror="this.style.display='none'"></div>`;
+  }).join('');
+}
+
+/* ---------- ranking (com critérios alternáveis) ---------- */
+const CRITERIOS_RANKING = [
+  { id:'titulos', label:'Títulos', calc:c=>stats[c.id].titulos, sub:c=>`${stats[c.id].vices} vice(s)` },
+  { id:'vitorias', label:'Vitórias', calc:c=>stats[c.id].vitorias, sub:c=>`${stats[c.id].jogos} jogo(s)` },
+  { id:'aproveitamento', label:'Aproveitamento', calc:c=>stats[c.id].aproveitamento, sub:c=>`${stats[c.id].jogos} jogo(s)` },
+  { id:'gols', label:'Gols', calc:c=>stats[c.id].golsPro, sub:c=>`saldo ${stats[c.id].saldoGols>0?'+':''}${stats[c.id].saldoGols}` },
+  { id:'participacoes', label:'Participações', calc:c=>stats[c.id].participacoes, sub:c=>`${stats[c.id].finais} final(is)` }
+];
+let criterioRankingAtual = 'titulos';
+function renderRankFilter(){
+  const box = document.getElementById('rankFilter');
+  box.innerHTML = CRITERIOS_RANKING.map(cr =>
+    `<button class="rank-filter-btn${cr.id===criterioRankingAtual?' active':''}" data-criterio="${cr.id}">${cr.label}</button>`
+  ).join('');
+  box.querySelectorAll('.rank-filter-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      criterioRankingAtual = btn.dataset.criterio;
+      renderRankFilter();
+      renderRanking();
+    });
+  });
+}
+function renderRanking(){
+  const list = document.getElementById('rankList');
+  const criterio = CRITERIOS_RANKING.find(c=>c.id===criterioRankingAtual) || CRITERIOS_RANKING[0];
+  const ordenados = [...clubes].sort((a,b)=> criterio.calc(b) - criterio.calc(a) || (stats[b.id].titulos - stats[a.id].titulos));
+  list.innerHTML = '';
+  ordenados.forEach((c,i)=>{
+    const row = document.createElement('div');
+    row.className = 'rank-row';
+    row.innerHTML = `
+      <div class="rank-pos">${i+1}</div>
+      <div class="rank-club"><img src="${c.escudo}" alt="" onerror="this.style.display='none'">${c.nome}</div>
+      <div class="rank-stats">
+        <div><b>${criterio.calc(c)}${criterio.id==='aproveitamento'?'%':''}</b><span>${criterio.label}</span></div>
+        <div style="flex:1.4"><span style="font-size:10px;color:var(--grey-dim)">${criterio.sub(c)}</span></div>
+      </div>`;
+    row.addEventListener('click', ()=>openClub(c.id));
+    list.appendChild(row);
+  });
+}
+
+/* ---------- formação tática ---------- */
+function parseFormacao(str){
+  // Suporta "4-3-3", "4-2-3-1", "4-4-2", etc.
+  if(!str) return null;
+  const partes = str.split('-').map(Number).filter(n=>!isNaN(n)&&n>0);
+  if(partes.length<2) return null;
+  return partes;
+}
+const POSICOES_LINHA = ['ATA','ATA','ATA','ATA','MEI','MEI','MEI','MEI','ZAG','ZAG','ZAG','ZAG'];
+function formacaoVisualHTML(formacaoStr){
+  const linhas = parseFormacao(formacaoStr);
+  if(!linhas) return '';
+  // Montar linhas de frente pra trás + goleiro
+  const linhasExib = [...linhas].reverse(); // ataque → defesa
+  const linhasHTML = linhasExib.map((qtd, li)=>{
+    const isAtk = li===0 && linhas.length>2;
+    return `<div class="fv-line">${Array(qtd).fill(0).map(()=>`<div class="fv-dot">${isAtk?'ATA':'MEI'}</div>`).join('')}</div>`;
+  }).join('');
+  return `<div class="formation-vis">
+    <div class="fv-label">${formacaoStr}</div>
+    <div class="fv-lines">
+      <div class="fv-line"><div class="fv-dot is-gk">GOL</div></div>
+      ${[...linhas].map((qtd,li)=>{
+        const lbl = li===0?'ZAG': li===linhas.length-1?'ATA':'MEI';
+        return `<div class="fv-line">${Array(qtd).fill(0).map(()=>`<div class="fv-dot">${lbl}</div>`).join('')}</div>`;
+      }).join('')}
+    </div>
+  </div>`;
+}
+
+/* ---------- elenco ---------- */
+function elencoHTML(c){
+  if(!c.elenco || c.elenco.length===0) return '';
+  const sorted = [...c.elenco].sort((a,b)=>(b.rating||0)-(a.rating||0));
+  const cards = sorted.map(j=>{
+    const star = j.destaque || (c.jogadorDestaque && c.jogadorDestaque.nome===j.nome);
+    return `<div class="squad-card${star?' is-star':''}">
+      <div class="squad-num">${j.numero||'—'}</div>
+      <div class="squad-info"><b>${j.nome}</b><span>${j.posicao||''}${j.funcao?' · '+j.funcao:''}</span></div>
+      <div class="squad-rating${star?' is-top':''}">${j.rating||'—'}</div>
+    </div>`;
+  }).join('');
+  return `<div class="club-detail-subhead">👥 Elenco (${c.elenco.length})</div><div class="squad-grid">${cards}</div>`;
+}
+
+/* ---------- ranking de força eFootball (separado do ranking histórico) ---------- */
+function renderRankingForca(){
+  const list = document.getElementById('rankListForca');
+  if(!list) return;
+  const comForca = clubes.filter(c=>c.forca>0).sort((a,b)=>b.forca-a.forca);
+  if(comForca.length===0){
+    list.innerHTML = `<p style="color:var(--grey-dim);font-size:13px">Nenhuma força cadastrada ainda. Preencha o campo "forca" de cada clube para aparecer aqui.</p>`;
+    return;
+  }
+  list.innerHTML = '';
+  comForca.forEach((c,i)=>{
+    const row = document.createElement('div');
+    row.className = 'rank-row';
+    row.innerHTML = `
+      <div class="rank-pos">${i+1}</div>
+      <div class="rank-club"><img src="${c.escudo}" alt="" onerror="this.style.display='none'">${c.nome}</div>
+      <div class="rank-stats">
+        <div><b>⭐ ${c.forca}</b><span>Força</span></div>
+        <div style="flex:1.4"><span style="font-size:10px;color:var(--grey-dim)">${temDestaque(c)?`Destaque: ${c.jogadorDestaque.nome}`:'Sem destaque cadastrado'}</span></div>
+      </div>`;
+    row.addEventListener('click', ()=>openClub(c.id));
+    list.appendChild(row);
+  });
+}
+
+/* ---------- Scout da Liga ---------- */
+function renderScout(){
+  const el = document.getElementById('scoutGrid');
+  if(!el) return;
+  const comForca = clubes.filter(c=>c.forca>0);
+  if(comForca.length===0){
+    el.innerHTML=`<p style="color:var(--grey-dim);font-size:13px">Nenhum dado de força cadastrado ainda.</p>`;
+    return;
+  }
+  const sorted = [...comForca].sort((a,b)=>b.forca-a.forca);
+  const maior = sorted[0];
+  const menor = sorted[sorted.length-1];
+  const media = Math.round(comForca.reduce((s,c)=>s+c.forca,0)/comForca.length);
+  const dif = maior.forca - menor.forca;
+  const destaques = clubes.filter(c=>temDestaque(c)&&c.jogadorDestaque.forca>0)
+    .sort((a,b)=>b.jogadorDestaque.forca-a.jogadorDestaque.forca);
+  const topDestaque = destaques[0];
+
+  // histórico de força: maior evolução
+  let maiorEvolucao = null;
+  clubes.forEach(c=>{
+    if(c.historicoForca&&c.historicoForca.length>=2){
+      const vals = c.historicoForca.map(h=>h.forca).filter(v=>v>0);
+      if(vals.length>=2){ const evo=vals[vals.length-1]-vals[0]; if(!maiorEvolucao||evo>maiorEvolucao.evo) maiorEvolucao={clube:c,evo}; }
+    }
+  });
+
+  const stat = (icon,label,valor,sub='')=>`
+    <div class="scout-card">
+      <div class="sc-icon">${icon}</div>
+      <div class="sc-body"><div class="sc-label">${label}</div><div class="sc-value">${valor}</div>${sub?`<div class="sc-sub">${sub}</div>`:''}</div>
+    </div>`;
+
+  el.innerHTML=`<div class="scout-grid">
+    ${stat('🏆','Maior força',`${maior.forca}`,maior.nome)}
+    ${stat('📉','Menor força',`${menor.forca}`,menor.nome)}
+    ${stat('📊','Média de força',`${media}`,`${comForca.length} clube(s) com dados`)}
+    ${stat('⚖️','Diferença entre extremos',`${dif}`,`${maior.nome} × ${menor.nome}`)}
+    ${topDestaque?stat('⚡','Maior destaque',`${topDestaque.jogadorDestaque.nome} — ${topDestaque.jogadorDestaque.forca}`,topDestaque.nome):''}
+    ${maiorEvolucao?stat('📈','Maior evolução',`+${maiorEvolucao.evo}`,maiorEvolucao.clube.nome):''}
+  </div>
+  <div class="club-detail-subhead" style="margin-top:24px">Destaques cadastrados</div>
+  <div class="squad-grid">
+    ${destaques.length?destaques.map(c=>`
+      <div class="squad-card is-star">
+        <img src="${c.escudo}" alt="" style="width:28px;height:28px;object-fit:contain;flex-shrink:0" onerror="this.style.display='none'">
+        <div class="squad-info"><b>${c.jogadorDestaque.nome}</b><span>${c.nome} · ${c.jogadorDestaque.posicao||'—'}</span></div>
+        <div class="squad-rating is-top">${c.jogadorDestaque.forca||'—'}</div>
+      </div>`).join('')
+    :`<p style="color:var(--grey-dim);font-size:13px">Nenhum destaque cadastrado.</p>`}
+  </div>`;
+}
+
+/* ---------- recordes da Liga (Fase 7) ---------- */
+function sequenciasDoClube(id){
+  const jogos = partidas.filter(p => p.mandante===id || p.visitante===id)
+    .sort((a,b) => a.torneioNumero - b.torneioNumero || (a.fase==='Final'?1:0) - (b.fase==='Final'?1:0));
+  let invictaAtual=0, invictaMax=0, vitoriasAtual=0, vitoriasMax=0;
+  jogos.forEach(p => {
+    const r = resultadoDaPartida(p, id);
+    if(r.status==='derrota'){ invictaAtual=0; } else { invictaAtual++; invictaMax=Math.max(invictaMax,invictaAtual); }
+    if(r.status==='vitoria'){ vitoriasAtual++; vitoriasMax=Math.max(vitoriasMax,vitoriasAtual); } else { vitoriasAtual=0; }
+  });
+  return { invicta: invictaMax, vitoriasSeguidas: vitoriasMax };
+}
+function calcularRecordes(){
+  const recs = [];
+  const comJogos = clubes.filter(c => stats[c.id].jogos > 0);
+  const mc = maiorCampeao();
+  if(stats[mc.id].titulos > 0) recs.push({ icon:'👑', label:'Maior campeão', valor:mc.nome, detalhe:`${stats[mc.id].titulos} título(s)` });
+
+  if(comJogos.length){
+    const maisFinais = [...clubes].sort((a,b)=>stats[b.id].finais-stats[a.id].finais)[0];
+    if(stats[maisFinais.id].finais>0) recs.push({ icon:'🥈', label:'Mais finais disputadas', valor:maisFinais.nome, detalhe:`${stats[maisFinais.id].finais} final(is)` });
+
+    const maisVitorias = [...comJogos].sort((a,b)=>stats[b.id].vitorias-stats[a.id].vitorias)[0];
+    recs.push({ icon:'✅', label:'Mais vitórias', valor:maisVitorias.nome, detalhe:`${stats[maisVitorias.id].vitorias} vitória(s)` });
+
+    const maisGols = [...comJogos].sort((a,b)=>stats[b.id].golsPro-stats[a.id].golsPro)[0];
+    recs.push({ icon:'⚽', label:'Mais gols marcados', valor:maisGols.nome, detalhe:`${stats[maisGols.id].golsPro} gol(s)` });
+
+    const melhorAprov = [...comJogos].sort((a,b)=>stats[b.id].aproveitamento-stats[a.id].aproveitamento)[0];
+    recs.push({ icon:'📈', label:'Melhor aproveitamento', valor:melhorAprov.nome, detalhe:`${stats[melhorAprov.id].aproveitamento}%` });
+  }
+
+  if(partidas.length){
+    const maiorGoleada = partidas.reduce((max,p)=>{
+      const dif = Math.abs(p.golsMandante - p.golsVisitante);
+      return (!max || dif>max.dif) ? { dif, partida:p } : max;
+    }, null);
+    if(maiorGoleada && maiorGoleada.dif > 0){
+      const p = maiorGoleada.partida;
+      recs.push({ icon:'🔥', label:'Maior goleada', valor:`${nomeOf(p.mandante)} ${p.golsMandante}-${p.golsVisitante} ${nomeOf(p.visitante)}`, detalhe:p.torneioNome });
+    }
+  }
+
+  let melhorInvicta = { count:0, clube:null }, melhorSeqVitorias = { count:0, clube:null };
+  clubes.forEach(c => {
+    const seq = sequenciasDoClube(c.id);
+    if(seq.invicta > melhorInvicta.count) melhorInvicta = { count:seq.invicta, clube:c };
+    if(seq.vitoriasSeguidas > melhorSeqVitorias.count) melhorSeqVitorias = { count:seq.vitoriasSeguidas, clube:c };
+  });
+  if(melhorInvicta.count > 1) recs.push({ icon:'🛡️', label:'Maior sequência invicta', valor:melhorInvicta.clube.nome, detalhe:`${melhorInvicta.count} jogo(s)` });
+  if(melhorSeqVitorias.count > 1) recs.push({ icon:'🚀', label:'Maior sequência de vitórias', valor:melhorSeqVitorias.clube.nome, detalhe:`${melhorSeqVitorias.count} jogo(s)` });
+
+  return recs;
+}
+function renderRecords(){
+  const grid = document.getElementById('recordGrid');
+  const recs = calcularRecordes();
+  if(!recs.length){ grid.innerHTML = `<p style="color:var(--grey)">Ainda não há partidas suficientes para gerar recordes.</p>`; return; }
+  grid.innerHTML = recs.map(r => `
+    <div class="record-card">
+      <div class="rc-icon">${r.icon}</div>
+      <div>
+        <div class="rc-label">${r.label}</div>
+        <div class="rc-value">${r.valor}</div>
+        <div class="rc-detail">${r.detalhe}</div>
+      </div>
+    </div>`).join('');
+}
+
+/* ---------- estatísticas + gráficos ---------- */
+function renderStatGrid2(){
+  const totalTitulos = torneios.filter(t=>t.campeao).length;
+  document.getElementById('statGrid2').innerHTML = `
+    <div class="stat-box"><b>${torneios.length}</b><span>Edições realizadas</span></div>
+    <div class="stat-box"><b>${totalTitulos}</b><span>Títulos distribuídos</span></div>
+    <div class="stat-box"><b>${clubes.length}</b><span>Clubes na Liga</span></div>
+    <div class="stat-box"><b>${campeoesDiferentes()}</b><span>Campeões diferentes</span></div>`;
+}
+function drawBarChart(canvas, labels, values, colorMain){
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.clientWidth || 300, cssH = 200;
+  canvas.width = cssW*dpr; canvas.height = cssH*dpr; ctx.scale(dpr,dpr); ctx.clearRect(0,0,cssW,cssH);
+  const max = Math.max(1, ...values);
+  const padL = 8, padB = 24, padT = 14, gap = 14;
+  const chartW = cssW - padL*2, chartH = cssH - padB - padT;
+  const barW = (chartW - gap*(values.length-1)) / values.length;
+  values.forEach((v,i)=>{
+    const h = (v/max) * chartH;
+    const x = padL + i*(barW+gap);
+    const y = padT + (chartH - h);
+    const grad = ctx.createLinearGradient(0,y,0,y+h);
+    grad.addColorStop(0, colorMain); grad.addColorStop(1, 'rgba(30,155,255,.15)');
+    ctx.fillStyle = grad; ctx.beginPath();
+    ctx.roundRect ? ctx.roundRect(x,y,barW,h,[6,6,0,0]) : ctx.rect(x,y,barW,h);
+    ctx.fill();
+    ctx.fillStyle = '#F5F8FF'; ctx.font='700 12px Rajdhani, sans-serif'; ctx.textAlign='center';
+    ctx.fillText(v, x+barW/2, y-6 < padT ? padT+12 : y-6);
+    ctx.fillStyle = '#93A3CC'; ctx.font='600 9.5px Manrope, sans-serif';
+    ctx.fillText(labels[i], x+barW/2, cssH-8);
+  });
+}
+function drawLineChart(canvas, labels, series){
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = canvas.clientWidth || 300, cssH = 200;
+  canvas.width = cssW*dpr; canvas.height = cssH*dpr; ctx.scale(dpr,dpr); ctx.clearRect(0,0,cssW,cssH);
+  const padL=22,padR=8,padT=14,padB=24;
+  const chartW = cssW-padL-padR, chartH = cssH-padT-padB;
+  const maxY = 3, minY = 1;
+  const stepX = chartW/(labels.length-1 || 1);
+  ctx.strokeStyle='rgba(255,255,255,.06)';
+  for(let r=1;r<=3;r++){ const y = padT + ((r-minY)/(maxY-minY))*chartH; ctx.beginPath(); ctx.moveTo(padL,y); ctx.lineTo(cssW-padR,y); ctx.stroke(); }
+  ctx.fillStyle='#5B6584'; ctx.font='9px Manrope, sans-serif'; ctx.textAlign='right';
+  ['1º','2º','Semi'].forEach((lbl,i)=>{ const y = padT + (i/(maxY-minY))*chartH; ctx.fillText(lbl, padL-4, y+3); });
+  series.forEach(s=>{
+    ctx.beginPath();
+    s.values.forEach((v,i)=>{ const x = padL + i*stepX; const y = padT + ((v-minY)/(maxY-minY))*chartH; if(i===0) ctx.moveTo(x,y); else ctx.lineTo(x,y); });
+    ctx.strokeStyle = s.color; ctx.lineWidth=2; ctx.stroke();
+    s.values.forEach((v,i)=>{ const x = padL + i*stepX; const y = padT + ((v-minY)/(maxY-minY))*chartH; ctx.beginPath(); ctx.arc(x,y,3,0,7); ctx.fillStyle=s.color; ctx.fill(); });
+  });
+  ctx.fillStyle='#93A3CC'; ctx.font='9px Manrope, sans-serif'; ctx.textAlign='center';
+  labels.forEach((lbl,i)=>{ const x = padL + i*stepX; ctx.fillText(lbl.replace('Torneio ','T'), x, cssH-6); });
+}
+function renderCharts(){
+  const labels = clubes.map(c=>c.nome.split(' ')[0]);
+  drawBarChart(document.getElementById('chartTitulos'), labels, clubes.map(c=>stats[c.id].titulos), '#1E9BFF');
+  drawBarChart(document.getElementById('chartVices'), labels, clubes.map(c=>stats[c.id].vices), '#0052FF');
+  drawBarChart(document.getElementById('chartPart'), labels, clubes.map(c=>stats[c.id].participacoes), '#93A3CC');
+  const evolColors = clubes.map(c=>c.cor);
+  const series = clubes.map((c,i)=>({ name:c.nome, color:evolColors[i%evolColors.length], values: torneios.map(t => t.campeao===c.id?1 : t.vice===c.id?2 : 3) }));
+  drawLineChart(document.getElementById('chartEvol'), torneios.map(t=>t.nome), series);
+}
+
+/* ---------- confronto direto + comparação ---------- */
+function renderRivalries(){
+  const rivs = calcularRivalidades();
+  const callout = document.getElementById('rivalryCallout');
+  const list = document.getElementById('rivalryList');
+  const historyText = document.getElementById('rivalryText');
+  if(rivs.length===0){
+    callout.innerHTML = `<span class="icon">🤝</span><div><b>Nenhuma rivalidade registrada ainda</b><span>As finais aparecerão aqui assim que forem cadastradas.</span></div>`;
+    list.innerHTML=''; return;
+  }
+  const top = rivs[0];
+  callout.innerHTML = `<span class="icon">🔥</span><div><b>Maior rivalidade: ${nomeOf(top.a)} × ${nomeOf(top.b)}</b><span>${top.total} final${top.total>1?'is':''} — ${nomeOf(top.a)} ${top.titulosA} × ${top.titulosB} ${nomeOf(top.b)}</span></div>`;
+  list.innerHTML = `<h4>Todas as finais registradas</h4>` + rivs.map(r=>`<div class="rivalry-row"><b>${nomeOf(r.a)} × ${nomeOf(r.b)}</b><span class="count">${r.total} final${r.total>1?'is':''} · ${r.titulosA}-${r.titulosB}</span></div>`).join('');
+  if(historyText) historyText.textContent = `Os confrontos diretos entre os clubes já desenharam ${rivs.length} rivalidade${rivs.length>1?'s':''} em finais. A mais intensa até aqui é ${nomeOf(top.a)} × ${nomeOf(top.b)}, com ${top.total} decisão${top.total>1?'ões':''} de título entre eles.`;
+}
+/* ---------- confronto direto: retrospecto real entre dois clubes (Fase 8) ---------- */
+function headToHead(idA, idB){
+  const jogos = partidas.filter(p =>
+    (p.mandante===idA && p.visitante===idB) || (p.mandante===idB && p.visitante===idA)
+  ).sort((a,b) => a.torneioNumero - b.torneioNumero);
+  let vitoriasA=0, vitoriasB=0, empates=0, golsA=0, golsB=0, maiorGoleada=null;
+  jogos.forEach(p => {
+    const aEhMandante = p.mandante===idA;
+    const gA = aEhMandante ? p.golsMandante : p.golsVisitante;
+    const gB = aEhMandante ? p.golsVisitante : p.golsMandante;
+    golsA += gA; golsB += gB;
+    if(gA>gB) vitoriasA++; else if(gB>gA) vitoriasB++; else empates++;
+    const dif = Math.abs(gA-gB);
+    if(dif>0 && (!maiorGoleada || dif>maiorGoleada.dif)) maiorGoleada = { dif, gA, gB, torneioNome:p.torneioNome, fase:p.fase, vencedor: gA>gB?idA:idB };
+  });
+  const finaisDiretas = torneios.filter(t => t.chave.final && t.chave.finalPlacar &&
+    ((t.chave.final[0]===idA && t.chave.final[1]===idB) || (t.chave.final[0]===idB && t.chave.final[1]===idA)));
+  return { jogos, totalJogos:jogos.length, vitoriasA, vitoriasB, empates, golsA, golsB, maiorGoleada, finaisDiretas };
+}
+function setupHTH(){
+  const a = document.getElementById('hthA'), b = document.getElementById('hthB');
+  a.innerHTML=''; b.innerHTML='';
+  clubes.forEach(c=>{ a.innerHTML += `<option value="${c.id}">${c.nome}</option>`; b.innerHTML += `<option value="${c.id}">${c.nome}</option>`; });
+  b.selectedIndex = 1;
+  function update(){
+    const idA = a.value, idB = b.value;
+    const res = document.getElementById('hthResult');
+    const matchesBox = document.getElementById('hthMatches');
+    const cmp = document.getElementById('comparePanel');
+    if(idA===idB){
+      res.innerHTML = `<p style="color:var(--grey-dim);font-size:13px">Escolha dois clubes diferentes.</p>`;
+      matchesBox.innerHTML=''; cmp.innerHTML=''; return;
+    }
+    const h2h = headToHead(idA, idB);
+    if(h2h.totalJogos===0){
+      res.innerHTML = `<p style="color:var(--grey-dim);font-size:13px">Nenhum confronto registrado ainda entre ${nomeOf(idA)} e ${nomeOf(idB)}.</p>`;
+      matchesBox.innerHTML = '';
+    } else {
+      res.innerHTML = `
+        <div class="side"><b>${h2h.vitoriasA}</b><span>Vitórias — ${nomeOf(idA)}</span></div>
+        <div class="side"><b>${h2h.empates}</b><span>Empates</span></div>
+        <div class="side"><b>${h2h.vitoriasB}</b><span>Vitórias — ${nomeOf(idB)}</span></div>`;
+      const ultimos = [...h2h.jogos].reverse().slice(0,5);
+      matchesBox.innerHTML = `
+        <div class="hm-subhead">${h2h.totalJogos} jogo(s) · Gols: ${nomeOf(idA)} ${h2h.golsA} — ${h2h.golsB} ${nomeOf(idB)}</div>
+        <div class="match-list">
+          ${ultimos.map(p=>{
+            const aEhMandante = p.mandante===idA;
+            const gA = aEhMandante ? p.golsMandante : p.golsVisitante;
+            const gB = aEhMandante ? p.golsVisitante : p.golsMandante;
+            const status = gA>gB ? 'vitoria' : (gA<gB ? 'derrota' : 'empate');
+            return `<div class="match-row is-${status}"><span>${p.torneioNome} · ${p.fase}</span><span class="mr-score">${gA}-${gB}</span></div>`;
+          }).join('')}
+        </div>
+        ${h2h.maiorGoleada ? `<div class="hm-subhead">Maior goleada</div><p style="font-size:13px">${nomeOf(idA===h2h.maiorGoleada.vencedor?idA:idB)} venceu por ${h2h.maiorGoleada.gA>h2h.maiorGoleada.gB?h2h.maiorGoleada.gA:h2h.maiorGoleada.gB}-${h2h.maiorGoleada.gA>h2h.maiorGoleada.gB?h2h.maiorGoleada.gB:h2h.maiorGoleada.gA} (${h2h.maiorGoleada.torneioNome})</p>` : ''}
+        ${h2h.finaisDiretas.length ? `<div class="hm-subhead">Confrontos em finais</div>${h2h.finaisDiretas.map(t=>`<p style="font-size:13px">${t.nome}: campeão ${nomeOf(t.campeao)} (${t.chave.finalPlacar[0]}-${t.chave.finalPlacar[1]})</p>`).join('')}` : ''}
+      `;
+    }
+    const sA = stats[idA], sB = stats[idB];
+    const metrics = [ ['Títulos', sA.titulos, sB.titulos], ['Vices', sA.vices, sB.vices], ['Finais', sA.finais, sB.finais], ['Aproveitamento', sA.aproveitamento, sB.aproveitamento] ];
+    const cA = porId(idA), cB = porId(idB);
+    if(cA.forca>0 && cB.forca>0) metrics.push(['Força eFootball', cA.forca, cB.forca]);
+    if(temDestaque(cA) && temDestaque(cB) && cA.jogadorDestaque.forca>0 && cB.jogadorDestaque.forca>0){
+      metrics.push([`Destaque (${cA.jogadorDestaque.nome} × ${cB.jogadorDestaque.nome})`, cA.jogadorDestaque.forca, cB.jogadorDestaque.forca]);
+    }
+    cmp.innerHTML = `<h4>${nomeOf(idA)} vs ${nomeOf(idB)} — carreira</h4>` + metrics.map(([label,va,vb])=>{
+      const max = Math.max(va,vb,1);
+      return `<div class="compare-row"><span class="compare-metric-name">${label}</span>
+        <div class="compare-labels"><span>${va}</span><span>${vb}</span></div>
+        <div class="compare-track"><div class="fillA" style="width:${(va/max)*50}%"></div><div class="fillB" style="width:${(vb/max)*50}%;margin-left:auto"></div></div></div>`;
+    }).join('');
+  }
+  a.addEventListener('change', update); b.addEventListener('change', update);
+  update();
+}
+
+/* ---------- história ---------- */
+function renderTimeline(){
+  const tl = document.getElementById('timeline'); tl.innerHTML='';
+  torneios.forEach(t=>{
+    const item = document.createElement('div');
+    item.className='tl-item' + (t.campeao ? ' is-title' : '');
+    const desc = t.campeao ? `Campeão: ${nomeOf(t.campeao)} · Vice: ${nomeOf(t.vice)}` : 'Resultados a definir';
+    item.innerHTML = `<h4>${t.nome}</h4><p>${desc}</p>`;
+    tl.appendChild(item);
+  });
+}
+
+/* ---------- notícias com filtro ---------- */
+let filtroAtual = 'Todas';
+function renderNewsFilter(){
+  const cats = ['Todas', ...new Set(noticias.map(n=>n.categoria))];
+  const el = document.getElementById('newsFilter'); el.innerHTML='';
+  cats.forEach(cat=>{
+    const btn = document.createElement('button');
+    btn.textContent = cat; btn.className = cat===filtroAtual ? 'active' : '';
+    btn.addEventListener('click', ()=>{ filtroAtual = cat; renderNewsFilter(); renderNews(); });
+    el.appendChild(btn);
+  });
+}
+function newsCardHTML(n){
+  return `<div class="news-thumb">${n.imagem ? `<img src="${n.imagem}" alt="${n.titulo}" onerror="this.parentElement.innerHTML='${n.icone}'">` : n.icone}</div><div class="news-body"><div class="news-cat">${n.categoria}</div><h3>${n.titulo}</h3><p>${n.descricao}</p><span class="news-date">${n.data}</span></div>`;
+}
+function renderNews(){
+  const grid = document.getElementById('newsGrid'); grid.innerHTML='';
+  const lista = filtroAtual==='Todas' ? noticias : noticias.filter(n=>n.categoria===filtroAtual);
+  lista.forEach(n=>{
+    const card = document.createElement('div'); card.className='news-card';
+    card.innerHTML = newsCardHTML(n);
+    card.addEventListener('click', ()=>openNews(n));
+    grid.appendChild(card);
+  });
+}
+function openNews(n){
+  const detail = document.getElementById('clubDetail');
+  detail.innerHTML = `
+    <div class="sheet-handle"></div>
+    <button class="sheet-close" id="closeClub">×</button>
+    <div class="news-detail">
+      ${n.imagem ? `<img src="${n.imagem}" alt="${n.titulo}" onerror="this.style.display='none'">` : ''}
+      <div class="news-cat">${n.categoria}</div>
+      <h3>${n.titulo}</h3>
+      <span class="news-date">${n.data}</span>
+      <p>${n.conteudo || n.descricao}</p>
+    </div>`;
+  document.getElementById('overlay').classList.add('open');
+  document.getElementById('closeClub').addEventListener('click', closeClub);
+}
+/* prévia das notícias mais recentes, mostrada na Home (Fase 9) */
+function renderHomeNewsPreview(){
+  const box = document.getElementById('homeNewsPreview');
+  if(!noticias.length){ box.innerHTML=''; return; }
+  const recentes = noticias.slice(0,2);
+  box.innerHTML = `<h4>Últimas notícias</h4><div class="news-grid">${recentes.map(n=>`<div class="news-card" data-idx="${noticias.indexOf(n)}">${newsCardHTML(n)}</div>`).join('')}</div>`;
+  box.querySelectorAll('.news-card').forEach(el=>{
+    el.addEventListener('click', ()=> openNews(noticias[+el.dataset.idx]));
+  });
+}
+
+/* ---------- galeria por categorias (Fase 9) ---------- */
+/* "Escudos" é gerado automaticamente a partir dos clubes cadastrados. As demais categorias
+   (finais, troféus, momentos, jogadores) aparecem vazias até que imagens sejam cadastradas —
+   basta adicionar objetos { categoria, titulo, imagem } no array galeriaExtra abaixo. */
+const galeriaExtra = [
+  // Exemplo: { categoria:"Finais", titulo:"Final do Torneio 3", imagem:"URL_DA_IMAGEM" },
+];
+let galeriaCategoriaAtual = 'Escudos';
+function galeriaItens(){
+  const escudos = clubes.map(c=>({ categoria:'Escudos', titulo:c.nome, imagem:c.escudo, cor:c.cor }));
+  return [...escudos, ...galeriaExtra];
+}
+function renderGalleryFilter(){
+  const cats = ['Escudos', 'Finais', 'Troféus', 'Momentos', 'Jogadores'];
+  const el = document.getElementById('galleryFilter'); el.innerHTML='';
+  cats.forEach(cat=>{
+    const btn = document.createElement('button');
+    btn.textContent = cat; btn.className = cat===galeriaCategoriaAtual ? 'active' : '';
+    btn.addEventListener('click', ()=>{ galeriaCategoriaAtual = cat; renderGalleryFilter(); renderGallery(); });
+    el.appendChild(btn);
+  });
+}
+function renderGallery(){
+  const grid = document.getElementById('galleryGrid'); grid.innerHTML='';
+  const itens = galeriaItens().filter(i=>i.categoria===galeriaCategoriaAtual);
+  if(!itens.length){
+    grid.innerHTML = `<p class="hof-empty">Nenhuma imagem cadastrada em "${galeriaCategoriaAtual}" ainda.</p>`;
+    return;
+  }
+  itens.forEach(i=>{
+    const item = document.createElement('div'); item.className='gallery-item';
+    item.style.setProperty('--card-cor', i.cor || '#1E3B72');
+    item.innerHTML = `<img src="${i.imagem}" alt="${i.titulo}" onerror="this.style.opacity=0"><span class="gallery-tag">${i.titulo}</span>`;
+    grid.appendChild(item);
+  });
+}
+
+/* ---------- hall da fama (Fase 9) ---------- */
+function renderHallFama(){
+  const grid = document.getElementById('hofGrid');
+  const eraTexto = document.getElementById('eraAtualText');
+  if(eraTexto) eraTexto.textContent = `Com ${torneios.length} edições no histórico, a Copa Liga eFootball segue em expansão, com novas edições sempre a caminho.`;
+
+  const primeiroT = torneios.find(t=>t.campeao);
+  const mc = maiorCampeao();
+  const cards = [];
+  if(primeiroT) cards.push({ icon:'🥇', label:'Primeiro campeão', valor:nomeOf(primeiroT.campeao), detalhe:primeiroT.nome });
+  if(mc && stats[mc.id].titulos>0) cards.push({ icon:'👑', label:'Maior campeão', valor:mc.nome, detalhe:`${stats[mc.id].titulos} título(s)` });
+  calcularRecordes().slice(0,2).forEach(r=> cards.push(r));
+  grid.innerHTML = cards.length ? cards.map(r=>`
+    <div class="record-card"><div class="rc-icon">${r.icon}</div><div>
+      <div class="rc-label">${r.label}</div><div class="rc-value">${r.valor}</div><div class="rc-detail">${r.detalhe}</div>
+    </div></div>`).join('') : `<p class="hof-empty">Ainda não há torneios decididos para gerar o Hall da Fama.</p>`;
+
+  document.getElementById('hofFounders').innerHTML = clubes.map(c=>
+    `<div class="hof-founder-chip"><img src="${c.escudo}" alt="${c.nome}" onerror="this.style.display='none'">${c.nome}</div>`).join('');
+
+  document.getElementById('hofPlayers').innerHTML = jogadoresHistoricos.length
+    ? jogadoresHistoricos.map(j=>`<div class="record-card"><div class="rc-icon">⭐</div><div><div class="rc-label">${nomeOf(j.clubeId)}</div><div class="rc-value">${j.nome}</div><div class="rc-detail">${j.destaque}</div></div></div>`).join('')
+    : `<p class="hof-empty">Nenhum jogador histórico cadastrado ainda.</p>`;
+
+  document.getElementById('hofMoments').innerHTML = momentosMarcantes.length
+    ? momentosMarcantes.map(m=>`<div class="record-card"><div class="rc-icon">✨</div><div><div class="rc-label">${m.data}</div><div class="rc-value">${m.titulo}</div><div class="rc-detail">${m.descricao}</div></div></div>`).join('')
+    : `<p class="hof-empty">Nenhum momento marcante cadastrado ainda.</p>`;
+}
+
+/* ---------- guia (perguntas e respostas) ---------- */
+function renderGuia(){
+  const el = document.getElementById('guiaList'); el.innerHTML='';
+  guiaFAQ.forEach(item=>{
+    const box = document.createElement('div'); box.className='guia-item';
+    box.innerHTML = `<button class="guia-q">${item.p}<span class="plus">+</span></button><div class="guia-a"><div class="guia-a-inner">${item.r}</div></div>`;
+    box.querySelector('.guia-q').addEventListener('click', ()=> box.classList.toggle('open'));
+    el.appendChild(box);
+  });
+}
+
+/* ---------- tag hero ---------- */
+function renderHeroTag(){
+  const el = document.getElementById('heroTag');
+  const t = ultimoTorneioComCampeao();
+  const pendente = torneios[torneios.length-1];
+  if(!t) return;
+  let texto = `${nomeOf(t.campeao)} é o atual detentor da taça, conquistada no ${t.nome}.`;
+  if(!pendente.campeao && pendente !== t) texto += ` O ${pendente.nome} ainda aguarda seu campeão.`;
+  el.textContent = texto;
+}
+
+/* ---------- confete (efeito de celebração) ---------- */
+function fireConfetti(count){
+  const layer = document.getElementById('confettiLayer');
+  const emojis = ['🎉','🏆','⭐','🔵','🟡'];
+  for(let i=0;i<(count||24);i++){
+    const piece = document.createElement('span');
+    piece.className = 'confetti-piece';
+    piece.textContent = emojis[Math.floor(Math.random()*emojis.length)];
+    piece.style.left = Math.random()*100 + '%';
+    piece.style.fontSize = (12 + Math.random()*14) + 'px';
+    const dur = 1.8 + Math.random()*1.4;
+    piece.style.animationDuration = dur + 's';
+    piece.style.animationDelay = (Math.random()*.4) + 's';
+    layer.appendChild(piece);
+    setTimeout(()=>piece.remove(), (dur+0.5)*1000);
+  }
+}
+
+/* ---------- palpite: torcedor escolhe quem acha que vai ser campeão do próximo torneio ---------- */
+const PREDICT_KEY = "ligaZP_palpite_";
+function torneioPendente(){ return torneios.find(t => !t.campeao) || null; }
+function renderPredictCard(){
+  const box = document.getElementById('predictCard');
+  const pendente = torneioPendente();
+  if(!pendente){ box.style.display='none'; return; }
+  box.style.display='block';
+  const key = PREDICT_KEY + pendente.numero;
+  let palpite = null;
+  try { palpite = localStorage.getItem(key); } catch(e){}
+  if(!palpite){
+    box.innerHTML = `
+      <h4>🔮 Qual o seu palpite pro ${pendente.nome}?</h4>
+      <p>Escolha quem você acha que vai levantar a taça. Só você vê essa escolha.</p>
+      <div class="predict-row">
+        <select id="predictSelect">${clubes.map(c=>`<option value="${c.id}">${c.nome}</option>`).join('')}</select>
+        <button id="predictSave">Salvar</button>
+      </div>`;
+    document.getElementById('predictSave').addEventListener('click', ()=>{
+      const id = document.getElementById('predictSelect').value;
+      try { localStorage.setItem(key, id); } catch(e){}
+      if(navigator.vibrate) navigator.vibrate(10);
+      renderPredictCard();
+    });
+  } else {
+    if(pendente.campeao){
+      const acertou = pendente.campeao === palpite;
+      box.innerHTML = `
+        <h4>🔮 Seu palpite pro ${pendente.nome}</h4>
+        <span class="predict-chip">${nomeOf(palpite)}</span>
+        <div class="predict-result ${acertou?'hit':'miss'}">${acertou ? '✅ Você acertou o campeão!' : `❌ Não dessa vez — o campeão foi ${nomeOf(pendente.campeao)}.`}</div>`;
+    } else {
+      box.innerHTML = `
+        <h4>🔮 Seu palpite pro ${pendente.nome}</h4>
+        <span class="predict-chip">🏆 ${nomeOf(palpite)}</span>
+        <div class="predict-result" style="color:var(--grey)">Palpite guardado. O resultado aparece aqui assim que o torneio for decidido.</div>`;
+    }
+  }
+}
+
+/* ---------- simulador de confronto amigável (Fase 8) ---------- */
+/* ---------- força do time: leva em conta títulos, aproveitamento e saldo de gols, não só taças ---------- */
+function pesoDoClube(id){
+  const s = stats[id];
+  const porTitulos = s.titulos * 0.5;
+  const porAproveitamento = (s.aproveitamento/100) * 1.5;
+  const porSaldo = Math.max(-1, Math.min(1, s.jogos ? s.saldoGols/s.jogos/2 : 0)) * 0.6;
+  return 1 + porTitulos + porAproveitamento + porSaldo;
+}
+function forcaStars(id){
+  const peso = pesoDoClube(id);
+  const nota = Math.max(1, Math.min(5, Math.round(peso)));
+  return '★'.repeat(nota) + '☆'.repeat(5-nota);
+}
+function renderSimForce(idA, idB){
+  const box = document.getElementById('simForce');
+  if(idA===idB){ box.innerHTML=''; return; }
+  box.innerHTML = `
+    <div class="sf-side"><span>${nomeOf(idA)}</span><span class="sf-stars">${forcaStars(idA)}</span></div>
+    <div class="sf-side"><span class="sf-stars">${forcaStars(idB)}</span><span>${nomeOf(idB)}</span></div>`;
+}
+function sortearPlacar(idA, idB){
+  const pesoA = pesoDoClube(idA), pesoB = pesoDoClube(idB);
+  const golsA = Math.min(6, Math.round(Math.random()*3*pesoA));
+  const golsB = Math.min(6, Math.round(Math.random()*3*pesoB));
+  return [golsA, golsB];
+}
+/* disputa de pênaltis recreativa — usada só quando o simulador empata, nunca vira estatística oficial */
+function sortearPenaltis(idA, idB){
+  const pesoA = pesoDoClube(idA), pesoB = pesoDoClube(idB);
+  const chanceA = 0.7 + Math.max(-0.1, Math.min(0.1, (pesoA-pesoB)*0.04));
+  const chanceB = 0.7 + Math.max(-0.1, Math.min(0.1, (pesoB-pesoA)*0.04));
+  let golsA = 0, golsB = 0;
+  const cobrancas = [];
+  for(let r=1; r<=5; r++){
+    const a = Math.random() < chanceA, b = Math.random() < chanceB;
+    if(a) golsA++; if(b) golsB++;
+    cobrancas.push({ a, b });
+  }
+  let extra = 0;
+  while(golsA===golsB && extra < 8){
+    extra++;
+    const a = Math.random() < chanceA, b = Math.random() < chanceB;
+    if(a) golsA++; if(b) golsB++;
+    cobrancas.push({ a, b, subita:true });
+  }
+  if(golsA===golsB){ if(pesoA>=pesoB) golsA++; else golsB++; } // desempate final de segurança
+  return { golsA, golsB, cobrancas, vencedor: golsA>golsB ? idA : idB };
+}
+function penaltiShootoutHTML(idA, idB, pen){
+  const linhaA = pen.cobrancas.map(c=>`<div class="pen-dot ${c.a?'is-goal':'is-miss'}">${c.a?'●':'×'}</div>`).join('');
+  const linhaB = pen.cobrancas.map(c=>`<div class="pen-dot ${c.b?'is-goal':'is-miss'}">${c.b?'●':'×'}</div>`).join('');
+  return `
+    <div class="pen-shootout">
+      <div class="pen-title">🥅 Disputa de pênaltis</div>
+      <div class="pen-row">${linhaA}</div>
+      <div class="pen-row">${linhaB}</div>
+      <div class="pen-score">${nomeOf(idA)} ${pen.golsA} — ${pen.golsB} ${nomeOf(idB)}</div>
+    </div>`;
+}
+function renderSimProbability(idA, idB){
+  const box = document.getElementById('simProbability');
+  if(idA===idB){ box.innerHTML=''; return; }
+  const pesoA = pesoDoClube(idA), pesoB = pesoDoClube(idB);
+  const pctA = Math.round((pesoA/(pesoA+pesoB))*100);
+  box.innerHTML = `<span>${nomeOf(idA)} ${pctA}%</span><div class="sp-bar"><div class="sp-fill" style="width:${pctA}%"></div></div><span>${100-pctA}% ${nomeOf(idB)}</span>`;
+}
+function renderSimHistory(idA, idB){
+  const box = document.getElementById('simHistory');
+  if(idA===idB){ box.innerHTML=''; return; }
+  const h2h = headToHead(idA, idB);
+  box.innerHTML = h2h.totalJogos===0
+    ? `Sem confrontos oficiais registrados entre eles ainda.`
+    : `Histórico oficial: ${h2h.totalJogos} jogo(s) — ${h2h.vitoriasA}V ${h2h.empates}E ${h2h.vitoriasB}D (${nomeOf(idA)} x ${nomeOf(idB)})`;
+}
+function setupSimulador(){
+  const a = document.getElementById('simA'), b = document.getElementById('simB');
+  a.innerHTML=''; b.innerHTML='';
+  clubes.forEach(c=>{ a.innerHTML += `<option value="${c.id}">${c.nome}</option>`; b.innerHTML += `<option value="${c.id}">${c.nome}</option>`; });
+  b.selectedIndex = 1;
+  function atualizarPrévia(){ renderSimProbability(a.value, b.value); renderSimForce(a.value, b.value); renderSimHistory(a.value, b.value); }
+  a.addEventListener('change', atualizarPrévia); b.addEventListener('change', atualizarPrévia);
+  atualizarPrévia();
+
+  document.getElementById('simRun').addEventListener('click', ()=>{
+    const idA = a.value, idB = b.value;
+    const result = document.getElementById('simResult'), verdict = document.getElementById('simVerdict');
+    if(idA===idB){ verdict.textContent='Escolha dois clubes diferentes.'; result.innerHTML=''; return; }
+    const [golsA, golsB] = sortearPlacar(idA, idB);
+    result.innerHTML = `
+      <div class="sim-side"><img src="${escudoOf(idA)}" alt="" onerror="this.style.display='none'"><b>${nomeOf(idA)}</b></div>
+      <div class="sim-score" id="simScoreEl">${golsA} — ${golsB}</div>
+      <div class="sim-side"><img src="${escudoOf(idB)}" alt="" onerror="this.style.display='none'"><b>${nomeOf(idB)}</b></div>`;
+    requestAnimationFrame(()=> document.getElementById('simScoreEl').classList.add('show'));
+    if(golsA===golsB){
+      const pen = sortearPenaltis(idA, idB);
+      result.innerHTML += penaltiShootoutHTML(idA, idB, pen);
+      verdict.textContent = `Empate no tempo normal — ${nomeOf(pen.vencedor)} levaria nos pênaltis!`;
+      if(navigator.vibrate) navigator.vibrate([8,20,8,20,8]);
+    } else {
+      verdict.textContent = `${golsA>golsB ? nomeOf(idA) : nomeOf(idB)} levaria essa simulação.`;
+      if(navigator.vibrate) navigator.vibrate([8,30,8]);
+    }
+  });
+
+  /* mata-mata recreativo com todos os clubes (só aparece quando há 4+ clubes cadastrados) */
+  const bracketBtn = document.getElementById('simBracketRun');
+  if(clubes.length < 4){ bracketBtn.style.display = 'none'; return; }
+  bracketBtn.addEventListener('click', ()=>{
+    const sorteados = shuffle(clubes);
+    const [c1,c2,c3,c4] = sorteados;
+    const sf1 = sortearPlacar(c1.id, c2.id), sf2 = sortearPlacar(c3.id, c4.id);
+    const finalistaA = sf1[0]===sf1[1] ? porId(sortearPenaltis(c1.id,c2.id).vencedor) : (sf1[0]>sf1[1] ? c1 : c2);
+    const finalistaB = sf2[0]===sf2[1] ? porId(sortearPenaltis(c3.id,c4.id).vencedor) : (sf2[0]>sf2[1] ? c3 : c4);
+    const final = sortearPlacar(finalistaA.id, finalistaB.id);
+    const campeao = final[0]===final[1] ? porId(sortearPenaltis(finalistaA.id,finalistaB.id).vencedor) : (final[0]>final[1] ? finalistaA : finalistaB);
+    const box = document.getElementById('simBracketResult');
+    box.innerHTML = `
+      <div class="sbr-row"><span>${c1.nome} x ${c2.nome}</span><span>${sf1[0]}-${sf1[1]}${sf1[0]===sf1[1]?' (pên.)':''}</span></div>
+      <div class="sbr-row"><span>${c3.nome} x ${c4.nome}</span><span>${sf2[0]}-${sf2[1]}${sf2[0]===sf2[1]?' (pên.)':''}</span></div>
+      <div class="sbr-row"><span>${finalistaA.nome} x ${finalistaB.nome} (final)</span><span>${final[0]}-${final[1]}${final[0]===final[1]?' (pên.)':''}</span></div>
+      <div class="sbr-champ">🏆 ${campeao.nome} — campeão do mata-mata simulado</div>`;
+    if(navigator.vibrate) navigator.vibrate([8,30,8,30,8]);
+  });
+}
+
+/* ---------- quiz da liga (perguntas geradas a partir dos dados) ---------- */
+function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function buildQuizQuestions(){
+  const perguntas = [];
+  torneios.filter(t=>t.campeao).forEach(t=>{
+    perguntas.push({ pergunta:`Quem foi o campeão do ${t.nome}?`, opcoes: shuffle(clubes.map(c=>c.nome)), correta: nomeOf(t.campeao) });
+  });
+  perguntas.push({ pergunta:'Qual clube é o maior campeão da Liga?', opcoes: shuffle(clubes.map(c=>c.nome)), correta: maiorCampeao().nome });
+  const rivs = calcularRivalidades();
+  if(rivs.length){
+    const top = rivs[0];
+    const outros = clubes.filter(c=>c.id!==top.a && c.id!==top.b).map(c=>c.nome);
+    perguntas.push({ pergunta:`Qual clube mais vezes enfrentou o ${nomeOf(top.a)} numa final?`, opcoes: shuffle([nomeOf(top.b), ...outros]), correta: nomeOf(top.b) });
+  }
+  const totalOpcoes = shuffle([String(torneios.length), String(torneios.length+1), String(Math.max(1,torneios.length-1)), String(torneios.length+2)]);
+  perguntas.push({ pergunta:'Quantos torneios a Copa Liga eFootball já teve (incluindo os ainda não decididos)?', opcoes: totalOpcoes, correta: String(torneios.length) });
+  return shuffle(perguntas).slice(0,6);
+}
+let quizState = null;
+function setupQuiz(){
+  quizState = { perguntas: buildQuizQuestions(), atual:0, acertos:0 };
+  renderQuizQuestion();
+}
+function renderQuizQuestion(){
+  const card = document.getElementById('quizCard');
+  if(quizState.atual >= quizState.perguntas.length){
+    const nota = quizState.acertos;
+    const total = quizState.perguntas.length;
+    const perfeito = nota === total;
+    card.innerHTML = `
+      <div class="quiz-done">
+        <div class="cup">${perfeito ? '🏆' : nota >= total/2 ? '🥈' : '📘'}</div>
+        <h3>${nota} de ${total} acertos</h3>
+        <p>${perfeito ? 'Você conhece a Liga de cor e salteado!' : nota >= total/2 ? 'Boa! Você manja da história da Liga.' : 'Dá uma revisada na seção de Títulos e tenta de novo!'}</p>
+        <button class="quiz-next" id="quizRestart">Jogar novamente</button>
+      </div>`;
+    document.getElementById('quizRestart').addEventListener('click', setupQuiz);
+    if(perfeito) fireConfetti(30);
+    return;
+  }
+  const q = quizState.perguntas[quizState.atual];
+  card.innerHTML = `
+    <div class="quiz-top">
+      <span class="quiz-progress-label">Pergunta ${quizState.atual+1} de ${quizState.perguntas.length}</span>
+      <span class="quiz-score-label">${quizState.acertos} ✓</span>
+    </div>
+    <div class="quiz-bar"><div class="quiz-bar-fill" style="width:${(quizState.atual/quizState.perguntas.length)*100}%"></div></div>
+    <div class="quiz-question">${q.pergunta}</div>
+    <div class="quiz-options" id="quizOptions">
+      ${q.opcoes.map(op=>`<button class="quiz-option" data-op="${op}">${op}</button>`).join('')}
+    </div>`;
+  document.querySelectorAll('#quizOptions .quiz-option').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const escolha = btn.dataset.op;
+      document.querySelectorAll('#quizOptions .quiz-option').forEach(b=>{
+        b.disabled = true;
+        if(b.dataset.op === q.correta) b.classList.add('correct');
+        else if(b===btn) b.classList.add('wrong');
+      });
+      if(escolha === q.correta) quizState.acertos++;
+      if(navigator.vibrate) navigator.vibrate(escolha===q.correta ? 12 : [8,20,8]);
+      const nextBtn = document.createElement('button');
+      nextBtn.className='quiz-next'; nextBtn.textContent = (quizState.atual === quizState.perguntas.length-1) ? 'Ver resultado' : 'Próxima pergunta';
+      nextBtn.addEventListener('click', ()=>{ quizState.atual++; renderQuizQuestion(); });
+      document.getElementById('quizCard').appendChild(nextBtn);
+    });
+  });
+}
+
+/* ---------- carteirinha do torcedor (Nova funcionalidade 2) ---------- */
+const FANCARD_NAME_KEY = "ligaZP_torcedor_nome";
+function setupFanCard(){
+  const selClub = document.getElementById('fancardClub');
+  const inputName = document.getElementById('fancardName');
+  if(!selClub || !inputName) return;
+  selClub.innerHTML = clubes.map(c=>`<option value="${c.id}">${c.nome}</option>`).join('');
+  const favId = getFavorito();
+  if(favId) selClub.value = favId;
+  let savedName = '';
+  try { savedName = localStorage.getItem(FANCARD_NAME_KEY) || ''; } catch(e){}
+  inputName.value = savedName;
+  function update(){
+    try { localStorage.setItem(FANCARD_NAME_KEY, inputName.value); } catch(e){}
+    drawFanCard(selClub.value, inputName.value);
+  }
+  selClub.addEventListener('change', update);
+  inputName.addEventListener('input', update);
+  update();
+
+  const btnDownload = document.getElementById('fancardDownload');
+  const btnShare = document.getElementById('fancardShare');
+  btnDownload.addEventListener('click', ()=>{
+    const canvas = document.getElementById('fancardCanvas');
+    try{
+      const url = canvas.toDataURL('image/png');
+      const a = document.createElement('a');
+      a.href = url; a.download = `carteirinha-${selClub.value}.png`;
+      a.click();
+      if(navigator.vibrate) navigator.vibrate(10);
+    } catch(e){
+      alert('Não foi possível baixar a imagem (restrição do navegador com imagens externas). Tente fazer print da tela.');
+    }
+  });
+  btnShare.addEventListener('click', ()=>{
+    const canvas = document.getElementById('fancardCanvas');
+    canvas.toBlob(blob=>{
+      if(!blob) return;
+      const file = new File([blob], 'carteirinha.png', { type:'image/png' });
+      if(navigator.share && navigator.canShare && navigator.canShare({ files:[file] })){
+        navigator.share({ files:[file], title:'Minha carteirinha da Liga Zé Prefeitura' }).catch(()=>{});
+      } else {
+        try{
+          const url = canvas.toDataURL('image/png');
+          const a = document.createElement('a'); a.href = url; a.download = 'carteirinha.png'; a.click();
+        } catch(e){
+          alert('Não foi possível compartilhar. Tente a opção de baixar.');
+        }
+      }
+    });
+  });
+}
+function drawFanCard(id, nomeTorcedor){
+  const c = porId(id); if(!c) return;
+  const s = stats[id];
+  const canvas = document.getElementById('fancardCanvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = 320, H = 500, dpr = window.devicePixelRatio || 1;
+  canvas.width = W*dpr; canvas.height = H*dpr;
+  canvas.style.width = W+'px'; canvas.style.height = H+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  ctx.clearRect(0,0,W,H);
+  ctx.textAlign = 'center';
+
+  const cor = c.cor || '#1E9BFF';
+  const bg = ctx.createLinearGradient(0,0,0,H);
+  bg.addColorStop(0,'#0F2040'); bg.addColorStop(1,'#040919');
+  ctx.fillStyle = bg;
+  ctx.beginPath();
+  ctx.roundRect ? ctx.roundRect(0,0,W,H,20) : ctx.rect(0,0,W,H);
+  ctx.fill();
+
+  ctx.fillStyle = cor;
+  ctx.fillRect(0,0,W,8);
+
+  ctx.fillStyle = '#7080AC';
+  ctx.font = '700 11px Rajdhani, sans-serif';
+  ctx.fillText('LIGA ZÉ PREFEITURA · COPA LIGA eFOOTBALL', W/2, 34);
+
+  ctx.strokeStyle = 'rgba(255,255,255,.15)';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(W/2, 130, 60, 0, Math.PI*2); ctx.stroke();
+
+  function finish(img){
+    if(img){
+      try{
+        ctx.save();
+        ctx.beginPath(); ctx.arc(W/2,130,54,0,Math.PI*2); ctx.clip();
+        ctx.drawImage(img, W/2-54, 130-54, 108,108);
+        ctx.restore();
+      } catch(e){}
+    }
+    ctx.fillStyle = '#F5F8FF';
+    ctx.font = '700 24px Rajdhani, sans-serif';
+    ctx.fillText(c.nome.toUpperCase(), W/2, 218);
+
+    ctx.fillStyle = '#93A3CC';
+    ctx.font = '600 11px Manrope, sans-serif';
+    ctx.fillText('CARTEIRINHA DO TORCEDOR', W/2, 240);
+
+    ctx.fillStyle = cor;
+    ctx.font = '700 20px Rajdhani, sans-serif';
+    const nome = (nomeTorcedor && nomeTorcedor.trim()) ? nomeTorcedor.trim().toUpperCase() : 'TORCEDOR ANÔNIMO';
+    ctx.fillText(nome, W/2, 275);
+
+    const statsList = [ [s.titulos,'TÍTULOS'], [s.vices,'VICES'], [s.aproveitamento+'%','APROVEIT.'] ];
+    const boxW = 90, gap = 10, totalW = boxW*3+gap*2, startX = (W-totalW)/2, y = 310;
+    statsList.forEach(([val,label],i)=>{
+      const x = startX + i*(boxW+gap);
+      ctx.fillStyle = 'rgba(255,255,255,.04)';
+      ctx.beginPath();
+      ctx.roundRect ? ctx.roundRect(x,y,boxW,60,10) : ctx.rect(x,y,boxW,60);
+      ctx.fill();
+      ctx.fillStyle = '#F5F8FF'; ctx.font = '700 20px Rajdhani, sans-serif';
+      ctx.fillText(String(val), x+boxW/2, y+30);
+      ctx.fillStyle = '#7080AC'; ctx.font = '600 9px Manrope, sans-serif';
+      ctx.fillText(label, x+boxW/2, y+48);
+    });
+
+    const badges = calcularConquistas(id).slice(0,3);
+    let by = 395;
+    badges.forEach(b=>{
+      ctx.font = '600 11px Manrope, sans-serif';
+      const txt = `${b.icon} ${b.label}`;
+      const tw = ctx.measureText(txt).width + 24;
+      const bx = W/2 - tw/2;
+      ctx.fillStyle = b.gold ? 'rgba(255,209,0,.12)' : 'rgba(30,155,255,.1)';
+      ctx.beginPath();
+      ctx.roundRect ? ctx.roundRect(bx,by,tw,26,13) : ctx.rect(bx,by,tw,26);
+      ctx.fill();
+      ctx.fillStyle = b.gold ? '#FFD100' : '#1E9BFF';
+      ctx.fillText(txt, W/2, by+17);
+      by += 34;
+    });
+
+    ctx.fillStyle = '#5B6584';
+    ctx.font = '600 10px Manrope, sans-serif';
+    ctx.fillText('Emitida em ' + new Date().toLocaleDateString('pt-BR'), W/2, H-20);
+  }
+
+  if(c.escudo){
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = ()=> finish(img);
+    img.onerror = ()=> finish(null);
+    img.src = c.escudo;
+  } else {
+    finish(null);
+  }
+}
+
+function renderAll(){
+  renderHeroStats(); renderChampionShowcase(); renderQuickFacts(); renderLastResult();
+  renderCrestRing(); renderFavPill(); renderHighlights(); renderClubGrid(); renderChampList();
+  renderResultFeed(); renderRankFilter(); renderRanking(); renderRankingForca(); renderScout(); renderStatGrid2(); renderRecords(); renderRivalries(); renderTimeline();
+  renderGallery(); renderHeroTag(); renderPredictCard(); renderHallFama(); renderHomeNewsPreview();
+}
+
+/* =====================================================================================================
+   INICIALIZAÇÃO GERAL
+   ===================================================================================================== */
+renderAll();
+renderCountdown();
+renderTournaments();
+renderCharts();
+setupHTH();
+renderNewsFilter();
+renderNews();
+renderGalleryFilter();
+renderGuia();
+setupSimulador();
+setupQuiz();
+setupFanCard();
+window.addEventListener('resize', ()=>{ clearTimeout(window._rt); window._rt=setTimeout(renderCharts,200); });
+
+/* barra inferior + folha "mais" */
+const overlayMore = document.getElementById('overlayMore');
+document.getElementById('tabMore').addEventListener('click', ()=> overlayMore.classList.add('open'));
+document.getElementById('closeMore').addEventListener('click', ()=> overlayMore.classList.remove('open'));
+overlayMore.addEventListener('click', e=>{ if(e.target.id==='overlayMore') overlayMore.classList.remove('open'); });
+overlayMore.querySelectorAll('[data-close-more]').forEach(a=>a.addEventListener('click', ()=> overlayMore.classList.remove('open')));
+
+document.querySelectorAll('.tab-btn[data-target]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelector(btn.dataset.target).scrollIntoView({behavior:'smooth', block:'start'});
+    if(navigator.vibrate) navigator.vibrate(8);
+  });
+});
+const mainTargets = ['#inicio','#clubes','#torneios','#estatisticas'];
+const sectionsToWatch = document.querySelectorAll('section[id]');
+const tabIo = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{
+    if(en.isIntersecting){
+      const id = '#'+en.target.id;
+      document.querySelectorAll('.tab-btn[data-target]').forEach(b=>{
+        b.classList.toggle('active', mainTargets.includes(id) && b.dataset.target===id);
+      });
+    }
+  });
+}, { rootMargin: '-40% 0px -50% 0px' });
+sectionsToWatch.forEach(s=>tabIo.observe(s));
+
+/* contador animado do hero */
+document.querySelectorAll('[data-count]').forEach(el=>{
+  const target = parseInt(el.dataset.count, 10);
+  let cur = 0; const step = Math.max(1, Math.round(target/30));
+  const t = setInterval(()=>{ cur += step; if(cur>=target){ cur=target; clearInterval(t); } el.textContent = cur; }, 40);
+});
+
+/* barra de progresso de leitura */
+const progress = document.getElementById('scrollProgress');
+const fabTop = document.getElementById('fabTop');
+window.addEventListener('scroll', ()=>{
+  const h = document.documentElement;
+  const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+  progress.style.width = pct + '%';
+  fabTop.classList.toggle('show', h.scrollTop > 600);
+});
+fabTop.addEventListener('click', ()=>{ window.scrollTo({top:0, behavior:'smooth'}); });
+
+/* revelar seções ao rolar */
+const revealIO = new IntersectionObserver(entries=>{
+  entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); revealIO.unobserve(en.target); } });
+},{ threshold:.12 });
+document.querySelectorAll('.reveal').forEach(el=>revealIO.observe(el));
+
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.body.classList.add('reduced-motion');
+  document.querySelectorAll('.reveal').forEach(el=>el.classList.add('in'));
+}
+</script>
+</body>
+</html>
